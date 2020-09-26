@@ -55,6 +55,11 @@ button {
   padding: 1px 5px;
   cursor: pointer;
 
+  &:hover {
+    background-color: rgb(210, 210, 210);
+    border: 1px solid rgb(200, 200, 200);
+  }
+
   &.success {
     background-color: rgb(200, 240, 200);
     border: 1px solid rgb(180, 220, 180);

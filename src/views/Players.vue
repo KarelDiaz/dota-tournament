@@ -29,7 +29,7 @@
       <tr>
         <th>Nombre</th>
         <th>Nick</th>
-        <th>ELO</th>
+        <th>ELO ↓</th>
         <th>Active</th>
         <th></th>
       </tr>
@@ -66,13 +66,27 @@ export default {
       fetch(dataurl + "players")
         .then(res => res.json())
         .then(data => {
-          this.players = data.filter(p => {
-            let out = false;
-            if (p.fullName.toLowerCase().indexOf(this.textFilter.toLowerCase()) >= 0) out = true;
-            if (p.nick.toLowerCase().indexOf(this.textFilter.toLowerCase()) >= 0) out = true;
-            if (p.elo == this.textFilter) out = true;
-            return out;
-          });
+          this.players = data
+            .filter(player => {
+              // normalize texts
+              let text = this.textFilter.toLowerCase();
+              let name = player.fullName.toLowerCase();
+              let nick = player.nick.toLowerCase();
+              let elo = player.elo;
+
+              //search text into data
+              if (name.indexOf(text) >= 0) return true;
+              if (nick.indexOf(text) >= 0) return true;
+              if (elo == text) return true;
+
+              return false;//discard player if no match
+            })
+            .sort((a, b) => {
+              if (a.elo == b.elo) {
+                return a.fullName > b.fullName;
+              }
+              return a.elo < b.elo;
+            });
         });
     },
 
@@ -87,7 +101,7 @@ export default {
           }
         }).then(() => {
           this.filter();
-          this.playerForm=new Player();
+          this.playerForm = new Player();
         });
       } else {
         fetch(dataurl + "players", {

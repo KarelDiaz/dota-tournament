@@ -68,8 +68,8 @@ export default {
         .then(data => {
           this.players = data.filter(p => {
             let out = false;
-            if (p.fullName.indexOf(this.textFilter) >= 0) out = true;
-            if (p.nick.indexOf(this.textFilter) >= 0) out = true;
+            if (p.fullName.toLowerCase().indexOf(this.textFilter.toLowerCase()) >= 0) out = true;
+            if (p.nick.toLowerCase().indexOf(this.textFilter.toLowerCase()) >= 0) out = true;
             if (p.elo == this.textFilter) out = true;
             return out;
           });

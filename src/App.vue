@@ -10,6 +10,10 @@
 </template>
 
 <style lang="scss">
+body,html{
+  margin: 0;
+  padding: 0;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

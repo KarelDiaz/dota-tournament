@@ -63,7 +63,7 @@ export default {
   },
   methods: {
     filter() {
-      fetch(dataurl + "players")
+      fetch(dataurl + "/players")
         .then(res => res.json())
         .then(data => {
           this.players = data
@@ -92,7 +92,7 @@ export default {
 
     send() {
       if (this.idMod >= 0) {
-        fetch(dataurl + "players/" + this.idMod, {
+        fetch(dataurl + "/players/" + this.idMod, {
           method: "PUT",
           body: JSON.stringify(this.playerForm),
           headers: {
@@ -104,7 +104,7 @@ export default {
           this.playerForm = new Player();
         });
       } else {
-        fetch(dataurl + "players", {
+        fetch(dataurl + "/players", {
           method: "POST",
           body: JSON.stringify(this.playerForm),
           headers: {
@@ -122,7 +122,7 @@ export default {
     },
 
     preMod(id) {
-      fetch(dataurl + "players/" + id)
+      fetch(dataurl + "/players/" + id)
         .then(res => res.json())
         .then(data => {
           this.idMod = id;
@@ -137,7 +137,7 @@ export default {
 
     del(id) {
       if (confirm("Estas seguro de eliminar el player"))
-        fetch(dataurl + "players/" + id, {
+        fetch(dataurl + "/players/" + id, {
           method: "DELETE",
           headers: {
             Accept: "application/json",

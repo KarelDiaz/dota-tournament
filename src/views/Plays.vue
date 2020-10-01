@@ -4,9 +4,9 @@
       <form @submit.prevent="send">
         <div class="plays">
           <div class="play">
-            <button type="submit" class="success">Agregar el play</button>
+            <span>Nuevo play</span>
             <div class="result-content">
-              <div class="result" :class="pr.side" v-for="pr in prForm" :key="pr.player">
+              <div class="result" :class="pr.side" v-for="(pr, index) in prForm" :key="index">
                 <span>
                   <input v-model="pr.bot" type="checkbox" /> Bot
                 </span>
@@ -24,12 +24,21 @@
                 </span>
               </div>
             </div>
+            <button type="submit" class="success">Guardar el play</button>
           </div>
         </div>
       </form>
     </div>
 
     <div class="plays">
+      <div class="play loading" v-if="loading">
+        <div class="loading-animation">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+
       <div class="play" v-for="play in plays" :key="play.id">
         <span>{{play.created_at}}</span>
 
@@ -40,8 +49,8 @@
             v-for="result in play.player_results"
             :key="result.id"
           >
-            <span class="item" v-if="!result.bot">{{getPlayer(result.player).nick}}</span>
-            <span class="item" v-if="result.bot">Bot</span>
+            <b class="item" v-if="!result.bot">{{getPlayer(result.player).nick}}</b>
+            <b class="item" v-if="result.bot">Bot</b>
             <table class="item" v-if="!result.bot">
               <tr>
                 <td>K</td>
@@ -77,6 +86,8 @@
 <script>
 import dataurl from "@/store/dataurl";
 import PlayerResult from "@/store/model/player_result.js";
+import axios from "axios";
+import moment from "moment";
 
 export default {
   name: "Plays",
@@ -86,66 +97,47 @@ export default {
       players: [],
       heroes: [],
       prForm: [],
-      ns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+      loading: false
     };
   },
   methods: {
     send() {
       var out = [];
+      this.loading = true;
       this.prForm.forEach(pr => {
-        fetch(dataurl + "/player-results", {
-          method: "POST",
-          body: JSON.stringify(pr),
-          headers: {
-            Accept: "application/json",
-            "Content-type": "application/json"
+        axios.post(dataurl + "/player-results", pr).then(({ data }) => {
+          out.push(data.id);
+          if (out.length === 10) {
+            axios.post(dataurl + "/plays", { player_results: out }).then(() => {
+              this.resetForm();
+              this.filter();
+            });
           }
-        })
-          .then(res => res.json())
-          .then(data => {
-            out.push(data.id);
-            if (out.length === 10) {
-              fetch(dataurl + "/plays", {
-                method: "POST",
-                body: JSON.stringify({ player_results: out }),
-                headers: {
-                  Accept: "application/json",
-                  "Content-type": "application/json"
-                }
-              })
-                .then(res => res.json())
-                .then(() => {
-                  this.resetForm();
-                  this.filter();
-                });
-            }
-          });
+        });
       });
     },
     filter() {
-      fetch(dataurl + "/plays")
-        .then(res => res.json())
-        .then(data => {
-          this.plays = data.reverse().slice(0, 10);
-          this.plays.forEach(play => {
-            play.player_results = play.player_results.sort((a, b) => {
-              if (a.side == b.side) {
-                return a.bot;
-              }
-              return a.side < b.side;
-            });
+      this.loading = true;
+      axios.get(dataurl + "/plays").then(({ data }) => {
+        this.plays = data.reverse(); //.slice(0, 10);
+        this.plays.forEach(play => {
+          play.player_results = play.player_results.sort((a, b) => {
+            if (a.side == b.side) {
+              return a.bot;
+            }
+            return a.side < b.side;
           });
         });
+        this.loading = false;
+      });
     },
 
     initPlayers() {
-      fetch(dataurl + "/players")
-        .then(res => res.json())
-        .then(data => {
-          this.players = data.sort(
-            (a, b) => a.fullName.toLowerCase() > b.fullName.toLowerCase()
-          );
-        });
+      axios.get(dataurl + "/players").then(({ data }) => {
+        this.players = data.sort(
+          (a, b) => a.fullName.toLowerCase() > b.fullName.toLowerCase()
+        );
+      });
     },
 
     getPlayer(id) {
@@ -153,13 +145,11 @@ export default {
     },
 
     initHeroes() {
-      fetch(dataurl + "/heroes")
-        .then(res => res.json())
-        .then(data => {
-          this.heroes = data.sort(
-            (a, b) => a.displayName.toLowerCase() > b.displayName.toLowerCase()
-          );
-        });
+      axios.get(dataurl + "/heroes").then(({ data }) => {
+        this.heroes = data.sort(
+          (a, b) => a.displayName.toLowerCase() > b.displayName.toLowerCase()
+        );
+      });
     },
 
     getHero(id) {
@@ -167,18 +157,22 @@ export default {
     },
 
     resetForm() {
-      this.prForm = [
-        new PlayerResult("good"),
-        new PlayerResult("good"),
-        new PlayerResult("good"),
-        new PlayerResult("good"),
-        new PlayerResult("good"),
-        new PlayerResult("bad"),
-        new PlayerResult("bad"),
-        new PlayerResult("bad"),
-        new PlayerResult("bad"),
-        new PlayerResult("bad")
-      ];
+      for (let i = 0; i < 10; i++) {
+        if (i < 5) {
+          this.prForm[i] = new PlayerResult("good");
+        } else {
+          this.prForm[i] = new PlayerResult("bad");
+        }
+      }
+    }
+  },
+  watch: {
+    plays(val) {
+      val.forEach(elem => {
+        elem.created_at = moment(elem.created_at).format(
+          "YYYY - M - D // hh:mm"
+        );
+      });
     }
   },
   created() {
@@ -195,6 +189,52 @@ export default {
   display: flex;
   flex-direction: column;
 
+  .loading {
+    height: 150px;
+    justify-content: center;
+
+    .loading-animation {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+
+      * {
+        min-width: 10px;
+        min-height: 20px;
+        width: 10px;
+        height: 20px;
+        background-color: green;
+        border: 1px solid greenyellow;
+        margin: 10px;
+
+        &:nth-child(1) {
+          animation: loading 1.5s 0s infinite linear;
+        }
+
+        &:nth-child(2) {
+          animation: loading 1.5s 0.1s infinite linear;
+        }
+
+        &:nth-child(3) {
+          animation: loading 1.5s 0.2s infinite linear;
+        }
+
+        @keyframes loading {
+          10% {
+            background-color: greenyellow;
+            transform: scale(1.6);
+          }
+          0%,
+          20%,
+          100% {
+            transform: scale(1);
+            background-color: green;
+          }
+        }
+      }
+    }
+  }
+
   .play {
     display: flex;
     flex-direction: column;
@@ -206,7 +246,7 @@ export default {
       display: flex;
       flex-direction: row;
       justify-content: space-evenly;
-      padding-top: 5px;
+      padding: 5px 0;
 
       .result {
         display: flex;

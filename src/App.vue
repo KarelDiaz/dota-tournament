@@ -10,7 +10,8 @@
 </template>
 
 <style lang="scss">
-body,html{
+body,
+html {
   margin: 0;
   padding: 0;
 }

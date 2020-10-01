@@ -50,6 +50,7 @@
 <script>
 import dataurl from "@/store/dataurl";
 import Player from "@/store/model/player";
+import axios from "axios";
 
 export default {
   name: "Players",
@@ -63,87 +64,63 @@ export default {
   },
   methods: {
     filter() {
-      fetch(dataurl + "/players")
-        .then(res => res.json())
-        .then(data => {
-          this.players = data
-            .filter(player => {
-              // normalize texts
-              let text = this.textFilter.toLowerCase();
-              let name = player.fullName.toLowerCase();
-              let nick = player.nick.toLowerCase();
-              let elo = player.elo;
+      axios.get(dataurl + "/players").then(({data}) => {
+        this.players = data
+          .filter(player => {
+            // normalize texts
+            let text = this.textFilter.toLowerCase();
+            let name = player.fullName.toLowerCase();
+            let nick = player.nick.toLowerCase();
+            let elo = player.elo;
 
-              //search text into data
-              if (name.indexOf(text) >= 0) return true;
-              if (nick.indexOf(text) >= 0) return true;
-              if (elo == text) return true;
+            //search text into data
+            if (name.indexOf(text) >= 0) return true;
+            if (nick.indexOf(text) >= 0) return true;
+            if (elo == text) return true;
 
-              return false;//discard player if no match
-            })
-            .sort((a, b) => {
-              if (a.elo == b.elo) {
-                return a.fullName > b.fullName;
-              }
-              return a.elo < b.elo;
-            });
-        });
+            return false; //discard player if no match
+          })
+          .sort((a, b) => {
+            if (a.elo == b.elo) {
+              return a.fullName > b.fullName;
+            }
+            return a.elo < b.elo;
+          });
+      });
     },
 
     send() {
       if (this.idMod >= 0) {
-        fetch(dataurl + "/players/" + this.idMod, {
-          method: "PUT",
-          body: JSON.stringify(this.playerForm),
-          headers: {
-            Accept: "application/json",
-            "Content-type": "application/json"
-          }
-        }).then(() => {
-          this.filter();
-          this.playerForm = new Player();
-        });
-      } else {
-        fetch(dataurl + "/players", {
-          method: "POST",
-          body: JSON.stringify(this.playerForm),
-          headers: {
-            Accept: "application/json",
-            "Content-type": "application/json"
-          }
-        })
-          .then(res => res.json())
+        axios
+          .put(dataurl + "/players/" + this.idMod, this.playerForm)
           .then(() => {
-            this.playerForm = new Player();
             this.filter();
+            this.playerForm = new Player();
           });
+      } else {
+        axios.post(dataurl + "/players", this.playerForm).then(() => {
+          this.playerForm = new Player();
+          this.filter();
+        });
       }
       this.idMod = -1;
     },
 
     preMod(id) {
-      fetch(dataurl + "/players/" + id)
-        .then(res => res.json())
-        .then(data => {
-          this.idMod = id;
-          this.playerForm = new Player(
-            data.fullName,
-            data.nick,
-            data.elo,
-            data.active
-          );
-        });
+      axios.get(dataurl + "/players/" + id).then(({data}) => {
+        this.idMod = id;
+        this.playerForm = new Player(
+          data.fullName,
+          data.nick,
+          data.elo,
+          data.active
+        );
+      });
     },
 
     del(id) {
       if (confirm("Estas seguro de eliminar el player"))
-        fetch(dataurl + "/players/" + id, {
-          method: "DELETE",
-          headers: {
-            Accept: "application/json",
-            "Content-type": "application/json"
-          }
-        }).then(() => {
+        axios.delete(dataurl + "/players/" + id).then(() => {
           this.players = this.players.filter(p => p.id != id);
         });
     }

@@ -46,7 +46,8 @@ html {
   }
 }
 
-input {
+input,
+select {
   border: none;
   box-shadow: none;
   background-color: rgb(250, 250, 250);

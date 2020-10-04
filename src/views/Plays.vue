@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="options" v-if="!loading">
+    <div class="options">
       <form @submit.prevent="send">
         <div class="plays">
           <div class="play">
@@ -61,16 +61,11 @@
     </div>
 
     <div class="plays">
-      <div class="play loading" v-if="loading">
-        <div class="loading-animation">
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-      </div>
-
-      <div class="play" v-for="play in plays" :key="play.id">
-        <span>{{play.created_at}}</span>
+      <div class="play" v-for="(play,iPlay) in plays" :key="play.id">
+        <span>
+          {{play.created_at}}
+          <button class="danger" @click="del(play.id)">Eliminar</button>
+        </span>
 
         <div class="result-content">
           <div
@@ -102,10 +97,20 @@
             <span class="item">{{getHero(result.hero).displayName}}</span>
             <div class="black-shadow" :class="result.side + (result.bot?' bot':'')"></div>
             <img
+              v-if="iPlay>0"
               class="hero-img"
               :src="'http://localhost:1337'+getHero(result.hero).picture.url"
               :alt="getHero(result.hero).picture.url"
             />
+            <video
+              preload
+              autoplay
+              loop
+              v-if="iPlay==0"
+              class="hero-img"
+              :src="'http://localhost:1337'+getHero(result.hero).video.url"
+              :alt="getHero(result.hero).video.url"
+            ></video>
           </div>
         </div>
       </div>
@@ -114,11 +119,12 @@
 </template>
 
 <script>
+import axios from "axios";
+import moment from "moment";
+
 import dataurl from "@/store/dataurl";
 import PlayerResult from "@/store/model/player_result.js";
 import Hero from "@/store/model/hero.js";
-import axios from "axios";
-import moment from "moment";
 
 export default {
   name: "Plays",
@@ -127,14 +133,13 @@ export default {
       plays: [],
       players: [],
       heroes: [],
-      prForm: [],
-      loading: false
+      prForm: []
     };
   },
   methods: {
     send() {
       var out = [];
-      this.loading = true;
+      this.$store.commit("startLoading");
       this.prForm.forEach(pr => {
         axios.post(dataurl + "/player-results", pr).then(({ data }) => {
           out.push(data.id);
@@ -148,7 +153,7 @@ export default {
       });
     },
     filter() {
-      this.loading = true;
+      this.$store.commit("startLoading");
       axios.get(dataurl + "/plays").then(({ data }) => {
         this.plays = data.reverse(); //.slice(0, 10);
         this.plays.forEach(play => {
@@ -159,10 +164,17 @@ export default {
             return a.side < b.side;
           });
         });
-        this.loading = false;
+        this.$store.commit("endLoading");
       });
     },
-
+    del(id) {
+      if (confirm("Seguro de eliminar el Play?")) {
+        this.$store.commit("startLoading");
+        axios.delete(`${dataurl}/plays/${id}`).then(() => {
+          this.filter();
+        });
+      }
+    },
     initPlayers() {
       axios.get(dataurl + "/players").then(({ data }) => {
         this.players = data.sort(
@@ -185,8 +197,8 @@ export default {
         axios.get(dataurl + "/heroes/" + i).then(({ data }) => {
           this.heroes.push(data);
           this.heroes = this.heroes.sort(
-          (a, b) => a.displayName.toLowerCase() > b.displayName.toLowerCase()
-        );
+            (a, b) => a.displayName.toLowerCase() > b.displayName.toLowerCase()
+          );
         });
       }
     },
@@ -225,58 +237,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$width-hero: calc(100vw / 10 - 1.5px);
-$height-hero: 180px;
+$width-hero: calc(100vw / 10);
+$height-hero: $width-hero;
+
+$width-hero-xs: calc(100vw / 5);
+$height-hero-xs: $width-hero-xs;
 
 .plays {
   display: flex;
   flex-direction: column;
-
-  .loading {
-    height: $height-hero;
-    justify-content: center;
-
-    .loading-animation {
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-
-      * {
-        min-width: 10px;
-        min-height: 20px;
-        width: 10px;
-        height: 20px;
-        background-color: green;
-        border: 1px solid greenyellow;
-        margin: 10px;
-
-        &:nth-child(1) {
-          animation: loading 1.5s 0s infinite linear;
-        }
-
-        &:nth-child(2) {
-          animation: loading 1.5s 0.1s infinite linear;
-        }
-
-        &:nth-child(3) {
-          animation: loading 1.5s 0.2s infinite linear;
-        }
-
-        @keyframes loading {
-          10% {
-            background-color: greenyellow;
-            transform: scale(1.6);
-          }
-          0%,
-          20%,
-          100% {
-            transform: scale(1);
-            background-color: green;
-          }
-        }
-      }
-    }
-  }
 
   .play {
     display: flex;
@@ -286,8 +255,10 @@ $height-hero: 180px;
     margin-bottom: 1rem;
 
     .result-content {
-      display: flex;
-      flex-direction: row;
+      display: grid;
+      grid-template-rows: auto;
+      grid-template-columns: repeat(10, $width-hero);
+      align-content: center;
       justify-content: center;
       padding-top: 5px;
 
@@ -300,6 +271,13 @@ $height-hero: 180px;
         width: $width-hero;
         height: $height-hero;
         font-size: smaller;
+
+        @media screen and (max-width: 599px) {
+          & {
+            width: $width-hero-xs;
+            height: $height-hero-xs;
+          }
+        }
 
         .item {
           z-index: 2;
@@ -325,6 +303,14 @@ $height-hero: 180px;
           height: $height-hero;
           z-index: 1;
           background-color: transparent;
+          border: none;
+
+          @media screen and (max-width: 599px) {
+            & {
+              width: $width-hero-xs;
+              height: $height-hero-xs;
+            }
+          }
 
           &.bot {
             background-color: rgba(0, 0, 0, 0.8);
@@ -334,19 +320,29 @@ $height-hero: 180px;
           position: absolute;
           width: $width-hero;
           height: $height-hero;
-          background-color: transparentize($color: #000000, $amount: 0);
+          
+          @media screen and (max-width: 599px) {
+            & {
+              width: $width-hero-xs;
+              height: $height-hero-xs;
+            }
+          }
+        }
+      }
+
+      @media screen and (max-width: 599px) {
+        & {
+          grid-template-columns: repeat(5, $width-hero-xs);
         }
       }
     }
 
     .good {
-      //background-color: rgb(110, 255, 110);
-      border-top: 1px solid rgb(110, 255, 110);
+      border-top: 5px solid rgb(0, 255, 191);
     }
 
     .bad {
-      //background-color: rgb(255, 117, 117);
-      border-top: 1px solid rgb(255, 117, 117);
+      border-top: 5px solid rgb(255, 81, 0);
     }
   }
 }

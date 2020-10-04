@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Loading></Loading>
     <div id="nav">
       <router-link to="/">Players</router-link>
       <span class="nav-separator">|</span>
@@ -8,6 +9,16 @@
     <router-view />
   </div>
 </template>
+
+<script>
+import Loading from "@/components/Loading";
+
+export default {
+  components: {
+    Loading
+  }
+};
+</script>
 
 <style lang="scss">
 body,

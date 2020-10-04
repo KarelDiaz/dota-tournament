@@ -48,7 +48,6 @@
 </template>
 
 <script>
-import dataurl from "@/store/dataurl";
 import Player from "@/store/model/player";
 import axios from "axios";
 
@@ -64,7 +63,7 @@ export default {
   },
   methods: {
     filter() {
-      axios.get(dataurl + "/players").then(({data}) => {
+      axios.get(this.$store.state.strapi + "/players").then(({data}) => {
         this.players = data
           .filter(player => {
             // normalize texts
@@ -92,13 +91,13 @@ export default {
     send() {
       if (this.idMod >= 0) {
         axios
-          .put(dataurl + "/players/" + this.idMod, this.playerForm)
+          .put(this.$store.state.strapi + "/players/" + this.idMod, this.playerForm)
           .then(() => {
             this.filter();
             this.playerForm = new Player();
           });
       } else {
-        axios.post(dataurl + "/players", this.playerForm).then(() => {
+        axios.post(this.$store.state.strapi + "/players", this.playerForm).then(() => {
           this.playerForm = new Player();
           this.filter();
         });
@@ -107,7 +106,7 @@ export default {
     },
 
     preMod(id) {
-      axios.get(dataurl + "/players/" + id).then(({data}) => {
+      axios.get(this.$store.state.strapi + "/players/" + id).then(({data}) => {
         this.idMod = id;
         this.playerForm = new Player(
           data.fullName,
@@ -120,7 +119,7 @@ export default {
 
     del(id) {
       if (confirm("Estas seguro de eliminar el player"))
-        axios.delete(dataurl + "/players/" + id).then(() => {
+        axios.delete(this.$store.state.strapi + "/players/" + id).then(() => {
           this.players = this.players.filter(p => p.id != id);
         });
     }

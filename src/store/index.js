@@ -1,8 +1,10 @@
 import { createStore } from "vuex";
+import strapi from "./strapiurl";
 
 export default createStore({
   state: {
-    loading: true,
+    loading: false,
+    strapi: strapi,
   },
   mutations: {
     startLoading(state) {
@@ -10,7 +12,7 @@ export default createStore({
     },
     endLoading(state) {
       state.loading = false;
-    }
+    },
   },
   actions: {},
   modules: {},

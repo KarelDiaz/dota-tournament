@@ -47,10 +47,21 @@
                   <input v-model="pr.win" v-if="!pr.bot" type="checkbox" /> Win
                 </span>
                 <div class="black-shadow" :class="pr.side + (pr.bot?' bot':'')"></div>
+
                 <img
+                  v-if="pr.bot"
                   class="hero-img"
-                  :src="'http://localhost:1337'+getHero(pr.hero).picture.url"
+                  :src="$store.state.strapi+getHero(pr.hero).picture.url"
                   :alt="getHero(pr.hero).picture.url"
+                />
+                <video
+                  preload
+                  autoplay
+                  loop
+                  v-if="!pr.bot"
+                  class="hero-img"
+                  :src="$store.state.strapi+getHero(pr.hero).video.url"
+                  :alt="getHero(pr.hero).video.url"
                 />
               </div>
             </div>
@@ -61,7 +72,7 @@
     </div>
 
     <div class="plays">
-      <div class="play" v-for="(play,iPlay) in plays" :key="play.id">
+      <div class="play" v-for="play in plays" :key="play.id">
         <span>
           {{play.created_at}}
           <button class="danger" @click="del(play.id)">Eliminar</button>
@@ -97,20 +108,20 @@
             <span class="item">{{getHero(result.hero).displayName}}</span>
             <div class="black-shadow" :class="result.side + (result.bot?' bot':'')"></div>
             <img
-              v-if="iPlay>0"
+              v-if="result.bot"
               class="hero-img"
-              :src="'http://localhost:1337'+getHero(result.hero).picture.url"
+              :src="$store.state.strapi+getHero(result.hero).picture.url"
               :alt="getHero(result.hero).picture.url"
             />
             <video
               preload
               autoplay
               loop
-              v-if="iPlay==0"
+              v-if="!result.bot"
               class="hero-img"
-              :src="'http://localhost:1337'+getHero(result.hero).video.url"
+              :src="$store.state.strapi+getHero(result.hero).video.url"
               :alt="getHero(result.hero).video.url"
-            ></video>
+            />
           </div>
         </div>
       </div>
@@ -122,7 +133,6 @@
 import axios from "axios";
 import moment from "moment";
 
-import dataurl from "@/store/dataurl";
 import PlayerResult from "@/store/model/player_result.js";
 import Hero from "@/store/model/hero.js";
 
@@ -141,10 +151,10 @@ export default {
       var out = [];
       this.$store.commit("startLoading");
       this.prForm.forEach(pr => {
-        axios.post(dataurl + "/player-results", pr).then(({ data }) => {
+        axios.post(this.$store.state.strapi + "/player-results", pr).then(({ data }) => {
           out.push(data.id);
           if (out.length === 10) {
-            axios.post(dataurl + "/plays", { player_results: out }).then(() => {
+            axios.post(this.$store.state.strapi + "/plays", { player_results: out }).then(() => {
               this.resetForm();
               this.filter();
             });
@@ -154,7 +164,7 @@ export default {
     },
     filter() {
       this.$store.commit("startLoading");
-      axios.get(dataurl + "/plays").then(({ data }) => {
+      axios.get(this.$store.state.strapi + "/plays").then(({ data }) => {
         this.plays = data.reverse(); //.slice(0, 10);
         this.plays.forEach(play => {
           play.player_results = play.player_results.sort((a, b) => {
@@ -170,13 +180,13 @@ export default {
     del(id) {
       if (confirm("Seguro de eliminar el Play?")) {
         this.$store.commit("startLoading");
-        axios.delete(`${dataurl}/plays/${id}`).then(() => {
+        axios.delete(`${this.$store.state.strapi}/plays/${id}`).then(() => {
           this.filter();
         });
       }
     },
     initPlayers() {
-      axios.get(dataurl + "/players").then(({ data }) => {
+      axios.get(this.$store.state.strapi + "/players").then(({ data }) => {
         this.players = data.sort(
           (a, b) => a.fullName.toLowerCase() > b.fullName.toLowerCase()
         );
@@ -188,13 +198,13 @@ export default {
     },
 
     initHeroes() {
-      axios.get(dataurl + "/heroes").then(({ data }) => {
+      axios.get(this.$store.state.strapi + "/heroes").then(({ data }) => {
         this.heroes = data.sort(
           (a, b) => a.displayName.toLowerCase() > b.displayName.toLowerCase()
         );
       });
       for (let i = 101; i <= 118; i++) {
-        axios.get(dataurl + "/heroes/" + i).then(({ data }) => {
+        axios.get(this.$store.state.strapi + "/heroes/" + i).then(({ data }) => {
           this.heroes.push(data);
           this.heroes = this.heroes.sort(
             (a, b) => a.displayName.toLowerCase() > b.displayName.toLowerCase()
@@ -276,6 +286,7 @@ $height-hero-xs: $width-hero-xs;
           & {
             width: $width-hero-xs;
             height: $height-hero-xs;
+            font-size: xx-small;
           }
         }
 
@@ -313,14 +324,14 @@ $height-hero-xs: $width-hero-xs;
           }
 
           &.bot {
-            background-color: rgba(0, 0, 0, 0.8);
+            background-color: rgba(0, 0, 0, 0.6);
           }
         }
         .hero-img {
           position: absolute;
           width: $width-hero;
           height: $height-hero;
-          
+
           @media screen and (max-width: 599px) {
             & {
               width: $width-hero-xs;

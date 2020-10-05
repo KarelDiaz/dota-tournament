@@ -10,7 +10,7 @@
                 <span class="item-form">
                   <input v-model="pr.bot" type="checkbox" /> Bot
                 </span>
-                <select class="item-form" v-model="pr.player" v-if="!pr.bot">
+                <select required class="item-form" v-model="pr.player" v-if="!pr.bot">
                   <option :value="p.id" v-for="p in players" :key="p.id">{{p.nick}}</option>
                 </select>
 
@@ -135,6 +135,7 @@ import moment from "moment";
 
 import PlayerResult from "@/store/model/player_result.js";
 import Hero from "@/store/model/hero.js";
+import { START_LOADING, END_LOADING } from "@/store/mutations-type";
 
 export default {
   name: "Plays",
@@ -149,7 +150,7 @@ export default {
   methods: {
     send() {
       var out = [];
-      this.$store.commit("startLoading");
+      this.$store.commit(START_LOADING);
       this.prForm.forEach(pr => {
         axios.post(this.$store.state.strapi + "/player-results", pr).then(({ data }) => {
           out.push(data.id);
@@ -163,7 +164,7 @@ export default {
       });
     },
     filter() {
-      this.$store.commit("startLoading");
+      this.$store.commit(START_LOADING);
       axios.get(this.$store.state.strapi + "/plays").then(({ data }) => {
         this.plays = data.reverse(); //.slice(0, 10);
         this.plays.forEach(play => {
@@ -174,12 +175,12 @@ export default {
             return a.side < b.side;
           });
         });
-        this.$store.commit("endLoading");
+        this.$store.commit(END_LOADING);
       });
     },
     del(id) {
       if (confirm("Seguro de eliminar el Play?")) {
-        this.$store.commit("startLoading");
+        this.$store.commit(START_LOADING);
         axios.delete(`${this.$store.state.strapi}/plays/${id}`).then(() => {
           this.filter();
         });
@@ -247,10 +248,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$width-hero: calc(100vw / 10);
+$width-hero: calc(calc(100vw / 10) - 5px);
 $height-hero: $width-hero;
 
-$width-hero-xs: calc(100vw / 5);
+$width-hero-xs: calc(calc(100vw / 5) - 5px);
 $height-hero-xs: $width-hero-xs;
 
 .plays {
@@ -282,7 +283,7 @@ $height-hero-xs: $width-hero-xs;
         height: $height-hero;
         font-size: smaller;
 
-        @media screen and (max-width: 599px) {
+        @media screen and (max-width: 899px) {
           & {
             width: $width-hero-xs;
             height: $height-hero-xs;
@@ -316,7 +317,7 @@ $height-hero-xs: $width-hero-xs;
           background-color: transparent;
           border: none;
 
-          @media screen and (max-width: 599px) {
+          @media screen and (max-width: 899px) {
             & {
               width: $width-hero-xs;
               height: $height-hero-xs;
@@ -332,7 +333,7 @@ $height-hero-xs: $width-hero-xs;
           width: $width-hero;
           height: $height-hero;
 
-          @media screen and (max-width: 599px) {
+          @media screen and (max-width: 899px) {
             & {
               width: $width-hero-xs;
               height: $height-hero-xs;
@@ -341,7 +342,7 @@ $height-hero-xs: $width-hero-xs;
         }
       }
 
-      @media screen and (max-width: 599px) {
+      @media screen and (max-width: 899px) {
         & {
           grid-template-columns: repeat(5, $width-hero-xs);
         }

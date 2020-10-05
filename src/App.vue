@@ -1,6 +1,7 @@
 <template>
   <div>
     <Loading></Loading>
+    <Clean></Clean>
     <div id="nav">
       <router-link to="/">Players</router-link>
       <span class="nav-separator">|</span>
@@ -12,11 +13,13 @@
 
 <script>
 import Loading from "@/components/Loading";
+import Clean from "@/components/Clean";
 
 export default {
   components: {
-    Loading
-  }
+    Loading,
+    Clean
+  } 
 };
 </script>
 

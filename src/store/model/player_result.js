@@ -8,6 +8,8 @@ export default class PlayerResult {
   bot;
   hero;
   player;
+  elo;
+  eloPlus;
   constructor(
     side = "",
     kills = 0,
@@ -17,7 +19,9 @@ export default class PlayerResult {
     win = false,
     bot = true,
     hero = 1,
-    player = 0
+    player = 0,
+    elo = 0,
+    eloPus = 0
   ) {
     this.kills = kills;
     this.deths = deths;
@@ -28,5 +32,7 @@ export default class PlayerResult {
     this.bot = bot;
     this.hero = hero;
     this.player = player;
+    this.elo = elo;
+    this.eloPlus = eloPus;
   }
 }

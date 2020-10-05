@@ -86,6 +86,14 @@
             :key="result.id"
           >
             <b class="item" v-if="!result.bot">{{getPlayer(result.player).nick}}</b>
+            <span class="item elo" v-if="!result.bot">
+              {{result.elo}}
+              <b class="elo-plus" :class="result.win?'success':'danger'">
+                <span v-if="result.win">+</span>
+                <span v-if="!result.win">-</span>
+                {{Math.abs(result.eloPlus)}}
+              </b>
+            </span>
             <b class="item" v-if="result.bot">Bot</b>
             <table class="item" v-if="!result.bot">
               <tr>
@@ -108,7 +116,6 @@
             <span class="item">{{getHero(result.hero).displayName}}</span>
             <div class="black-shadow" :class="result.side + (result.bot?' bot':'')"></div>
             <img
-              v-if="result.bot"
               class="hero-img"
               :src="$store.state.strapi+getHero(result.hero).picture.url"
               :alt="getHero(result.hero).picture.url"
@@ -117,7 +124,7 @@
               preload
               autoplay
               loop
-              v-if="!result.bot"
+              v-if="false"
               class="hero-img"
               :src="$store.state.strapi+getHero(result.hero).video.url"
               :alt="getHero(result.hero).video.url"
@@ -136,6 +143,8 @@ import moment from "moment";
 import PlayerResult from "@/store/model/player_result.js";
 import Hero from "@/store/model/hero.js";
 import { START_LOADING, END_LOADING } from "@/store/mutations-type";
+import Elo from "@/store/elo";
+import Player from "@/store/model/player";
 
 export default {
   name: "Plays",
@@ -149,20 +158,125 @@ export default {
   },
   methods: {
     send() {
-      var out = [];
       this.$store.commit(START_LOADING);
+      var out = [];
+
+      // players to win or lose
+      var playersWin = [];
+      var mediaWin = 0;
+      var playersLose = [];
+      var mediaLose = 0;
       this.prForm.forEach(pr => {
-        axios.post(this.$store.state.strapi + "/player-results", pr).then(({ data }) => {
-          out.push(data.id);
-          if (out.length === 10) {
-            axios.post(this.$store.state.strapi + "/plays", { player_results: out }).then(() => {
-              this.resetForm();
-              this.filter();
-            });
+        if (!pr.bot) {
+          if (pr.win) {
+            playersWin.push(pr.player);
+            mediaWin += this.getPlayer(pr.player).elo;
           }
-        });
+          if (!pr.win) {
+            playersLose.push(pr.player);
+            mediaLose += this.getPlayer(pr.player).elo;
+          }
+        }
+      });
+
+      if (playersWin.length > 0 && playersLose.length > 0) {
+        this.elo(playersWin, playersLose);
+        mediaWin /= playersWin.length;
+        mediaLose /= playersLose.length;
+      }
+
+      this.prForm.forEach(pr => {
+        if (!pr.bot) {
+          pr.elo = this.getPlayer(pr.player).elo;
+          if (pr.win) {
+            let telo = new Elo(pr.elo, mediaLose);
+            pr.eloPlus = telo.getPlusA();
+          } else {
+            let telo = new Elo(mediaWin, pr.elo);
+            pr.eloPlus = telo.getPlusB();
+          }
+        }
+
+        axios
+          .post(this.$store.state.strapi + "/player-results", pr)
+          .then(({ data }) => {
+            out.push(data.id);
+
+            if (out.length === 10) {
+              axios
+                .post(this.$store.state.strapi + "/plays", {
+                  player_results: out
+                })
+                .then(() => {
+                  this.resetForm();
+                  this.initPlayers();
+                  this.filter();
+                });
+            }
+          });
       });
     },
+
+    elo(win, lose) {
+      var pWin = [];
+      var pLose = [];
+
+      // media del ELO q ganan
+      let eloWin = 0;
+      win.forEach(id => {
+        let ptemp = this.getPlayer(id);
+        eloWin += ptemp.elo;
+        pWin.push(ptemp);
+      });
+      eloWin /= win.length;
+
+      // media del ELO q pierden
+      let eloLose = 0;
+      lose.forEach(id => {
+        let ptemp = this.getPlayer(id);
+        eloLose += ptemp.elo;
+        pLose.push(ptemp);
+      });
+      eloLose /= lose.length;
+
+      // update elo de los q ganana
+      pWin.forEach(player => {
+        let elo = new Elo(player.elo, eloLose);
+        let playerOut = new Player(
+          player.fullName,
+          player.nick,
+          elo.getEloA(),
+          player.active
+        );
+
+        this.$store.commit(START_LOADING);
+        axios
+          .put(`${this.$store.state.strapi}/players/${player.id}`, playerOut)
+          .then(() => {
+            this.$store.commit(END_LOADING);
+          });
+      });
+
+      // update elo de los q ganana
+      pLose.forEach(player => {
+        let elo = new Elo(eloWin, player.elo);
+        let playerOut = new Player(
+          player.fullName,
+          player.nick,
+          elo.getEloB(),
+          player.active
+        );
+
+        this.$store.commit(START_LOADING);
+        axios
+          .put(`${this.$store.state.strapi}/players/${player.id}`, playerOut)
+          .then(() => {
+            this.initPlayers();
+            this.$store.commit(END_LOADING);
+          });
+      });
+    },
+
     filter() {
       this.$store.commit(START_LOADING);
       axios.get(this.$store.state.strapi + "/plays").then(({ data }) => {
@@ -178,6 +292,7 @@ export default {
         this.$store.commit(END_LOADING);
       });
     },
+
     del(id) {
       if (confirm("Seguro de eliminar el Play?")) {
         this.$store.commit(START_LOADING);
@@ -186,11 +301,14 @@ export default {
         });
       }
     },
+
     initPlayers() {
+      this.$store.commit(START_LOADING);
       axios.get(this.$store.state.strapi + "/players").then(({ data }) => {
         this.players = data.sort(
           (a, b) => a.fullName.toLowerCase() > b.fullName.toLowerCase()
         );
+        this.$store.commit(END_LOADING);
       });
     },
 
@@ -205,12 +323,17 @@ export default {
         );
       });
       for (let i = 101; i <= 118; i++) {
-        axios.get(this.$store.state.strapi + "/heroes/" + i).then(({ data }) => {
-          this.heroes.push(data);
-          this.heroes = this.heroes.sort(
-            (a, b) => a.displayName.toLowerCase() > b.displayName.toLowerCase()
-          );
-        });
+        this.$store.commit(START_LOADING);
+        axios
+          .get(this.$store.state.strapi + "/heroes/" + i)
+          .then(({ data }) => {
+            this.heroes.push(data);
+            this.heroes = this.heroes.sort(
+              (a, b) =>
+                a.displayName.toLowerCase() > b.displayName.toLowerCase()
+            );
+            this.$store.commit(END_LOADING);
+          });
       }
     },
 
@@ -297,6 +420,16 @@ $height-hero-xs: $width-hero-xs;
           padding: 0 5px;
           text-shadow: 0px 0px 3px black;
           width: calc($width-hero - 10);
+          &.elo{
+            .elo-plus{
+              &.success{
+                color: rgb(153, 255, 0);
+              }
+              &.danger{
+                color: rgb(255, 51, 51);
+              }
+            }
+          }
         }
         .item-form {
           z-index: 2;

@@ -63,7 +63,7 @@ export default {
   },
   methods: {
     filter() {
-      axios.get(this.$store.state.strapi + "/players").then(({data}) => {
+      axios.get(this.$store.state.strapi + "/players").then(({ data }) => {
         this.players = data
           .filter(player => {
             // normalize texts
@@ -91,30 +91,37 @@ export default {
     send() {
       if (this.idMod >= 0) {
         axios
-          .put(this.$store.state.strapi + "/players/" + this.idMod, this.playerForm)
+          .put(
+            this.$store.state.strapi + "/players/" + this.idMod,
+            this.playerForm
+          )
           .then(() => {
             this.filter();
             this.playerForm = new Player();
           });
       } else {
-        axios.post(this.$store.state.strapi + "/players", this.playerForm).then(() => {
-          this.playerForm = new Player();
-          this.filter();
-        });
+        axios
+          .post(this.$store.state.strapi + "/players", this.playerForm)
+          .then(() => {
+            this.playerForm = new Player();
+            this.filter();
+          });
       }
       this.idMod = -1;
     },
 
     preMod(id) {
-      axios.get(this.$store.state.strapi + "/players/" + id).then(({data}) => {
-        this.idMod = id;
-        this.playerForm = new Player(
-          data.fullName,
-          data.nick,
-          data.elo,
-          data.active
-        );
-      });
+      axios
+        .get(this.$store.state.strapi + "/players/" + id)
+        .then(({ data }) => {
+          this.idMod = id;
+          this.playerForm = new Player(
+            data.fullName,
+            data.nick,
+            data.elo,
+            data.active
+          );
+        });
     },
 
     del(id) {

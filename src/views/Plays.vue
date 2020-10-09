@@ -352,7 +352,7 @@ export default {
           (a, b) => a.displayName.toLowerCase() > b.displayName.toLowerCase()
         );
       });
-      for (let i = 101; i <= 118; i++) {
+      for (let i = 101; i <= 119; i++) {
         this.$store.commit(START_LOADING);
         axios
           .get(this.$store.state.strapi + "/heroes/" + i)

@@ -37,10 +37,9 @@ $time:(0:0s,
 $color:(good:rgb(0, 255, 230),
   bad:rgb(255, 60, 0),
   win:rgb(255, 205, 0),
-  win-line:rgb(214, 171, 0),
+  win-line:rgb(187, 150, 0),
   good-plus:rgb(90, 255, 90),
   bad-plus:rgb(255, 90, 90));
-
 $secundary: (50 : rgb(247, 236, 249),
   100 : #edcff0,
   200 : #e1afe6,
@@ -70,6 +69,9 @@ $secundary: (50 : rgb(247, 236, 249),
     A400 : #000000,
     A700 : #000000,
   ));
+
+$bg: (1 : #11181d,
+  2 : #1b2839);
 
 $primary: (50 : #ecf9f5,
   100 : #cff0e5,

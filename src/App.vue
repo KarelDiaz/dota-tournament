@@ -1,23 +1,19 @@
 <template>
   <div>
     <Loading></Loading>
-    <div id="nav">
-      <router-link to="/">Players</router-link>
-      <span class="nav-separator">|</span>
-      <router-link to="/plays">Plays</router-link>
-      <span class="nav-separator">|</span>
-      <router-link to="/demo">Demo</router-link>
-    </div>
+    <Nav></Nav>
     <router-view />
   </div>
 </template>
 
 <script>
 import Loading from "@/components/Loading";
+import Nav from "@/components/Nav";
 
 export default {
   components: {
-    Loading
+    Loading,
+    Nav
   }
 };
 </script>
@@ -29,9 +25,8 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
 }
-
+/*
 #nav {
   padding: 30px;
 
@@ -53,5 +48,5 @@ export default {
       border: 1px solid rgb(170, 210, 170);
     }
   }
-}
+}*/
 </style>

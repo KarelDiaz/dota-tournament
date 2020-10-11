@@ -27,17 +27,25 @@
 
     <table class="players">
       <tr>
-        <th>Nombre</th>
+        <th></th>
+        <th v-if="false">Nombre</th>
         <th>Nick</th>
         <th>ELO ↓</th>
-        <th>Active</th>
+        <th># Plays</th>
+        <th># Win</th>
+        <th>Average</th>
+        <th v-if="false">Active</th>
         <th></th>
       </tr>
-      <tr class="players-item" v-for="p in players" :key="p.nick">
-        <td>{{p.fullName}}</td>
+      <tr class="players-item" v-for="(p,i) in players" :key="p.nick">
+        <td style="text-align:center">{{i+1}}</td>
+        <td v-if="false">{{p.fullName}}</td>
         <td>{{p.nick}}</td>
         <td>{{p.elo}}</td>
-        <td>{{p.active}}</td>
+        <td>{{p.num_plays}}</td>
+        <td>{{p.num_plays_win}}</td>
+        <td>{{Math.round((p.num_plays_win/p.num_plays)*1000)}}</td>
+        <td v-if="false">{{p.active}}</td>
         <td>
           <button class="danger" @click="del(p.id)">Eliminar</button>
           <button @click="preMod(p.id)">Edit</button>
@@ -138,6 +146,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/theme/theme.scss";
 .options {
   display: flex;
   justify-content: space-between;
@@ -158,11 +167,11 @@ export default {
 
   &-item {
     &:nth-child(odd) {
-      background-color: rgb(240, 240, 240);
+      background-color: map-get($map: $bg, $key: 2);
     }
 
     &:hover {
-      background-color: rgb(220, 220, 220);
+      background-color: rgb(45, 41, 59);
     }
   }
 }

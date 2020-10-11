@@ -5,23 +5,23 @@
         <div class="plays">
           <div class="play">
             <div class="play-options">
-              <label :class="['side-win',{wining:playForm.side_win=='good'}]">
-                <input v-model="playForm.side_win" type="radio" name="radio" value="good" />
+              <label :class="['btn','side-win',{wining:playForm.side_win=='good'}]">
+                <input v-model="playForm.side_win" type="radio" name="radio" value="good" hidden />
                 Good ganó
               </label>
               <div>
                 <button type="submit" class="success">Guardar el play</button>
               </div>
-              <label :class="['side-win',{wining:playForm.side_win=='bad'}]">
-                <input v-model="playForm.side_win" type="radio" name="radio" value="bad" />
+
+              <label :class="['btn','side-win',{wining:playForm.side_win=='bad'}]">
+                <input v-model="playForm.side_win" type="radio" name="radio" value="bad" hidden />
                 Bad ganó
               </label>
             </div>
             <transition name="fade" appear>
               <div class="result-content">
                 <div
-                  class="result"
-                  :class="pr.side"
+                  :class="['result',pr.side, {win:playForm.side_win==pr.side}]"
                   v-for="(pr, index) in playForm.player_results"
                   :key="index"
                 >
@@ -58,7 +58,7 @@
                       placeholder="Asist"
                     />
                   </div>
-                  <select class="item-form" v-model="pr.hero" required>
+                  <select class="item-form" v-if="!pr.bot" v-model="pr.hero" required>
                     <option :value="h.id" v-for="h in heroes" :key="h.id">{{h.displayName}}</option>
                   </select>
                   <div class="black-shadow" :class="pr.side + (pr.bot?' bot':'')"></div>
@@ -66,7 +66,7 @@
                   <img
                     v-if="pr.bot"
                     class="hero-img"
-                    :src="$store.state.strapi+getHero(pr.hero).picture.url"
+                    :src="!pr.bot?$store.state.strapi+getHero(pr.hero).picture.url:$store.state.strapi+'/uploads/bot_81979d4894.png'"
                     :alt="getHero(pr.hero).picture.url"
                   />
                   <video
@@ -89,15 +89,6 @@
     <div class="plays">
       <transition-group name="slide-fade" tag="p">
         <div class="play" v-for="play in plays" :key="play.id">
-          <transition name="fade" appear>
-            <div>
-              <span class="play-date">
-                {{play.created_at}}
-                <button class="danger" @click="del(play.id)">Eliminar</button>
-              </span>
-            </div>
-          </transition>
-
           <div class="result-content">
             <div
               :class="['result','result-list', result.side, {win:play.side_win==result.side},{bot:result.bot==true}]"
@@ -113,7 +104,6 @@
                   {{Math.abs(result.eloPlus)}}
                 </b>
               </span>
-              <b class="item" v-if="result.bot">Bot</b>
               <table class="item" v-if="!result.bot">
                 <tr>
                   <td>K</td>
@@ -132,7 +122,7 @@
                   </td>
                 </tr>
               </table>
-              <span class="item">{{getHero(result.hero).displayName}}</span>
+              <span class="item" v-if="!result.bot">{{getHero(result.hero).displayName}}</span>
               <div class="black-shadow" :class="result.side + (result.bot?' bot':'')"></div>
               <div class="player-img">
                 <img
@@ -143,7 +133,7 @@
               </div>
               <img
                 class="hero-img"
-                :src="$store.state.strapi+getHero(result.hero).picture.url"
+                :src="!result.bot?$store.state.strapi+getHero(result.hero).picture.url:$store.state.strapi+'/uploads/bot_81979d4894.png'"
                 :alt="getHero(result.hero).picture.url"
               />
               <video
@@ -156,6 +146,15 @@
                 :alt="getHero(result.hero).video.url"
               />
             </div>
+          </div>
+
+          <div class="play-date">
+            <span class="play-date-content">
+              {{play.created_at}}
+              <button v-if="false" class="danger" @click="del(play.id)">
+                <i class="fa fa-trash"></i>
+              </button>
+            </span>
           </div>
         </div>
       </transition-group>
@@ -276,7 +275,9 @@ export default {
           player.fullName,
           player.nick,
           elo.getEloA(),
-          player.active
+          player.active,
+          player.num_plays + 1,
+          player.num_plays_win + 1
         );
 
         this.$store.commit(START_LOADING);
@@ -287,14 +288,16 @@ export default {
           });
       });
 
-      // update elo de los q ganana
+      // update elo de los q pierden
       pLose.forEach(player => {
         let elo = new Elo(eloWin, player.elo);
         let playerOut = new Player(
           player.fullName,
           player.nick,
           elo.getEloB(),
-          player.active
+          player.active,
+          player.num_plays + 1,
+          player.num_plays
         );
 
         this.$store.commit(START_LOADING);
@@ -379,9 +382,11 @@ export default {
   watch: {
     plays(val) {
       val.forEach(elem => {
-        elem.created_at = moment(elem.created_at).format(
-          "YYYY - M - D // H:mm"
-        );
+        let m = moment(elem.created_at).format("MMMM");
+        let y = moment(elem.created_at).format("YYYY");
+        let d = moment(elem.created_at).format("D");
+        let h = moment(elem.created_at).format("H:mm");
+        elem.created_at = `${m} ${d}, ${y}, at ${h}`;
       });
     },
     playForm(val) {
@@ -390,7 +395,7 @@ export default {
       });
     }
   },
-  mounted() {
+  created() {
     this.initPlayers();
     this.initHeroes();
     this.resetForm();
@@ -416,27 +421,32 @@ $height-hero-xs: $width-hero-xs;
     display: flex;
     flex-direction: column;
     margin-bottom: 1.5rem;
+    align-content: center;
 
     .play-date {
-      background-color: map-get($map: $grey, $key: 400);
-      padding: 10px 30px 17px 30px;
-      clip-path: polygon(10% 0, 0 100%, 100% 100%, 90% 0);
+      display: flex;
+      justify-content: center;
+
+      .play-date-content {
+        background-color: map-get($map: $bg, $key: 2);
+        padding: 5px 13px 5px 13px;
+        clip-path: polygon(0 0, 5% 100%, 95% 100%, 100% 0);
+      }
     }
 
     .play-options {
       display: flex;
       justify-content: space-between;
-      padding: 0 10%;
+      padding: 0 10% 15px 10%;
 
       .side-win {
-        background-color: map-get($map: $grey, $key: 500);
-        border: 1px solid map-get($map: $grey, $key: 600);
         padding: 1px 5px;
         font-size: smaller;
 
         &.wining {
           background-color: map-get($map: $color, $key: win);
           border: 1px solid map-get($map: $color, $key: win-line);
+          color: map-get($map: $color, $key: win-line);
         }
       }
     }
@@ -447,7 +457,6 @@ $height-hero-xs: $width-hero-xs;
       grid-template-columns: repeat(10, $width-hero);
       align-content: center;
       justify-content: center;
-      margin-top: 15px;
 
       .result {
         display: flex;
@@ -457,7 +466,18 @@ $height-hero-xs: $width-hero-xs;
         text-align: left;
         width: $width-hero;
         height: $height-hero;
+        border-bottom: 5px solid map-get($map: $grey, $key: 500);
 
+        &.good {
+          border-top: 5px solid map-get($map: $color, $key: good);
+        }
+        &.bad {
+          border-top: 5px solid map-get($map: $color, $key: bad);
+        }
+
+        &.win {
+          border-bottom: 5px solid map-get($map: $color, $key: win);
+        }
         &.result-list:hover {
           .player-img-item {
             transform: scale(2);
@@ -574,19 +594,6 @@ $height-hero-xs: $width-hero-xs;
               height: $height-hero-xs;
             }
           }
-        }
-
-        &.good {
-          border-top: 5px solid map-get($map: $color, $key: good);
-        }
-
-        &.bad {
-          border-top: 5px solid map-get($map: $color, $key: bad);
-        }
-
-        border-bottom: 5px solid map-get($map: $grey, $key: 500);
-        &.win {
-          border-bottom: 5px solid map-get($map: $color, $key: win);
         }
       }
 

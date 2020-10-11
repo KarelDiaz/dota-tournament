@@ -350,24 +350,13 @@ export default {
     },
 
     initHeroes() {
-      axios.get(this.$store.state.strapi + "/heroes").then(({ data }) => {
-        this.heroes = data.sort(
-          (a, b) => a.displayName.toLowerCase() > b.displayName.toLowerCase()
-        );
-      });
-      for (let i = 101; i <= 119; i++) {
-        this.$store.commit(START_LOADING);
-        axios
-          .get(this.$store.state.strapi + "/heroes/" + i)
-          .then(({ data }) => {
-            this.heroes.push(data);
-            this.heroes = this.heroes.sort(
-              (a, b) =>
-                a.displayName.toLowerCase() > b.displayName.toLowerCase()
-            );
-            this.$store.commit(END_LOADING);
-          });
-      }
+      axios
+        .get(this.$store.state.strapi + "/heroes?_limit=-1")
+        .then(({ data }) => {
+          this.heroes = data.sort(
+            (a, b) => a.displayName.toLowerCase() > b.displayName.toLowerCase()
+          );
+        });
     },
 
     getHero(id) {

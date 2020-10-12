@@ -17,10 +17,10 @@ const routes = [
       import(/* webpackChunkName: "about" */ "../views/Plays.vue")
   },
   {
-    path: "/demo",
-    name: "Demo",
+    path: "/info",
+    name: "Info",
     component: () =>
-      import("../views/Demo.vue")
+      import("../views/Info.vue")
   }
 ];
 

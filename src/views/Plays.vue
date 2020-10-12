@@ -64,19 +64,9 @@
                   <div class="black-shadow" :class="pr.side + (pr.bot?' bot':'')"></div>
 
                   <img
-                    v-if="pr.bot"
                     class="hero-img"
                     :src="!pr.bot?$store.state.strapi+getHero(pr.hero).picture.url:$store.state.strapi+'/uploads/bot_0db0ba3b71.png'"
                     :alt="getHero(pr.hero).picture.url"
-                  />
-                  <video
-                    preload
-                    autoplay
-                    loop
-                    v-if="!pr.bot"
-                    class="hero-img"
-                    :src="$store.state.strapi+getHero(pr.hero).video.url"
-                    :alt="getHero(pr.hero).video.url"
                   />
                 </div>
               </div>
@@ -135,15 +125,6 @@
                 class="hero-img"
                 :src="!result.bot?$store.state.strapi+getHero(result.hero).picture.url:$store.state.strapi+'/uploads/bot_0db0ba3b71.png'"
                 :alt="getHero(result.hero).picture.url"
-              />
-              <video
-                preload
-                autoplay
-                loop
-                v-if="!result.bot"
-                class="hero-img hero-video"
-                :src="$store.state.strapi+getHero(result.hero).video.url"
-                :alt="getHero(result.hero).video.url"
               />
             </div>
           </div>
@@ -296,7 +277,7 @@ export default {
           elo.getEloB(),
           player.active,
           player.num_plays + 1,
-          player.num_plays
+          player.num_plays_win
         );
 
         this.$store.commit(START_LOADING);
@@ -391,6 +372,8 @@ export default {
   mounted() {
     this.resetForm();
     this.filter();
+
+
   }
 };
 </script>
@@ -473,12 +456,6 @@ $height-hero-xs: $width-hero-xs;
           .player-img-item {
             transform: scale(2);
           }
-          .hero-img {
-            display: none;
-          }
-          .hero-video {
-            display: initial;
-          }
         }
         &.result-list.bot {
           .hero-img {
@@ -493,9 +470,6 @@ $height-hero-xs: $width-hero-xs;
           }
         }
 
-        .hero-video {
-          display: none;
-        }
         .item {
           z-index: 2;
           color: white;

@@ -170,6 +170,7 @@ import { START_LOADING, END_LOADING } from "@/store/mutations-type";
 import Elo from "@/store/elo";
 import Player from "@/store/model/player";
 import Play from "@/store/model/play";
+import Hero from "@/store/model/hero";
 
 export default {
   name: "Plays",
@@ -223,11 +224,9 @@ export default {
             pr.eloPlus = telo.getPlusB();
           }
         }
-        console.log(pr);
-
         axios
           .post(this.$store.state.strapi + "/player-results", pr)
-          .then(({data}) => {
+          .then(({ data }) => {
             out.push(data.id);
 
             if (out.length === 10) {
@@ -236,9 +235,7 @@ export default {
                   this.$store.state.strapi + "/plays",
                   new Play(out, this.playForm.side_win)
                 )
-                .then(({ data }) => {
-                  console.log("add play", data);
-
+                .then(() => {
                   this.resetForm();
                   this.initPlayers();
                   this.filter();
@@ -348,7 +345,8 @@ export default {
     },
 
     getPlayer(id) {
-      return this.players.find(p => p.id == id);
+      let temp = this.players.find(p => p.id == id);
+      return temp ? temp : new Player();
     },
 
     initHeroes() {
@@ -362,7 +360,8 @@ export default {
     },
 
     getHero(id) {
-      return this.heroes.find(h => h.id == id);
+      let temp = this.heroes.find(h => h.id == id);
+      return temp ? temp : new Hero();
     },
 
     resetForm() {
@@ -385,9 +384,11 @@ export default {
       });
     }
   },
-  mounted() {
+  created() {
     this.initPlayers();
     this.initHeroes();
+  },
+  mounted() {
     this.resetForm();
     this.filter();
   }

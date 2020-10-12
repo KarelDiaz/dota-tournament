@@ -3,7 +3,6 @@ import PlayerResult from "./player_result";
 class Play {
   player_results;
   side_win;
-  bad_win;
 
   constructor(player_results = [], side_win = "good") {
     this.player_results = player_results;

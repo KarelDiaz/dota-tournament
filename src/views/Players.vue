@@ -44,7 +44,7 @@
         <td>{{p.elo}}</td>
         <td>{{p.num_plays}}</td>
         <td>{{p.num_plays_win}}</td>
-        <td>{{Math.round((p.num_plays_win/p.num_plays)*1000)}}</td>
+        <td>{{(p.num_plays>0?Math.round((p.num_plays_win/p.num_plays)*1000):0)}}</td>
         <td v-if="false">{{p.active}}</td>
         <td>
           <button class="danger" @click="del(p.id)">Eliminar</button>

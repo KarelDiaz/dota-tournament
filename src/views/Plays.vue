@@ -66,7 +66,7 @@
                   <img
                     v-if="pr.bot"
                     class="hero-img"
-                    :src="!pr.bot?$store.state.strapi+getHero(pr.hero).picture.url:$store.state.strapi+'/uploads/bot_81979d4894.png'"
+                    :src="!pr.bot?$store.state.strapi+getHero(pr.hero).picture.url:$store.state.strapi+'/uploads/bot_0db0ba3b71.png'"
                     :alt="getHero(pr.hero).picture.url"
                   />
                   <video
@@ -133,7 +133,7 @@
               </div>
               <img
                 class="hero-img"
-                :src="!result.bot?$store.state.strapi+getHero(result.hero).picture.url:$store.state.strapi+'/uploads/bot_81979d4894.png'"
+                :src="!result.bot?$store.state.strapi+getHero(result.hero).picture.url:$store.state.strapi+'/uploads/bot_0db0ba3b71.png'"
                 :alt="getHero(result.hero).picture.url"
               />
               <video
@@ -166,7 +166,6 @@
 import axios from "axios";
 import moment from "moment";
 
-import Hero from "@/store/model/hero.js";
 import { START_LOADING, END_LOADING } from "@/store/mutations-type";
 import Elo from "@/store/elo";
 import Player from "@/store/model/player";
@@ -224,10 +223,11 @@ export default {
             pr.eloPlus = telo.getPlusB();
           }
         }
+        console.log(pr);
 
         axios
           .post(this.$store.state.strapi + "/player-results", pr)
-          .then(({ data }) => {
+          .then(({data}) => {
             out.push(data.id);
 
             if (out.length === 10) {
@@ -236,7 +236,9 @@ export default {
                   this.$store.state.strapi + "/plays",
                   new Play(out, this.playForm.side_win)
                 )
-                .then(() => {
+                .then(({ data }) => {
+                  console.log("add play", data);
+
                   this.resetForm();
                   this.initPlayers();
                   this.filter();
@@ -360,8 +362,7 @@ export default {
     },
 
     getHero(id) {
-      if (this.heroes.length > 0) return this.heroes.find(h => h.id == id);
-      else return new Hero();
+      return this.heroes.find(h => h.id == id);
     },
 
     resetForm() {
@@ -384,7 +385,7 @@ export default {
       });
     }
   },
-  created() {
+  mounted() {
     this.initPlayers();
     this.initHeroes();
     this.resetForm();

@@ -1,2 +1,2 @@
-var strapi = "http://localhost:1337";
+var strapi = "http://localhost:1338";
 export default strapi;

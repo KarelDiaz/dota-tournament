@@ -37,7 +37,7 @@
         <th v-if="false">Active</th>
         <th></th>
       </tr>
-      <tr class="players-item" v-for="(p,i) in players" :key="p.nick">
+      <tr class="players-item" v-for="(p,i) in players" :key="p.nick" :style="p.nick=='bot'?'display:none':''">
         <td style="text-align:center">{{i+1}}</td>
         <td v-if="false">{{p.fullName}}</td>
         <td>{{p.nick}}</td>

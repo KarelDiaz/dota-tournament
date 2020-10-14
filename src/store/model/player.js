@@ -3,12 +3,7 @@ export default class Player {
   nick;
   elo;
   active;
-  constructor(
-    fullName = "",
-    nick = "",
-    elo = 1400,
-    active = true,
-  ) {
+  constructor(fullName = "", nick = "", elo = 1400, active = true) {
     this.fullName = fullName;
     this.nick = nick;
     this.elo = elo;

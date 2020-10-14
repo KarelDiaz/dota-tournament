@@ -5,7 +5,7 @@ import { START_LOADING, END_LOADING } from "./mutations-type";
 export default createStore({
   state: {
     loading: false,
-    strapi: strapi,
+    strapi: strapi
   },
   mutations: {
     [START_LOADING](state) {
@@ -13,8 +13,8 @@ export default createStore({
     },
     [END_LOADING](state) {
       state.loading = false;
-    },
+    }
   },
   actions: {},
-  modules: {},
+  modules: {}
 });

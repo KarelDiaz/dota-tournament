@@ -9,7 +9,7 @@
 </template>
 
 <style lang="scss" scoped>
-@import '@/theme/theme.scss';
+@import "@/theme/theme.scss";
 
 .nav {
   padding: 20px 0;

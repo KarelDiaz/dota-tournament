@@ -18,8 +18,8 @@ export default class PlayerResult {
     level = 1,
     win = false,
     bot = true,
-    hero = '5f763c758e17a0310415d51b',
-    player = '5f83b3518ea4f42ae861a9d3',
+    hero = "5f763c758e17a0310415d51b",
+    player = "5f83b3518ea4f42ae861a9d3",
     elo = 0,
     eloPus = 0
   ) {

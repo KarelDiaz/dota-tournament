@@ -43,7 +43,7 @@ export default {
       background-color: $color-off;
       border: 1px solid $color-on;
       margin: 10px;
-      $t:1s;
+      $t: 1s;
 
       &:nth-child(1) {
         animation: loading $t 0s infinite linear;

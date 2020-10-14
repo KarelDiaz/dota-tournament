@@ -1,7 +1,12 @@
 <template>
   <div>
     <div class="options">
-      <input type="text" placeholder="Filtrar" v-model="textFilter" @keyUp="filter" />
+      <input
+        type="text"
+        placeholder="Filtrar"
+        v-model="textFilter"
+        @keyUp="filter"
+      />
 
       <form class="hide-xs add-player" @submit.prevent="send">
         <input
@@ -19,7 +24,7 @@
           placeholder="Escriba el nick"
         />
         <button class="success" type="submit">
-          <span v-if="idMod==-1">Agregar</span>
+          <span v-if="idMod == -1">Agregar</span>
           <span v-else>Editar</span>
         </button>
       </form>
@@ -43,24 +48,40 @@
       </tr>
       <tr
         class="players-item"
-        v-for="(p,i) in players"
+        v-for="(p, i) in players"
         :key="p.nick"
-        :style="p.nick=='bot'?'display:none':''"
+        :style="p.nick == 'bot' ? 'display:none' : ''"
       >
-        <td style="text-align:center">{{i+1}}</td>
-        <td>{{p.nick}}</td>
-        <td>{{p.elo}}</td>
-        <td>{{getPlays(p.id).length}}</td>
-        <td class="hide-xs">{{getPlaysWin(p.id).length}}</td>
-        <td>{{getPlays(p.id).length > 0 ? Math.round((getPlaysWin(p.id).length / getPlays(p.id).length) * 1000) : 0}}</td>
-        <td>{{getK(p.id)}}</td>
-        <td class="hide-xs">{{Math.round(getK(p.id)/getPlays(p.id).length)}}</td>
-        <td>{{getD(p.id)}}</td>
-        <td class="hide-xs">{{Math.round(getD(p.id)/getPlays(p.id).length)}}</td>
-        <td>{{getA(p.id)}}</td>
-        <td class="hide-xs">{{Math.round(getA(p.id)/getPlays(p.id).length)}}</td>
+        <td style="text-align:center">{{ i + 1 }}</td>
+        <td>{{ p.nick }}</td>
+        <td>{{ p.elo }}</td>
+        <td>{{ getPlays(p.id).length }}</td>
+        <td class="hide-xs">{{ getPlaysWin(p.id).length }}</td>
+        <td>
+          {{
+            getPlays(p.id).length > 0
+              ? Math.round(
+                  (getPlaysWin(p.id).length / getPlays(p.id).length) * 1000
+                )
+              : 0
+          }}
+        </td>
+        <td>{{ getK(p.id) }}</td>
         <td class="hide-xs">
-          <button v-if="false" class="danger" @click="del(p.id)">Eliminar</button>
+          {{ Math.round(getK(p.id) / getPlays(p.id).length) }}
+        </td>
+        <td>{{ getD(p.id) }}</td>
+        <td class="hide-xs">
+          {{ Math.round(getD(p.id) / getPlays(p.id).length) }}
+        </td>
+        <td>{{ getA(p.id) }}</td>
+        <td class="hide-xs">
+          {{ Math.round(getA(p.id) / getPlays(p.id).length) }}
+        </td>
+        <td class="hide-xs">
+          <button v-if="false" class="danger" @click="del(p.id)">
+            Eliminar
+          </button>
           <button @click="preMod(p.id)">Edit</button>
         </td>
       </tr>

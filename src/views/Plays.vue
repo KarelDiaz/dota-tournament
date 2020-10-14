@@ -5,31 +5,66 @@
         <div class="plays">
           <div class="play">
             <div class="play-options">
-              <label :class="['btn','side-win',{wining:playForm.side_win=='good'}]">
-                <input v-model="playForm.side_win" type="radio" name="radio" value="good" hidden />
+              <label
+                :class="[
+                  'btn',
+                  'side-win',
+                  { wining: playForm.side_win == 'good' }
+                ]"
+              >
+                <input
+                  v-model="playForm.side_win"
+                  type="radio"
+                  name="radio"
+                  value="good"
+                  hidden
+                />
                 Good ganó
               </label>
               <div>
                 <button type="submit" class="success">Guardar el play</button>
               </div>
 
-              <label :class="['btn','side-win',{wining:playForm.side_win=='bad'}]">
-                <input v-model="playForm.side_win" type="radio" name="radio" value="bad" hidden />
+              <label
+                :class="[
+                  'btn',
+                  'side-win',
+                  { wining: playForm.side_win == 'bad' }
+                ]"
+              >
+                <input
+                  v-model="playForm.side_win"
+                  type="radio"
+                  name="radio"
+                  value="bad"
+                  hidden
+                />
                 Bad ganó
               </label>
             </div>
             <transition name="fade" appear>
               <div class="result-content">
                 <div
-                  :class="['result',pr.side, {win:playForm.side_win==pr.side}]"
+                  :class="[
+                    'result',
+                    pr.side,
+                    { win: playForm.side_win == pr.side }
+                  ]"
                   v-for="(pr, index) in playForm.player_results"
                   :key="index"
                 >
                   <span class="item-form">
                     <input v-model="pr.bot" type="checkbox" /> Bot
                   </span>
-                  <select required class="item-form" v-model="pr.player" v-if="!pr.bot">
-                    <option :value="p.id" v-for="p in players" :key="p.id">{{p.nick}}</option>
+                  <select
+                    required
+                    class="item-form"
+                    v-model="pr.player"
+                    v-if="!pr.bot"
+                  >
+                    <option :value="p.id" v-for="p in players" :key="p.id">{{
+                      p.nick
+                    }}</option>
                   </select>
 
                   <div class="item-form kda" v-if="!pr.bot">
@@ -58,14 +93,28 @@
                       placeholder="Asist"
                     />
                   </div>
-                  <select class="item-form" v-if="!pr.bot" v-model="pr.hero" required>
-                    <option :value="h.id" v-for="h in heroes" :key="h.id">{{h.displayName}}</option>
+                  <select
+                    class="item-form"
+                    v-if="!pr.bot"
+                    v-model="pr.hero"
+                    required
+                  >
+                    <option :value="h.id" v-for="h in heroes" :key="h.id">{{
+                      h.displayName
+                    }}</option>
                   </select>
-                  <div class="black-shadow" :class="pr.side + (pr.bot?' bot':'')"></div>
+                  <div
+                    class="black-shadow"
+                    :class="pr.side + (pr.bot ? ' bot' : '')"
+                  ></div>
 
                   <img
                     class="hero-img"
-                    :src="!pr.bot?$store.state.strapi+getHero(pr.hero).picture.url:$store.state.strapi+'/uploads/bot_0db0ba3b71.png'"
+                    :src="
+                      !pr.bot
+                        ? $store.state.strapi + getHero(pr.hero).picture.url
+                        : $store.state.strapi + '/uploads/bot_0db0ba3b71.png'
+                    "
                     :alt="getHero(pr.hero).picture.url"
                   />
                 </div>
@@ -87,17 +136,20 @@
         </select>
       </div>
       <div>
-        <b>{{plays.length}}</b> plays
+        <b>{{ plays.length }}</b> plays
       </div>
       <transition name="slide-fade">
         <div class="info-plays-win" v-if="fPlayer">
           <b>
             {{
-            plays.filter(p=>{
-            return p.player_results.find(pr=>pr.player==fPlayer && pr.side==p.side_win)
-            }).length
+              plays.filter(p => {
+                return p.player_results.find(
+                  pr => pr.player == fPlayer && pr.side == p.side_win
+                );
+              }).length
             }}
-          </b> victorias
+          </b>
+          victorias
         </div>
       </transition>
       <div>
@@ -108,8 +160,9 @@
             :value="p.id"
             v-for="p in players"
             :key="p.id"
-            :style="p.nick=='bot'?'display:none':''"
-          >{{p.nick}}</option>
+            :style="p.nick == 'bot' ? 'display:none' : ''"
+            >{{ p.nick }}</option
+          >
         </select>
       </div>
     </div>
@@ -119,17 +172,25 @@
         <div class="play" v-for="play in plays" :key="play.id">
           <div class="result-content">
             <div
-              :class="['result','result-list', result.side, {win:play.side_win==result.side},{bot:result.bot==true}]"
+              :class="[
+                'result',
+                'result-list',
+                result.side,
+                { win: play.side_win == result.side },
+                { bot: result.bot == true }
+              ]"
               v-for="result in play.player_results"
               :key="result.id"
             >
-              <b class="item" v-if="!result.bot">{{getPlayer(result.player).nick}}</b>
+              <b class="item" v-if="!result.bot">{{
+                getPlayer(result.player).nick
+              }}</b>
               <span class="item elo" v-if="!result.bot">
-                {{result.elo}}
-                <b class="elo-plus" :class="result.win?'success':'danger'">
+                {{ result.elo }}
+                <b class="elo-plus" :class="result.win ? 'success' : 'danger'">
                   <span v-if="result.win">+</span>
                   <span v-if="!result.win">-</span>
-                  {{Math.abs(result.eloPlus)}}
+                  {{ Math.abs(result.eloPlus) }}
                 </b>
               </span>
               <table class="item" v-if="!result.bot">
@@ -140,28 +201,40 @@
                 </tr>
                 <tr>
                   <td>
-                    <b>{{result.kills}}</b>
+                    <b>{{ result.kills }}</b>
                   </td>
                   <td>
-                    <b>{{result.deths}}</b>
+                    <b>{{ result.deths }}</b>
                   </td>
                   <td>
-                    <b>{{result.asist}}</b>
+                    <b>{{ result.asist }}</b>
                   </td>
                 </tr>
               </table>
-              <span class="item" v-if="!result.bot">{{getHero(result.hero).displayName}}</span>
-              <div class="black-shadow" :class="result.side + (result.bot?' bot':'')"></div>
+
+              <span class="item" v-if="!result.bot">{{
+                getHero(result.hero).displayName
+              }}</span>
+              <div
+                class="black-shadow"
+                :class="result.side + (result.bot ? ' bot' : '')"
+              ></div>
               <div class="player-img">
                 <img
-                  :class="['player-img-item',result.side]"
-                  :src="$store.state.strapi+getPlayer(result.player).picture.url"
+                  :class="['player-img-item', result.side]"
+                  :src="
+                    $store.state.strapi + getPlayer(result.player).picture.url
+                  "
                   v-if="!result.bot && getPlayer(result.player).picture"
                 />
               </div>
               <img
                 class="hero-img"
-                :src="!result.bot?$store.state.strapi+getHero(result.hero).picture.url:$store.state.strapi+'/uploads/bot_0db0ba3b71.png'"
+                :src="
+                  !result.bot
+                    ? $store.state.strapi + getHero(result.hero).picture.url
+                    : $store.state.strapi + '/uploads/bot_0db0ba3b71.png'
+                "
                 :alt="getHero(result.hero).picture.url"
               />
             </div>
@@ -169,7 +242,7 @@
 
           <div class="play-date">
             <span class="play-date-content">
-              {{play.created_at}}
+              {{ play.created_at }}
               <button v-if="false" class="danger" @click="del(play.id)">
                 <i class="fa fa-trash"></i>
               </button>
@@ -623,7 +696,7 @@ $height-hero-xs: $width-hero-xs;
   display: flex;
   justify-content: space-between;
 
-  .info-plays-win{
+  .info-plays-win {
     color: map-get($map: $color, $key: win);
   }
 }

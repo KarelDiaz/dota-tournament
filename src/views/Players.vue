@@ -32,19 +32,30 @@
         <th>Nick</th>
         <th>ELO ↓</th>
         <th># Plays</th>
-        <th># Win</th>
+        <th># Victorias</th>
         <th>Average</th>
+        <th>K</th>
+        <th>D</th>
+        <th>A</th>
         <th v-if="false">Active</th>
         <th></th>
       </tr>
-      <tr class="players-item" v-for="(p,i) in players" :key="p.nick" :style="p.nick=='bot'?'display:none':''">
+      <tr
+        class="players-item"
+        v-for="(p,i) in players"
+        :key="p.nick"
+        :style="p.nick=='bot'?'display:none':''"
+      >
         <td style="text-align:center">{{i+1}}</td>
         <td v-if="false">{{p.fullName}}</td>
         <td>{{p.nick}}</td>
         <td>{{p.elo}}</td>
-        <td>{{p.num_plays}}</td>
-        <td>{{p.num_plays_win}}</td>
-        <td>{{(p.num_plays>0?Math.round((p.num_plays_win/p.num_plays)*1000):0)}}</td>
+        <td>{{getPlays(p.id).length}}</td>
+        <td>{{getPlaysWin(p.id).length}}</td>
+        <td>{{getPlays(p.id).length > 0 ? Math.round((getPlaysWin(p.id).length / getPlays(p.id).length) * 1000) : 0}}</td>
+        <td>{{getK(p.id)}} // {{Math.round(getK(p.id)/getPlays(p.id).length)}}</td>
+        <td>{{getD(p.id)}} // {{Math.round(getD(p.id)/getPlays(p.id).length)}}</td>
+        <td>{{getA(p.id)}} // {{Math.round(getA(p.id)/getPlays(p.id).length)}}</td>
         <td v-if="false">{{p.active}}</td>
         <td>
           <button class="danger" @click="del(p.id)">Eliminar</button>
@@ -56,13 +67,15 @@
 </template>
 
 <script>
-import Player from "@/store/model/player";
 import axios from "axios";
+
+import Player from "@/store/model/player";
 
 export default {
   name: "Players",
   data() {
     return {
+      plays: [],
       players: [],
       playerForm: new Player(),
       textFilter: "",
@@ -137,10 +150,52 @@ export default {
         axios.delete(this.$store.state.strapi + "/players/" + id).then(() => {
           this.players = this.players.filter(p => p.id != id);
         });
+    },
+    initPlays() {
+      axios
+        .get(this.$store.state.strapi + "/plays?_limit=-1")
+        .then(({ data }) => (this.plays = data));
+    },
+    getPlays(idPlayer) {
+      return this.plays.filter(p => {
+        return p.player_results.find(pr => pr.player == idPlayer);
+      });
+    },
+    getPlaysWin(idPlayer) {
+      return this.plays.filter(p => {
+        return p.player_results.find(pr => {
+          return pr.player == idPlayer && pr.side == p.side_win;
+        });
+      });
+    },
+    getK(idPlayer) {
+      let out = 0;
+      this.plays.forEach(p => {
+        const pr = p.player_results.find(pr => pr.player == idPlayer);
+        out += pr ? pr.kills : 0;
+      });
+      return out;
+    },
+    getD(idPlayer) {
+      let out = 0;
+      this.plays.forEach(p => {
+        const pr = p.player_results.find(pr => pr.player == idPlayer);
+        out += pr ? pr.deths : 0;
+      });
+      return out;
+    },
+    getA(idPlayer) {
+      let out = 0;
+      this.plays.forEach(p => {
+        const pr = p.player_results.find(pr => pr.player == idPlayer);
+        out += pr ? pr.asist : 0;
+      });
+      return out;
     }
   },
   created() {
     this.filter();
+    this.initPlays();
   }
 };
 </script>

@@ -76,6 +76,44 @@
       </form>
     </div>
 
+    <div class="filters">
+      <div>
+        Cantidad de plays a visualizar:
+        <select v-model="fCant">
+          <option value="-1">Todos</option>
+          <option value="10">10</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>
+      </div>
+      <div>
+        <b>{{plays.length}}</b> plays
+      </div>
+      <transition name="slide-fade">
+        <div class="info-plays-win" v-if="fPlayer">
+          <b>
+            {{
+            plays.filter(p=>{
+            return p.player_results.find(pr=>pr.player==fPlayer && pr.side==p.side_win)
+            }).length
+            }}
+          </b> victorias
+        </div>
+      </transition>
+      <div>
+        Filtrar por usuario:
+        <select v-model="fPlayer">
+          <option value>Todos</option>
+          <option
+            :value="p.id"
+            v-for="p in players"
+            :key="p.id"
+            :style="p.nick=='bot'?'display:none':''"
+          >{{p.nick}}</option>
+        </select>
+      </div>
+    </div>
+
     <div class="plays">
       <transition-group name="slide-fade" tag="p">
         <div class="play" v-for="play in plays" :key="play.id">
@@ -160,7 +198,9 @@ export default {
       plays: [],
       players: [],
       heroes: [],
-      playForm: Play
+      playForm: Play,
+      fCant: -1,
+      fPlayer: ""
     };
   },
   methods: {
@@ -255,9 +295,7 @@ export default {
           player.fullName,
           player.nick,
           elo.getEloA(),
-          player.active,
-          player.num_plays + 1,
-          player.num_plays_win + 1
+          player.active
         );
 
         this.$store.commit(START_LOADING);
@@ -275,9 +313,7 @@ export default {
           player.fullName,
           player.nick,
           elo.getEloB(),
-          player.active,
-          player.num_plays + 1,
-          player.num_plays_win
+          player.active
         );
 
         this.$store.commit(START_LOADING);
@@ -292,18 +328,25 @@ export default {
 
     filter() {
       this.$store.commit(START_LOADING);
-      axios.get(this.$store.state.strapi + "/plays").then(({ data }) => {
-        this.plays = data.reverse(); //.slice(0, 10);
-        this.plays.forEach(play => {
-          play.player_results = play.player_results.sort((a, b) => {
-            if (a.side == b.side) {
-              return a.bot;
-            }
-            return a.side < b.side;
+      axios
+        .get(this.$store.state.strapi + "/plays?_limit=-1")
+        .then(({ data }) => {
+          this.plays = data.reverse();
+          if (this.fPlayer != "")
+            this.plays = this.plays.filter(p => {
+              return p.player_results.find(pr => pr.player == this.fPlayer);
+            });
+          if (this.fCant != -1) this.plays = this.plays.slice(0, this.fCant);
+          this.plays.forEach(play => {
+            play.player_results = play.player_results.sort((a, b) => {
+              if (a.side == b.side) {
+                return a.bot;
+              }
+              return a.side < b.side;
+            });
           });
+          this.$store.commit(END_LOADING);
         });
-        this.$store.commit(END_LOADING);
-      });
     },
 
     del(id) {
@@ -350,6 +393,12 @@ export default {
     }
   },
   watch: {
+    fCant() {
+      this.filter();
+    },
+    fPlayer() {
+      this.filter();
+    },
     plays(val) {
       val.forEach(elem => {
         let m = moment(elem.created_at).format("MMMM");
@@ -372,8 +421,6 @@ export default {
   mounted() {
     this.resetForm();
     this.filter();
-
-
   }
 };
 </script>
@@ -568,6 +615,16 @@ $height-hero-xs: $width-hero-xs;
         }
       }
     }
+  }
+}
+
+.filters {
+  padding: 0 15px;
+  display: flex;
+  justify-content: space-between;
+
+  .info-plays-win{
+    color: map-get($map: $color, $key: win);
   }
 }
 </style>

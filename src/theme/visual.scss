@@ -1,0 +1,15 @@
+.hide-xs {
+    @media screen and (max-width: 899px) {
+        & {
+            display: none !important;
+        }
+    }
+}
+
+.hide-lg {
+    @media screen and (min-width: 899px) {
+        & {
+            display: none !important;
+        }
+    }
+}

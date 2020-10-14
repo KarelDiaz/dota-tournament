@@ -78,7 +78,7 @@
 
     <div class="filters">
       <div>
-        Cantidad de plays a visualizar:
+        <span class="hide-xs">Cantidad de plays a visualizar:</span>
         <select v-model="fCant">
           <option value="-1">Todos</option>
           <option value="10">10</option>
@@ -101,7 +101,7 @@
         </div>
       </transition>
       <div>
-        Filtrar por usuario:
+        <span class="hide-xs">Filtrar por usuario:</span>
         <select v-model="fPlayer">
           <option value>Todos</option>
           <option

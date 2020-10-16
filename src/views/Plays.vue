@@ -595,7 +595,7 @@ $height-hero-xs: $width-hero-xs;
           color: white;
           padding: 0 5px;
           text-shadow: 0px 0px 3px black;
-          width: calc($width-hero - 10);
+          width: $width-hero;
           &.elo {
             .elo-plus {
               &.success {

@@ -3,8 +3,8 @@
     <router-link class="nav-link" to="/">Players</router-link>
     <span class="nav-separator">|</span>
     <router-link class="nav-link" to="/plays">Plays</router-link>
-    <span class="nav-separator">|</span>
-    <router-link class="nav-link" to="/info">Info</router-link>
+    <span v-if="false" class="nav-separator">|</span>
+    <router-link v-if="false" class="nav-link" to="/info">Info</router-link>
   </div>
 </template>
 

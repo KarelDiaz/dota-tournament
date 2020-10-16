@@ -9,11 +9,15 @@
 <script>
 import Loading from "@/components/Loading";
 import Nav from "@/components/Nav";
+import { INIT_PLAYERS } from "@/store/mutations-type";
 
 export default {
   components: {
     Loading,
     Nav
+  },
+  created() {
+    this.$store.commit(INIT_PLAYERS);
   }
 };
 </script>

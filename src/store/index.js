@@ -1,11 +1,13 @@
+import axios from "axios";
+
 import { createStore } from "vuex";
-import strapi from "./strapiurl";
-import { START_LOADING, END_LOADING } from "./mutations-type";
+import { START_LOADING, END_LOADING, INIT_PLAYERS } from "./mutations-type";
 
 export default createStore({
   state: {
     loading: false,
-    strapi: strapi
+    strapi: "http://localhost:1337",
+    players: [],
   },
   mutations: {
     [START_LOADING](state) {
@@ -13,8 +15,13 @@ export default createStore({
     },
     [END_LOADING](state) {
       state.loading = false;
-    }
+    },
+    [INIT_PLAYERS](state) {
+      axios.get(state.strapi + "/players?_limit=-1").then(({ data }) => {
+        state.players = data;
+      });
+    },
   },
   actions: {},
-  modules: {}
+  modules: {},
 });

@@ -259,7 +259,7 @@ import axios from "axios";
 import moment from "moment";
 
 import { START_LOADING, END_LOADING } from "@/store/mutations-type";
-import Elo from "@/store/elo";
+import Elo from "@/store/model/elo";
 import Player from "@/store/model/player";
 import Play from "@/store/model/play";
 import Hero from "@/store/model/hero";

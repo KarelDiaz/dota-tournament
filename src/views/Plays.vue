@@ -242,7 +242,7 @@
 
           <div class="play-date">
             <span class="play-date-content">
-              {{ play.created_at }}
+              {{ play.createdAt }}
               <button v-if="false" class="danger" @click="del(play.id)">
                 <i class="fa fa-trash"></i>
               </button>
@@ -474,11 +474,11 @@ export default {
     },
     plays(val) {
       val.forEach(elem => {
-        let m = moment(elem.created_at).format("MMMM");
-        let y = moment(elem.created_at).format("YYYY");
-        let d = moment(elem.created_at).format("D");
-        let h = moment(elem.created_at).format("H:mm");
-        elem.created_at = `${m} ${d}, ${y}, at ${h}`;
+        let m = moment(elem.createdAt).format("MMMM");
+        let y = moment(elem.createdAt).format("YYYY");
+        let d = moment(elem.createdAt).format("D");
+        let h = moment(elem.createdAt).format("H:mm");
+        elem.createdAt = `${m} ${d}, ${y}, at ${h}`;
       });
     },
     playForm(val) {

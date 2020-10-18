@@ -76,20 +76,45 @@
       </tr>
     </table>
 
-    <div class="info-container">
-      <span class="info-name">{{playerInfo.nick}}</span>
+    <div class="info-container" v-if="idPlayerInfo">
+      <b class="info-name">{{playerInfo.nick}}</b>
       <div class="info">
-        <div class="line-1400"></div>
-        <div class="line-1500">1500</div>
-        <div class="line-1300">1300</div>
-        <div class="info-item" v-for="pr in playerResultsInfo" :key="pr.id">
+
+        <div class="line p1500">
+          <span class="text">1500</span>
+        </div>
+
+        <div class="line p1400">
+          <span class="text">1400</span>
+        </div>
+
+        <div class="line p1300">
+          <span class="text">1300</span>
+        </div>
+
+        <div class="line" :style="'transform: translateY('+(1400-playerInfo.elo)+'px)'">
+          <span class="text">{{playerInfo.elo}}</span>
+        </div>
+
+        <div class="info-item" v-for="pr in playerResultsInfo" :key="pr.id" :style="'width:'+(98/playerResultsInfo.length)+'vw'">
+          <div class="info-hover" :style="'width:'+(98/playerResultsInfo.length)+'vw'"></div>
+          <span class="info-text">
+            <b class="result">{{pr.elo+pr.eloPlus}}</b>
+            <i>
+              <span>{{pr.elo}}</span>
+              <span :class="[pr.eloPlus>0?'good':'bad','val']">
+                <span v-if="pr.eloPlus>0">+</span>
+                <span v-else>-</span>
+                {{Math.abs(pr.eloPlus)}}
+              </span>
+              
+            </i>
+          </span>
           <div
             class="info-item-val"
             :class="pr.eloPlus>0?'good':'bad'"
             :style="['min-height:'+Math.abs(pr.eloPlus)+'px','transform:translateY('+(( pr.elo - 1400 + pr.eloPlus/2) * - 1 ) +'px)']"
-          >
-            <span>{{pr.eloPlus}}</span>
-          </div>
+          ></div>
         </div>
       </div>
     </div>
@@ -289,71 +314,118 @@ export default {
     }
   }
 }
+
 .info-container {
+  $width-info: 25px;
   display: flex;
   flex-direction: column;
-  padding: 10px 0;
+  margin: 1.5vw;
 
   .info-name {
     display: flex;
     justify-content: center;
+    margin-bottom: 10px;
+    font-size: large;
+    text-transform: uppercase;
   }
 
   .info {
     display: flex;
     flex-direction: row;
-    width: 100vw;
+    width: 97vw;
     overflow-x: auto;
-    height: 350px;
+    height: 400px;
     align-items: center;
-    border-top: 1px solid rgba(255, 255, 255, 0.3);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-    margin-top: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
 
-    .line-1400 {
+    .line {
       position: absolute;
       border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-      width: 100vw;
-    }
-    .line-1500 {
-      position: absolute;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-      width: 100vw;
-      transform: translateY(-100px);
+      width: 97vw;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      &.p1500 {
+        transform: translateY(-100px);
+      }
+
+      &.p1300 {
+        transform: translateY(100px);
+      }
+
+      .text {
+        position: absolute;
+        padding-left: 5px;
+      }
     }
 
-    .line-1300 {
+    .info-hover {
       position: absolute;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-      width: 100vw;
-      transform: translateY(100px);
+      height: 400px;
+
+      &:hover {
+        background-color: rgba(0, 255, 255, 0.05);
+      }
     }
 
     &-item {
-      width: 25px;
+      display: flex;
+      flex-direction: column;
+      align-content: center;
+      justify-content: center;
 
-      &-val {
-        z-index: 1;
+      .info-text {
+        cursor: default;
+        display: none;
+        position: absolute;
+        transform: translateY(-165px);
+        font-size: small;
 
-        &:hover {
-          span {
-            display: initial;
-            cursor: default;
+        .val {
+          padding-left: 5px;
+          &.bad {
+            color: map-get($map: $color, $key: bad-plus);
+          }
+
+          &.good {
+            color: map-get($map: $color, $key: good-plus);
           }
         }
 
+        .result {
+          font-size: initial;
+        }
+      }
+      &:hover {
+        .info-text {
+          display: flex;
+          flex-direction: column;
+        }
+        .info-item-val {
+          &.bad {
+            background-color: map-get($map: $color, $key: bad);
+            clip-path: polygon(40% 30%, 0% 100%, 60% 60%, 100% 0%);
+          }
+
+          &.good {
+            background-color: map-get($map: $color, $key: good);
+            clip-path: polygon(0% 0%, 20% 60%, 100% 100%, 60% 20%);
+          }
+        }
+      }
+
+      &-val {
+        transition: clip-path .2s;
         &.bad {
           background-color: map-get($map: $color, $key: bad-plus);
+          clip-path: polygon(80% 0%, 0% 100%, 20% 100%, 100% 0%);
         }
 
         &.good {
+          transition: clip-path .3s;
           background-color: map-get($map: $color, $key: good-plus);
-        }
-        span {
-          display: none;
-          position: absolute;
-          transform: translateY(-20px);
-          color: lightslategray;
+          clip-path: polygon(0% 0%, 80% 100%, 100% 100%, 20% 0%);
         }
       }
     }

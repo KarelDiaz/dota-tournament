@@ -1,7 +1,12 @@
 <template>
   <div>
     <div class="options">
-      <input type="text" placeholder="Filtrar" v-model="textFilter" @keyUp="filter" />
+      <input
+        type="text"
+        placeholder="Filtrar"
+        v-model="textFilter"
+        @keyUp="filter"
+      />
 
       <form class="hide-xs add-player" @submit.prevent="send">
         <input
@@ -46,7 +51,7 @@
         v-for="(p, i) in players"
         :key="p.nick"
         :style="p.nick == 'bot' ? 'display:none' : ''"
-        @click="idPlayerInfo=p.id"
+        @click="idPlayerInfo = p.id"
       >
         <td style="text-align:center">{{ i + 1 }}</td>
         <td>{{ p.nick }}</td>
@@ -55,31 +60,38 @@
         <td class="hide-xs">{{ getPlaysWin(p.id).length }}</td>
         <td>
           {{
-          getPlays(p.id).length > 0
-          ? Math.round(
-          (getPlaysWin(p.id).length / getPlays(p.id).length) * 1000
-          )
-          : 0
+            getPlays(p.id).length > 0
+              ? Math.round(
+                  (getPlaysWin(p.id).length / getPlays(p.id).length) * 1000
+                )
+              : 0
           }}
         </td>
         <td>{{ getK(p.id) }}</td>
-        <td class="hide-xs">{{ Math.round(getK(p.id) / getPlays(p.id).length) }}</td>
-        <td>{{ getD(p.id) }}</td>
-        <td class="hide-xs">{{ Math.round(getD(p.id) / getPlays(p.id).length) }}</td>
-        <td>{{ getA(p.id) }}</td>
-        <td class="hide-xs">{{ Math.round(getA(p.id) / getPlays(p.id).length) }}</td>
         <td class="hide-xs">
-          <button v-if="false" class="danger" @click="del(p.id)">Eliminar</button>
+          {{ Math.round(getK(p.id) / getPlays(p.id).length) }}
+        </td>
+        <td>{{ getD(p.id) }}</td>
+        <td class="hide-xs">
+          {{ Math.round(getD(p.id) / getPlays(p.id).length) }}
+        </td>
+        <td>{{ getA(p.id) }}</td>
+        <td class="hide-xs">
+          {{ Math.round(getA(p.id) / getPlays(p.id).length) }}
+        </td>
+        <td class="hide-xs">
+          <button v-if="false" class="danger" @click="del(p.id)">
+            Eliminar
+          </button>
           <button @click="preMod(p.id)">Edit</button>
-          <button v-if="false" @click="idPlayerInfo=p.id">Info</button>
+          <button v-if="false" @click="idPlayerInfo = p.id">Info</button>
         </td>
       </tr>
     </table>
 
     <div class="info-container" v-if="idPlayerInfo">
-      <b class="info-name">{{playerInfo.nick}}</b>
+      <b class="info-name">{{ playerInfo.nick }}</b>
       <div class="info">
-
         <div class="line p1500">
           <span class="text">1500</span>
         </div>
@@ -92,28 +104,43 @@
           <span class="text">1300</span>
         </div>
 
-        <div class="line" :style="'transform: translateY('+(1400-playerInfo.elo)+'px)'">
-          <span class="text">{{playerInfo.elo}}</span>
+        <div
+          class="line"
+          :style="'transform: translateY(' + (1400 - playerInfo.elo) + 'px)'"
+        >
+          <span class="text">{{ playerInfo.elo }}</span>
         </div>
 
-        <div class="info-item" v-for="pr in playerResultsInfo" :key="pr.id" :style="'width:'+(98/playerResultsInfo.length)+'vw'">
-          <div class="info-hover" :style="'width:'+(98/playerResultsInfo.length)+'vw'"></div>
+        <div
+          class="info-item"
+          v-for="pr in playerResultsInfo"
+          :key="pr.id"
+          :style="'width:' + 98 / playerResultsInfo.length + 'vw'"
+        >
+          <div
+            class="info-hover"
+            :style="'width:' + 98 / playerResultsInfo.length + 'vw'"
+          ></div>
           <span class="info-text">
-            <b class="result">{{pr.elo+pr.eloPlus}}</b>
+            <b class="result">{{ pr.elo + pr.eloPlus }}</b>
             <i>
-              <span>{{pr.elo}}</span>
-              <span :class="[pr.eloPlus>0?'good':'bad','val']">
-                <span v-if="pr.eloPlus>0">+</span>
+              <span>{{ pr.elo }}</span>
+              <span :class="[pr.eloPlus > 0 ? 'good' : 'bad', 'val']">
+                <span v-if="pr.eloPlus > 0">+</span>
                 <span v-else>-</span>
-                {{Math.abs(pr.eloPlus)}}
+                {{ Math.abs(pr.eloPlus) }}
               </span>
-              
             </i>
           </span>
           <div
             class="info-item-val"
-            :class="pr.eloPlus>0?'good':'bad'"
-            :style="['min-height:'+Math.abs(pr.eloPlus)+'px','transform:translateY('+(( pr.elo - 1400 + pr.eloPlus/2) * - 1 ) +'px)']"
+            :class="pr.eloPlus > 0 ? 'good' : 'bad'"
+            :style="[
+              'min-height:' + Math.abs(pr.eloPlus) + 'px',
+              'transform:translateY(' +
+                (pr.elo - 1400 + pr.eloPlus / 2) * -1 +
+                'px)'
+            ]"
           ></div>
         </div>
       </div>
@@ -305,12 +332,12 @@ export default {
   text-align: left;
 
   &-item {
-    &:nth-child(odd) {
+    &:nth-child(even) {
       background-color: map-get($map: $bg, $key: 2);
     }
 
     &:hover {
-      background-color:  map-get($map: $bg, $key: 3);
+      background-color: map-get($map: $bg, $key: 3);
     }
   }
 }
@@ -416,14 +443,14 @@ export default {
       }
 
       &-val {
-        transition: clip-path .2s;
+        transition: clip-path 0.2s;
         &.bad {
           background-color: map-get($map: $color, $key: bad-plus);
           clip-path: polygon(80% 0%, 0% 100%, 20% 100%, 100% 0%);
         }
 
         &.good {
-          transition: clip-path .3s;
+          transition: clip-path 0.3s;
           background-color: map-get($map: $color, $key: good-plus);
           clip-path: polygon(0% 0%, 80% 100%, 100% 100%, 20% 0%);
         }

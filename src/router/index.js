@@ -4,23 +4,23 @@ const routes = [
   {
     path: "/",
     name: "Players",
-    component: () => import("../views/Players.vue"),
+    component: () => import("../views/Players.vue")
   },
   {
     path: "/plays",
     name: "Plays",
-    component: () => import("../views/Plays.vue"),
+    component: () => import("../views/Plays.vue")
   },
   {
     path: "/hero",
     name: "Hero",
-    component: () => import("../views/Hero.vue"),
-  },
+    component: () => import("../views/Hero.vue")
+  }
 ];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes,
+  routes
 });
 
 export default router;

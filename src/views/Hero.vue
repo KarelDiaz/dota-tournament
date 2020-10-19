@@ -1,21 +1,28 @@
 <template>
   <div>
     <div class="heroes-container">
-      <input class="buscar" type="text" placeholder="Buscar" v-model="filterText" />
+      <input
+        class="buscar"
+        type="text"
+        placeholder="Buscar"
+        v-model="filterText"
+      />
 
       <div class="heroes">
         <transition-group name="slide-fade">
-          <template v-for="(h,i) in hs">
+          <template v-for="(h, i) in hs">
             <div
               :key="h.id"
-              :class="['hero',{selected:hSelected==h}]"
+              :class="['hero', { selected: hSelected == h }]"
               v-if="hsVisible[i]"
-              @click="hSelected=h"
+              @click="hSelected = h"
             >
-              <img :src="$store.state.strapi+h.picture.url" class="img" />
+              <img :src="$store.state.strapi + h.picture.url" class="img" />
               <span class="name hide-xs">
-                <span>{{h.displayName}}</span>
-                <b class="victorias">{{ prs.filter(pr=>(pr.hero.id==h.id)).length}}</b>
+                <span>{{ h.displayName }}</span>
+                <b class="victorias">{{
+                  prs.filter(pr => pr.hero.id == h.id).length
+                }}</b>
               </span>
             </div>
           </template>
@@ -26,9 +33,13 @@
     <div class="players-contianer">
       <transition name="fade-slide">
         <div class="hero-selected" v-if="hSelected">
-          <img class="img" :src="$store.state.strapi+hSelected.picture.url" alt />
+          <img
+            class="img"
+            :src="$store.state.strapi + hSelected.picture.url"
+            alt
+          />
           <div>
-            <span class="name">{{hSelected.displayName}}</span>
+            <span class="name">{{ hSelected.displayName }}</span>
             <table class="table">
               <thead>
                 <tr>
@@ -45,15 +56,15 @@
               </thead>
               <tbody>
                 <tr class="player">
-                  <td>{{hP}}</td>
-                  <td>{{hV}}</td>
-                  <td>{{hAve}}</td>
-                  <td>{{hK}}</td>
-                  <td>{{hKP}}</td>
-                  <td>{{hD}}</td>
-                  <td>{{hDP}}</td>
-                  <td>{{hA}}</td>
-                  <td>{{hAP}}</td>
+                  <td>{{ hP }}</td>
+                  <td>{{ hV }}</td>
+                  <td>{{ hAve }}</td>
+                  <td>{{ hK }}</td>
+                  <td>{{ hKP }}</td>
+                  <td>{{ hD }}</td>
+                  <td>{{ hDP }}</td>
+                  <td>{{ hA }}</td>
+                  <td>{{ hAP }}</td>
                 </tr>
               </tbody>
             </table>
@@ -80,17 +91,17 @@
         </thead>
         <tbody>
           <template v-for="p in ps">
-            <tr class="player" v-if="p.nick!='bot'" :key="p.id">
-              <td>{{p.nick}}</td>
-              <td>{{getP(p.id)}}</td>
-              <td>{{getV(p.id)}}</td>
-              <td>{{getAve(p.id)}}</td>
-              <td>{{getK(p.id)}}</td>
-              <td>{{getKP(p.id)}}</td>
-              <td>{{getD(p.id)}}</td>
-              <td>{{getDP(p.id)}}</td>
-              <td>{{getA(p.id)}}</td>
-              <td>{{getAP(p.id)}}</td>
+            <tr class="player" v-if="p.nick != 'bot'" :key="p.id">
+              <td>{{ p.nick }}</td>
+              <td>{{ getP(p.id) }}</td>
+              <td>{{ getV(p.id) }}</td>
+              <td>{{ getAve(p.id) }}</td>
+              <td>{{ getK(p.id) }}</td>
+              <td>{{ getKP(p.id) }}</td>
+              <td>{{ getD(p.id) }}</td>
+              <td>{{ getDP(p.id) }}</td>
+              <td>{{ getA(p.id) }}</td>
+              <td>{{ getAP(p.id) }}</td>
             </tr>
           </template>
         </tbody>
@@ -101,6 +112,7 @@
 
 <script>
 import axios from "axios";
+import { START_LOADING, END_LOADING } from "@/store/mutations-type";
 
 export default {
   data() {
@@ -123,18 +135,18 @@ export default {
     };
   },
   methods: {
-    initPs() {
-      axios
+    async initPs() {
+      await axios
         .get(this.$store.state.strapi + "/players?_limit=-1")
         .then(({ data }) => (this.ps = data.sort((a, b) => a.nick > b.nick)));
     },
-    initPrs() {
-      axios
+    async initPrs() {
+      await axios
         .get(this.$store.state.strapi + "/player-results?_limit=-1")
         .then(({ data }) => (this.prs = data.filter(d => !d.bot)));
     },
-    initHs() {
-      axios
+    async initHs() {
+      await axios
         .get(this.$store.state.strapi + "/heroes?_limit=-1")
         .then(({ data }) => {
           this.hsVisible = [];
@@ -201,9 +213,11 @@ export default {
     }
   },
   created() {
+    this.$store.commit(START_LOADING);
     this.initPs();
     this.initPrs();
     this.initHs();
+    this.$store.commit(END_LOADING);
   },
   watch: {
     filterText(text) {
@@ -260,6 +274,7 @@ export default {
     display: flex;
     flex-direction: column;
     overflow-y: auto;
+    overflow-x: hidden;
     height: 100%;
 
     .hero {
@@ -289,8 +304,8 @@ export default {
         padding-right: 5px;
 
         .victorias {
+          padding: 1px;
           display: flex;
-          //align-items: center;
           justify-content: center;
           background-color: rgba(255, 255, 255, 0.555);
           color: map-get($map: $bg, $key: 2);
@@ -319,7 +334,7 @@ export default {
       padding: 10px;
     }
 
-    .table{
+    .table {
       margin-top: 10px;
     }
   }

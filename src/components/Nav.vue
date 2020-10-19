@@ -3,8 +3,8 @@
     <router-link class="nav-link" to="/">Players</router-link>
     <span class="nav-separator">|</span>
     <router-link class="nav-link" to="/plays">Plays</router-link>
-    <span v-if="false" class="nav-separator">|</span>
-    <router-link v-if="false" class="nav-link" to="/info">Info</router-link>
+    <span class="nav-separator">|</span>
+    <router-link class="nav-link" to="/hero">Heroes</router-link>
   </div>
 </template>
 
@@ -12,7 +12,7 @@
 @import "@/theme/theme.scss";
 
 .nav {
-  padding: 20px 0;
+  padding: 10px 0;
   display: flex;
 
   justify-content: center;

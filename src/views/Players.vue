@@ -310,7 +310,7 @@ export default {
     }
 
     &:hover {
-      background-color: rgb(63, 56, 88);
+      background-color:  map-get($map: $bg, $key: 3);
     }
   }
 }

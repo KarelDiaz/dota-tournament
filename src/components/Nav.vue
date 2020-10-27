@@ -5,6 +5,8 @@
     <router-link class="nav-link" to="/plays">Plays</router-link>
     <span class="nav-separator">|</span>
     <router-link class="nav-link" to="/hero">Heroes</router-link>
+    <span class="nav-separator">|</span>
+    <router-link class="nav-link" to="/lotery">Lotery</router-link>
   </div>
 </template>
 

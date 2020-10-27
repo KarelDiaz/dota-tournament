@@ -6,7 +6,7 @@ import { START_LOADING, END_LOADING, INIT_PLAYERS } from "./mutations-type";
 export default createStore({
   state: {
     loading: false,
-    strapi: "http://192.168.137.1:1337",
+    strapi: "http://localhost:1337",
     players: []
   },
   mutations: {

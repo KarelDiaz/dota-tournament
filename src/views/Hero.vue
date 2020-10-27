@@ -112,7 +112,6 @@
 
 <script>
 import axios from "axios";
-import { START_LOADING, END_LOADING } from "@/store/mutations-type";
 
 export default {
   data() {
@@ -135,18 +134,18 @@ export default {
     };
   },
   methods: {
-    async initPs() {
-      await axios
+    initPs() {
+      axios
         .get(this.$store.state.strapi + "/players?_limit=-1")
         .then(({ data }) => (this.ps = data.sort((a, b) => a.nick > b.nick)));
     },
-    async initPrs() {
-      await axios
+    initPrs() {
+      axios
         .get(this.$store.state.strapi + "/player-results?_limit=-1")
         .then(({ data }) => (this.prs = data.filter(d => !d.bot)));
     },
-    async initHs() {
-      await axios
+     initHs() {
+       axios
         .get(this.$store.state.strapi + "/heroes?_limit=-1")
         .then(({ data }) => {
           this.hsVisible = [];
@@ -213,11 +212,9 @@ export default {
     }
   },
   created() {
-    this.$store.commit(START_LOADING);
     this.initPs();
     this.initPrs();
     this.initHs();
-    this.$store.commit(END_LOADING);
   },
   watch: {
     filterText(text) {
@@ -331,7 +328,9 @@ export default {
     .img {
       height: 15vw;
       border-radius: 50%;
-      padding: 10px;
+      margin: 10px;
+        box-shadow: 0px 0px 15px black;
+
     }
 
     .table {

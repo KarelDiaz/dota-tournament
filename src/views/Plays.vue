@@ -12,13 +12,7 @@
                   { wining: playForm.side_win == 'good' }
                 ]"
               >
-                <input
-                  v-model="playForm.side_win"
-                  type="radio"
-                  name="radio"
-                  value="good"
-                  hidden
-                />
+                <input v-model="playForm.side_win" type="radio" name="radio" value="good" hidden />
                 Good ganó
               </label>
               <div>
@@ -32,13 +26,7 @@
                   { wining: playForm.side_win == 'bad' }
                 ]"
               >
-                <input
-                  v-model="playForm.side_win"
-                  type="radio"
-                  name="radio"
-                  value="bad"
-                  hidden
-                />
+                <input v-model="playForm.side_win" type="radio" name="radio" value="bad" hidden />
                 Bad ganó
               </label>
             </div>
@@ -56,15 +44,8 @@
                   <span class="item-form">
                     <input v-model="pr.bot" type="checkbox" /> Bot
                   </span>
-                  <select
-                    required
-                    class="item-form"
-                    v-model="pr.player"
-                    v-if="!pr.bot"
-                  >
-                    <option :value="p.id" v-for="p in players" :key="p.id">{{
-                      p.nick
-                    }}</option>
+                  <select required class="item-form" v-model="pr.player" v-if="!pr.bot">
+                    <option :value="p.id" v-for="p in players" :key="p.id">{{ p.nick }}</option>
                   </select>
 
                   <div class="item-form kda" v-if="!pr.bot">
@@ -93,20 +74,10 @@
                       placeholder="Asist"
                     />
                   </div>
-                  <select
-                    class="item-form"
-                    v-if="!pr.bot"
-                    v-model="pr.hero"
-                    required
-                  >
-                    <option :value="h.id" v-for="h in heroes" :key="h.id">{{
-                      h.displayName
-                    }}</option>
+                  <select class="item-form" v-if="!pr.bot" v-model="pr.hero" required>
+                    <option :value="h.id" v-for="h in heroes" :key="h.id">{{ h.displayName }}</option>
                   </select>
-                  <div
-                    class="black-shadow"
-                    :class="pr.side + (pr.bot ? ' bot' : '')"
-                  ></div>
+                  <div class="black-shadow" :class="pr.side + (pr.bot ? ' bot' : '')"></div>
 
                   <img
                     class="hero-img"
@@ -142,11 +113,11 @@
         <div class="info-plays-win" v-if="fPlayer">
           <b>
             {{
-              plays.filter(p => {
-                return p.player_results.find(
-                  pr => pr.player == fPlayer && pr.side == p.side_win
-                );
-              }).length
+            plays.filter(p => {
+            return p.player_results.find(
+            pr => pr.player == fPlayer && pr.side == p.side_win
+            );
+            }).length
             }}
           </b>
           victorias
@@ -161,93 +132,15 @@
             v-for="p in players"
             :key="p.id"
             :style="p.nick == 'bot' ? 'display:none' : ''"
-            >{{ p.nick }}</option
-          >
+          >{{ p.nick }}</option>
         </select>
       </div>
     </div>
 
     <div class="plays">
       <transition-group name="slide-right" tag="p">
-        <div class="play" v-for="play in plays" :key="play.id">
-          <div class="result-content">
-            <div
-              :class="[
-                'result',
-                'result-list',
-                result.side,
-                { win: play.side_win == result.side },
-                { bot: result.bot == true }
-              ]"
-              v-for="result in play.player_results"
-              :key="result.id"
-            >
-              <b class="item" v-if="!result.bot">{{
-                getPlayer(result.player).nick
-              }}</b>
-              <span class="item elo" v-if="!result.bot">
-                {{ result.elo }}
-                <b class="elo-plus" :class="result.win ? 'success' : 'danger'">
-                  <span v-if="result.win">+</span>
-                  <span v-if="!result.win">-</span>
-                  {{ Math.abs(result.eloPlus) }}
-                </b>
-              </span>
-              <table class="item" v-if="!result.bot">
-                <tr>
-                  <td>K</td>
-                  <td>D</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>
-                    <b>{{ result.kills }}</b>
-                  </td>
-                  <td>
-                    <b>{{ result.deths }}</b>
-                  </td>
-                  <td>
-                    <b>{{ result.asist }}</b>
-                  </td>
-                </tr>
-              </table>
-
-              <span class="item" v-if="!result.bot">{{
-                getHero(result.hero).displayName
-              }}</span>
-              <div
-                class="black-shadow"
-                :class="result.side + (result.bot ? ' bot' : '')"
-              ></div>
-              <div class="player-img">
-                <img
-                  :class="['player-img-item', result.side]"
-                  :src="
-                    $store.state.strapi + getPlayer(result.player).picture.url
-                  "
-                  v-if="!result.bot && getPlayer(result.player).picture"
-                />
-              </div>
-              <img
-                class="hero-img"
-                :src="
-                  !result.bot
-                    ? $store.state.strapi + getHero(result.hero).picture.url
-                    : $store.state.strapi + '/uploads/bot_0db0ba3b71.png'
-                "
-                :alt="getHero(result.hero).picture.url"
-              />
-            </div>
-          </div>
-
-          <div class="play-date">
-            <span class="play-date-content">
-              {{ play.createdAt }}
-              <button v-if="false" class="danger" @click="del(play.id)">
-                <i class="fa fa-trash"></i>
-              </button>
-            </span>
-          </div>
+        <div v-for="play in plays" :key="play.id">
+          <PlayComponent :play="play"></PlayComponent>
         </div>
       </transition-group>
     </div>
@@ -261,8 +154,9 @@ import moment from "moment";
 import { START_LOADING, END_LOADING } from "@/store/mutations-type";
 import Elo from "@/store/model/elo";
 import Player from "@/store/model/player";
-import Play from "@/store/model/play";
 import Hero from "@/store/model/hero";
+import Play from "@/store/model/play";
+import PlayComponent from "@/components/PlayComponent";
 
 export default {
   name: "Plays",
@@ -272,9 +166,12 @@ export default {
       players: [],
       heroes: [],
       playForm: Play,
-      fCant: -1,
+      fCant: 10,
       fPlayer: ""
     };
+  },
+  components: {
+    PlayComponent
   },
   methods: {
     send() {
@@ -430,37 +327,14 @@ export default {
         });
       }
     },
-
-    initPlayers() {
-      this.$store.commit(START_LOADING);
-      axios.get(this.$store.state.strapi + "/players").then(({ data }) => {
-        this.players = data.sort(
-          (a, b) => a.fullName.toLowerCase() > b.fullName.toLowerCase()
-        );
-        this.$store.commit(END_LOADING);
-      });
-    },
-
     getPlayer(id) {
-      let temp = this.players.find(p => p.id == id);
+      const temp = this.$store.state.players.find(p => p.id == id);
       return temp ? temp : new Player();
     },
-
-    initHeroes() {
-      axios
-        .get(this.$store.state.strapi + "/heroes?_limit=-1")
-        .then(({ data }) => {
-          this.heroes = data.sort(
-            (a, b) => a.displayName.toLowerCase() > b.displayName.toLowerCase()
-          );
-        });
-    },
-
     getHero(id) {
-      let temp = this.heroes.find(h => h.id == id);
+      const temp = this.$store.state.heroes.find(p => p.id == id);
       return temp ? temp : new Hero();
     },
-
     resetForm() {
       this.playForm = new Play();
     }
@@ -487,10 +361,6 @@ export default {
       });
     }
   },
-  created() {
-    this.initPlayers();
-    this.initHeroes();
-  },
   mounted() {
     this.resetForm();
     this.filter();
@@ -511,184 +381,7 @@ $height-hero-xs: $width-hero-xs;
   display: flex;
   flex-direction: column;
 
-  .play {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 1.5rem;
-    align-content: center;
-
-    .play-date {
-      display: flex;
-      justify-content: center;
-
-      .play-date-content {
-        background-color: map-get($map: $bg, $key: 2);
-        padding: 5px 13px 5px 13px;
-        clip-path: polygon(0 0, 5% 100%, 95% 100%, 100% 0);
-      }
-    }
-
-    .play-options {
-      display: flex;
-      justify-content: space-between;
-      padding: 0 10% 15px 10%;
-
-      .side-win {
-        padding: 1px 5px;
-        font-size: smaller;
-
-        &.wining {
-          background-color: map-get($map: $color, $key: win);
-          border: 1px solid map-get($map: $color, $key: win-line);
-          color: map-get($map: $color, $key: win-line);
-        }
-      }
-    }
-
-    .result-content {
-      display: grid;
-      grid-template-rows: auto;
-      grid-template-columns: repeat(10, $width-hero);
-      align-content: center;
-      justify-content: center;
-
-      .result {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
-        align-content: space-between;
-        text-align: left;
-        width: $width-hero;
-        height: $height-hero;
-        border-bottom: 5px solid map-get($map: $grey, $key: 500);
-
-        &.good {
-          border-top: 5px solid map-get($map: $color, $key: good);
-        }
-        &.bad {
-          border-top: 5px solid map-get($map: $color, $key: bad);
-        }
-
-        &.win {
-          border-bottom: 5px solid map-get($map: $color, $key: win);
-        }
-        &.result-list:hover {
-          .player-img-item {
-            transform: scale(2);
-          }
-        }
-        &.result-list.bot {
-          .hero-img {
-            display: initial;
-          }
-        }
-
-        @media screen and (max-width: 899px) {
-          & {
-            width: $width-hero-xs;
-            height: $height-hero-xs;
-          }
-        }
-
-        .item {
-          z-index: 2;
-          color: white;
-          padding: 0 5px;
-          text-shadow: 0px 0px 3px black;
-          width: $width-hero;
-          &.elo {
-            .elo-plus {
-              &.success {
-                color: map-get($map: $color, $key: good-plus);
-              }
-              &.danger {
-                color: map-get($map: $color, $key: bad-plus);
-              }
-            }
-          }
-        }
-        .item-form {
-          z-index: 2;
-          background-color: transparent;
-          color: white;
-          margin: 0 5px;
-          width: calc(100% - 15px);
-        }
-        .kda {
-          display: grid;
-          grid-template-columns: repeat(3, calc(100% / 3));
-        }
-        .black-shadow {
-          position: absolute;
-          width: $width-hero;
-          height: $height-hero;
-          z-index: 1;
-          background-color: transparent;
-          border: none;
-
-          @media screen and (max-width: 899px) {
-            & {
-              width: $width-hero-xs;
-              height: $height-hero-xs;
-            }
-          }
-
-          &.bot {
-            background-color: rgba(0, 0, 0, 0.6);
-          }
-        }
-        .player-img {
-          display: flex;
-          justify-content: center;
-          align-content: flex-end;
-          z-index: 1;
-          position: absolute;
-          width: $width-hero;
-          height: $height-hero;
-          transform: translateY(-15px);
-
-          @media screen and (max-width: 899px) {
-            & {
-              width: $width-hero-xs;
-              height: $height-hero-xs;
-            }
-          }
-
-          &-item {
-            border-radius: 50%;
-            height: 25px;
-            width: 25px;
-            transition: 0.15s;
-
-            &.good {
-              box-shadow: 0px 0px 5px map-get($map: $color, $key: good);
-            }
-            &.bad {
-              box-shadow: 0px 0px 5px map-get($map: $color, $key: bad);
-            }
-          }
-        }
-        .hero-img {
-          position: absolute;
-          width: $width-hero;
-          height: $height-hero;
-
-          @media screen and (max-width: 899px) {
-            & {
-              width: $width-hero-xs;
-              height: $height-hero-xs;
-            }
-          }
-        }
-      }
-
-      @media screen and (max-width: 899px) {
-        & {
-          grid-template-columns: repeat(5, $width-hero-xs);
-        }
-      }
-    }
-  }
+  @import "@/components/PlayComponent.scss";
 }
 
 .filters {

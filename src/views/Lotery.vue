@@ -7,7 +7,7 @@
       <transition-group name="slide-right">
         <div class="player" v-for="p in ps1" :key="p.id" @click="from1To2(p)">
           <span class="name">
-            {{p.nick}}
+            {{ p.nick }}
             <span class="arrow">
               <i class="fa fa-arrow-right"></i>
             </span>
@@ -19,13 +19,15 @@
       <span class="top">
         <b class="text">Players</b>
         <transition name="fade">
-          <button v-if="ps2.length>0" class="success" @click="from2To3()">Seleccionar =></button>
+          <button v-if="ps2.length > 0" class="success" @click="from2To3()">
+            Seleccionar =>
+          </button>
         </transition>
       </span>
       <transition-group name="slide-left-in-fade-out">
         <div class="player" v-for="p in ps2" :key="p.id" @click="from2To1(p)">
           <span class="name">
-            {{p.nick}}
+            {{ p.nick }}
             <span class="arrow">
               <i class="fa fa-arrow-left"></i>
             </span>
@@ -37,13 +39,15 @@
       <span class="top">
         <b class="text">Seleccion aleatoria</b>
         <transition name="fade">
-          <button v-if="ps2.length>0 || ps3.length>0" @click="reset()">Reset</button>
+          <button v-if="ps2.length > 0 || ps3.length > 0" @click="reset()">
+            Reset
+          </button>
         </transition>
       </span>
       <transition-group name="slide-left">
-        <div class="player" v-for="(p,i) in ps3" :key="p.id">
+        <div class="player" v-for="(p, i) in ps3" :key="p.id">
           <span class="name" v-html="p.nick"></span>
-          <b class="number" v-html="i+1"></b>
+          <b class="number" v-html="i + 1"></b>
         </div>
       </transition-group>
     </div>

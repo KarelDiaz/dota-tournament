@@ -1,23 +1,24 @@
 <template>
   <div>
-    <Loading></Loading>
-    <Nav></Nav>
+    <LoadingComponent></LoadingComponent>
+    <NavComponent></NavComponent>
     <router-view />
   </div>
 </template>
 
 <script>
-import Loading from "@/components/Loading";
-import Nav from "@/components/Nav";
-import { INIT_PLAYERS } from "@/store/mutations-type";
+import LoadingComponent from "@/components/LoadingComponent";
+import NavComponent from "@/components/NavComponent";
+import { INIT_PLAYERS, INIT_HEROES } from "@/store/mutations-type";
 
 export default {
   components: {
-    Loading,
-    Nav
+    LoadingComponent,
+    NavComponent
   },
   created() {
     this.$store.commit(INIT_PLAYERS);
+    this.$store.commit(INIT_HEROES);
   }
 };
 </script>

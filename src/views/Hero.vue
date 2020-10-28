@@ -144,8 +144,8 @@ export default {
         .get(this.$store.state.strapi + "/player-results?_limit=-1")
         .then(({ data }) => (this.prs = data.filter(d => !d.bot)));
     },
-     initHs() {
-       axios
+    initHs() {
+      axios
         .get(this.$store.state.strapi + "/heroes?_limit=-1")
         .then(({ data }) => {
           this.hsVisible = [];
@@ -329,8 +329,7 @@ export default {
       height: 15vw;
       border-radius: 50%;
       margin: 10px;
-        box-shadow: 0px 0px 15px black;
-
+      box-shadow: 0px 0px 15px black;
     }
 
     .table {

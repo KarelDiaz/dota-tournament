@@ -1,32 +1,46 @@
 <template>
   <div class="players-container">
     <div class="players">
-      <span class="top">Seleccione los players =></span>
-      <transition-group name="slide-fade">
+      <span class="top">
+        <b class="text">Seleccione los players =></b>
+      </span>
+      <transition-group name="slide-right">
         <div class="player" v-for="p in ps1" :key="p.id" @click="from1To2(p)">
-          <span class="name" v-html="p.nick"></span>
+          <span class="name">
+            {{p.nick}}
+            <span class="arrow">
+              <i class="fa fa-arrow-right"></i>
+            </span>
+          </span>
         </div>
       </transition-group>
     </div>
     <div class="players">
       <span class="top">
-        Players
+        <b class="text">Players</b>
         <transition name="fade">
           <button v-if="ps2.length>0" class="success" @click="from2To3()">Seleccionar =></button>
         </transition>
       </span>
-      <transition-group name="slide-fade-left">
+      <transition-group name="slide-left-in-fade-out">
         <div class="player" v-for="p in ps2" :key="p.id" @click="from2To1(p)">
-          <span class="name" v-html="p.nick"></span>
+          <span class="name">
+            {{p.nick}}
+            <span class="arrow">
+              <i class="fa fa-arrow-left"></i>
+            </span>
+          </span>
         </div>
       </transition-group>
     </div>
     <div class="players">
       <span class="top">
-        Seleccion aleatoria
-        <button @click="reset()">Reset</button>
+        <b class="text">Seleccion aleatoria</b>
+        <transition name="fade">
+          <button v-if="ps2.length>0 || ps3.length>0" @click="reset()">Reset</button>
+        </transition>
       </span>
-      <transition-group name="slide-fade-left">
+      <transition-group name="slide-left">
         <div class="player" v-for="(p,i) in ps3" :key="p.id">
           <span class="name" v-html="p.nick"></span>
           <b class="number" v-html="i+1"></b>
@@ -104,15 +118,46 @@ export default {
     }
     .top {
       padding-bottom: 10px;
+
+      .text {
+        font-size: 1.1rem;
+        padding-right: 10px;
+      }
     }
     .player {
       cursor: pointer;
-      padding: 1px 10px;
+      padding: 5px 10px;
       display: flex;
       justify-content: space-between;
 
       &:hover {
         background-color: map-get($map: $bg, $key: 3);
+
+        .name {
+          i {
+            opacity: 1;
+            animation-play-state: running;
+          }
+        }
+      }
+
+      .name {
+        text-transform: capitalize;
+
+        i {
+          opacity: 0;
+          animation: atent 0.3s infinite alternate;
+          animation-play-state: paused;
+
+          @keyframes atent {
+            0% {
+              transform: translateX(0px);
+            }
+            100% {
+              transform: translateX(15px);
+            }
+          }
+        }
       }
     }
   }

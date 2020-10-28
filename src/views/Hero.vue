@@ -9,7 +9,7 @@
       />
 
       <div class="heroes">
-        <transition-group name="slide-fade">
+        <transition-group name="slide-right">
           <template v-for="(h, i) in hs">
             <div
               :key="h.id"

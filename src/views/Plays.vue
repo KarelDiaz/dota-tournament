@@ -138,7 +138,7 @@
       <div>
         <b>{{ plays.length }}</b> plays
       </div>
-      <transition name="slide-fade">
+      <transition name="slide-right">
         <div class="info-plays-win" v-if="fPlayer">
           <b>
             {{
@@ -168,7 +168,7 @@
     </div>
 
     <div class="plays">
-      <transition-group name="slide-fade" tag="p">
+      <transition-group name="slide-right" tag="p">
         <div class="play" v-for="play in plays" :key="play.id">
           <div class="result-content">
             <div

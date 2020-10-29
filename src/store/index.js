@@ -24,12 +24,12 @@ export default createStore({
     },
     [INIT_PLAYERS](state) {
       axios.get(state.strapi + "/players?_limit=-1").then(({ data }) => {
-        state.players = data;
+        state.players = data.sort((a, b) => a.nick > b.nick);
       });
     },
     [INIT_HEROES](state) {
       axios.get(state.strapi + "/heroes?_limit=-1").then(({ data }) => {
-        state.heroes = data;
+        state.heroes = data.sort((a, b) => a.displayName > b.displayName);
       });
     },
   },

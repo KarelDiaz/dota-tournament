@@ -45,7 +45,7 @@
                     <input v-model="pr.bot" type="checkbox" /> Bot
                   </span>
                   <select required class="item-form" v-model="pr.player" v-if="!pr.bot">
-                    <option :value="p.id" v-for="p in players" :key="p.id">{{ p.nick }}</option>
+                    <option :value="p.id" v-for="p in $store.state.players" :key="p.id">{{ p.nick }}</option>
                   </select>
 
                   <div class="item-form kda" v-if="!pr.bot">
@@ -75,7 +75,7 @@
                     />
                   </div>
                   <select class="item-form" v-if="!pr.bot" v-model="pr.hero" required>
-                    <option :value="h.id" v-for="h in heroes" :key="h.id">{{ h.displayName }}</option>
+                    <option :value="h.id" v-for="h in $store.state.heroes" :key="h.id">{{ h.displayName }}</option>
                   </select>
                   <div class="black-shadow" :class="pr.side + (pr.bot ? ' bot' : '')"></div>
 
@@ -225,7 +225,6 @@ export default {
                 )
                 .then(() => {
                   this.resetForm();
-                  this.initPlayers();
                   this.filter();
                 });
             }
@@ -287,7 +286,6 @@ export default {
         axios
           .put(`${this.$store.state.strapi}/players/${player.id}`, playerOut)
           .then(() => {
-            this.initPlayers();
             this.$store.commit(END_LOADING);
           });
       });

@@ -129,7 +129,7 @@
           <option value>Todos</option>
           <option
             :value="p.id"
-            v-for="p in players"
+            v-for="p in $store.state.players"
             :key="p.id"
             :style="p.nick == 'bot' ? 'display:none' : ''"
           >{{ p.nick }}</option>
@@ -139,9 +139,7 @@
 
     <div class="plays">
       <transition-group name="slide-right" tag="p">
-        <div v-for="play in plays" :key="play.id">
-          <PlayComponent :play="play"></PlayComponent>
-        </div>
+        <PlayComponent v-for="play in plays" :key="play.id" :playIn="play"></PlayComponent>
       </transition-group>
     </div>
   </div>
@@ -149,7 +147,6 @@
 
 <script>
 import axios from "axios";
-import moment from "moment";
 
 import { START_LOADING, END_LOADING } from "@/store/mutations-type";
 import Elo from "@/store/model/elo";
@@ -345,15 +342,6 @@ export default {
     },
     fPlayer() {
       this.filter();
-    },
-    plays(val) {
-      val.forEach(elem => {
-        let m = moment(elem.createdAt).format("MMMM");
-        let y = moment(elem.createdAt).format("YYYY");
-        let d = moment(elem.createdAt).format("D");
-        let h = moment(elem.createdAt).format("H:mm");
-        elem.createdAt = `${m} ${d}, ${y}, at ${h}`;
-      });
     },
     playForm(val) {
       val.player_results.forEach(pr => {

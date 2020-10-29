@@ -1,12 +1,7 @@
 <template>
   <div>
     <div class="options">
-      <input
-        type="text"
-        placeholder="Filtrar"
-        v-model="textFilter"
-        @keyUp="filter"
-      />
+      <input type="text" placeholder="Filtrar" v-model="textFilter" @keyUp="filter" />
 
       <form class="hide-xs add-player" @submit.prevent="send">
         <input
@@ -54,35 +49,27 @@
         @click="idPlayerInfo = p.id"
       >
         <td style="text-align:center">{{ i + 1 }}</td>
-        <td>{{ p.nick }}</td>
+        <td class="nick">{{ p.nick }}</td>
         <td>{{ p.elo }}</td>
         <td>{{ getPlays(p.id).length }}</td>
         <td class="hide-xs">{{ getPlaysWin(p.id).length }}</td>
         <td>
           {{
-            getPlays(p.id).length > 0
-              ? Math.round(
-                  (getPlaysWin(p.id).length / getPlays(p.id).length) * 1000
-                )
-              : 0
+          getPlays(p.id).length > 0
+          ? Math.round(
+          (getPlaysWin(p.id).length / getPlays(p.id).length) * 1000
+          )
+          : 0
           }}
         </td>
         <td>{{ getK(p.id) }}</td>
-        <td class="hide-xs">
-          {{ Math.round(getK(p.id) / getPlays(p.id).length) }}
-        </td>
+        <td class="hide-xs">{{ Math.round(getK(p.id) / getPlays(p.id).length) }}</td>
         <td>{{ getD(p.id) }}</td>
-        <td class="hide-xs">
-          {{ Math.round(getD(p.id) / getPlays(p.id).length) }}
-        </td>
+        <td class="hide-xs">{{ Math.round(getD(p.id) / getPlays(p.id).length) }}</td>
         <td>{{ getA(p.id) }}</td>
+        <td class="hide-xs">{{ Math.round(getA(p.id) / getPlays(p.id).length) }}</td>
         <td class="hide-xs">
-          {{ Math.round(getA(p.id) / getPlays(p.id).length) }}
-        </td>
-        <td class="hide-xs">
-          <button v-if="false" class="danger" @click="del(p.id)">
-            Eliminar
-          </button>
+          <button v-if="false" class="danger" @click="del(p.id)">Eliminar</button>
           <button @click="preMod(p.id)">Edit</button>
           <button v-if="false" @click="idPlayerInfo = p.id">Info</button>
         </td>
@@ -104,10 +91,7 @@
           <span class="text">1300</span>
         </div>
 
-        <div
-          class="line"
-          :style="'transform: translateY(' + (1400 - playerInfo.elo) + 'px)'"
-        >
+        <div class="line" :style="'transform: translateY(' + (1400 - playerInfo.elo) + 'px)'">
           <span class="text">{{ playerInfo.elo }}</span>
         </div>
 
@@ -116,9 +100,10 @@
           v-for="pr in playerResultsInfo"
           :key="pr.id"
           :style="'width:' + 98 / playerResultsInfo.length + 'vw'"
+          @click="idPlayerResultInfo = pr.id"
         >
           <div
-            class="info-hover"
+            :class="['info-hover', {waching:pr.id==idPlayerResultInfo}]"
             :style="'width:' + 98 / playerResultsInfo.length + 'vw'"
           ></div>
           <span class="info-text">
@@ -145,12 +130,14 @@
         </div>
       </div>
     </div>
+
+    <PlayComponent v-if="playInfo" :playIn="playInfo"></PlayComponent>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-
+import PlayComponent from "@/components/PlayComponent";
 import Player from "@/store/model/player";
 
 export default {
@@ -165,8 +152,13 @@ export default {
       idMod: -1,
       idPlayerInfo: "",
       playerInfo: "",
-      playerResultsInfo: []
+      playerResultsInfo: [],
+      idPlayerResultInfo: "",
+      playInfo: null
     };
+  },
+  components: {
+    PlayComponent
   },
   methods: {
     filter() {
@@ -300,11 +292,17 @@ export default {
   },
   watch: {
     idPlayerInfo(id) {
+      this.idPlayerResultInfo = "";
       this.playerResultsInfo = this.playerResults
         .filter(p => p.player.id == id)
         .reverse();
 
       this.playerInfo = this.players.find(p => p.id == id);
+    },
+    idPlayerResultInfo(val) {
+      this.playInfo = this.plays.find(p =>
+        p.player_results.find(pr => pr.id == val)
+      );
     }
   }
 };
@@ -339,6 +337,10 @@ export default {
     &:hover {
       background-color: map-get($map: $bg, $key: 3);
     }
+  }
+
+  .nick{
+    text-transform: capitalize;
   }
 }
 
@@ -390,9 +392,19 @@ export default {
     .info-hover {
       position: absolute;
       height: 400px;
+      cursor: pointer;
+      &.waching {
+        background-color: transparentize(
+          $color: map-get($map: $bg, $key: 3),
+          $amount: 0.5
+        );
+      }
 
       &:hover {
-        background-color: rgba(0, 255, 255, 0.05);
+        background-color: transparentize(
+          $color: map-get($map: $bg, $key: 2),
+          $amount: 0.5
+        );
       }
     }
 

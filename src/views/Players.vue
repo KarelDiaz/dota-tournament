@@ -43,7 +43,7 @@
       </tr>
       <tr
         class="players-item"
-        v-for="(p, i) in players"
+        v-for="(p, i) in $store.state.players.sort((a, b) => a.elo < b.elo)"
         :key="p.nick"
         :style="p.nick == 'bot' ? 'display:none' : ''"
         @click="idPlayerInfo = p.id"
@@ -51,23 +51,15 @@
         <td style="text-align:center">{{ i + 1 }}</td>
         <td class="nick">{{ p.nick }}</td>
         <td>{{ p.elo }}</td>
-        <td>{{ getPlays(p.id).length }}</td>
-        <td class="hide-xs">{{ getPlaysWin(p.id).length }}</td>
-        <td>
-          {{
-          getPlays(p.id).length > 0
-          ? Math.round(
-          (getPlaysWin(p.id).length / getPlays(p.id).length) * 1000
-          )
-          : 0
-          }}
-        </td>
-        <td>{{ getK(p.id) }}</td>
-        <td class="hide-xs">{{ Math.round(getK(p.id) / getPlays(p.id).length) }}</td>
-        <td>{{ getD(p.id) }}</td>
-        <td class="hide-xs">{{ Math.round(getD(p.id) / getPlays(p.id).length) }}</td>
-        <td>{{ getA(p.id) }}</td>
-        <td class="hide-xs">{{ Math.round(getA(p.id) / getPlays(p.id).length) }}</td>
+        <td>{{ p.p }}</td>
+        <td class="hide-xs">{{ p.v }}</td>
+        <td>{{p.p>0?Math.round((p.v / p.p)*1000):0}}</td>
+        <td>{{ p.k }}</td>
+        <td class="hide-xs">{{ Math.round(p.k / p.p) }}</td>
+        <td>{{ p.d }}</td>
+        <td class="hide-xs">{{ Math.round(p.d / p.p) }}</td>
+        <td>{{ p.a }}</td>
+        <td class="hide-xs">{{ Math.round(p.a / p.p) }}</td>
         <td class="hide-xs">
           <button v-if="false" class="danger" @click="del(p.id)">Eliminar</button>
           <button @click="preMod(p.id)">Edit</button>
@@ -108,7 +100,7 @@
           ></div>
           <span class="info-text">
             <b class="result">{{ pr.elo + pr.eloPlus }}</b>
-            <span>{{pr.id}}</span>
+            <span v-if="false">{{pr.id}}</span>
             <i>
               <span>{{ pr.elo }}</span>
               <span :class="[pr.eloPlus > 0 ? 'good' : 'bad', 'val']">
@@ -138,16 +130,15 @@
 
 <script>
 import axios from "axios";
+
 import PlayComponent from "@/components/PlayComponent";
 import Player from "@/store/model/player";
+import { START_LOADING, END_LOADING } from "@/store/mutations-type";
 
 export default {
   name: "Players",
   data() {
     return {
-      plays: [],
-      players: [],
-      playerResults: [],
       playerForm: new Player(),
       textFilter: "",
       idMod: -1,
@@ -225,85 +216,36 @@ export default {
     },
 
     del(id) {
-      if (confirm("Estas seguro de eliminar el player"))
-        axios.delete(this.$store.state.strapi + "/players/" + id).then(() => {
-          this.players = this.players.filter(p => p.id != id);
-        });
-    },
+      console.log("del", id);
 
-    initPlays() {
-      axios
-        .get(this.$store.state.strapi + "/plays?_limit=-1")
-        .then(({ data }) => (this.plays = data));
-    },
-
-    initPlayerResults() {
-      axios
-        .get(this.$store.state.strapi + "/player-results?_limit=-1")
-        .then(({ data }) => {
-          this.playerResults = data.filter(p => !p.bot);
-        });
-    },
-
-    getPlays(idPlayer) {
-      return this.plays.filter(p => {
-        return p.player_results.find(pr => pr.player == idPlayer);
-      });
-    },
-
-    getPlaysWin(idPlayer) {
-      return this.plays.filter(p => {
-        return p.player_results.find(pr => {
-          return pr.player == idPlayer && pr.side == p.side_win;
-        });
-      });
-    },
-
-    getK(idPlayer) {
-      let out = 0;
-      this.plays.forEach(p => {
-        const pr = p.player_results.find(pr => pr.player == idPlayer);
-        out += pr ? pr.kills : 0;
-      });
-      return out;
-    },
-
-    getD(idPlayer) {
-      let out = 0;
-      this.plays.forEach(p => {
-        const pr = p.player_results.find(pr => pr.player == idPlayer);
-        out += pr ? pr.deths : 0;
-      });
-      return out;
-    },
-
-    getA(idPlayer) {
-      let out = 0;
-      this.plays.forEach(p => {
-        const pr = p.player_results.find(pr => pr.player == idPlayer);
-        out += pr ? pr.asist : 0;
-      });
-      return out;
+      if (confirm("Estas seguro de eliminar el player")) this.filter();
     }
   },
   created() {
     this.filter();
-    this.initPlays();
-    this.initPlayerResults();
   },
   watch: {
     idPlayerInfo(id) {
+      this.$store.commit(START_LOADING);
       this.idPlayerResultInfo = "";
-      this.playerResultsInfo = this.playerResults
-        .filter(p => p.player.id == id)
-        .reverse();
-
-      this.playerInfo = this.players.find(p => p.id == id);
+      axios
+        .get(this.$store.state.strapi + "/player-results?_limit=-1")
+        .then(({ data }) => {
+          this.playerResultsInfo = data
+            .filter(p => p.player.id == id)
+            .reverse();
+          this.playerInfo = this.$store.state.players.find(p => p.id == id);
+          this.$store.commit(END_LOADING);
+        });
     },
     idPlayerResultInfo(val) {
-      this.playInfo = this.plays.find(p =>
-        p.player_results.find(pr => pr.id == val)
-      );
+      axios
+        .get(this.$store.state.strapi + "/plays?_limit=-1")
+        .then(({ data }) => {
+          this.playInfo = data.find(p =>
+            p.player_results.find(pr => pr.id == val)
+          );
+        });
     }
   }
 };
@@ -340,7 +282,7 @@ export default {
     }
   }
 
-  .nick{
+  .nick {
     text-transform: capitalize;
   }
 }

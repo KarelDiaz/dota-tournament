@@ -108,6 +108,7 @@
           ></div>
           <span class="info-text">
             <b class="result">{{ pr.elo + pr.eloPlus }}</b>
+            <span>{{pr.id}}</span>
             <i>
               <span>{{ pr.elo }}</span>
               <span :class="[pr.eloPlus > 0 ? 'good' : 'bad', 'val']">

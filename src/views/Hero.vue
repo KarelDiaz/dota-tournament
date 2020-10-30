@@ -17,7 +17,7 @@
               v-if="hsVisible[i]"
               @click="hSelected = h"
             >
-              <img :src="$store.state.strapi + h.picture.url" class="img" />
+              <img :src="'npc/' + h.name + '.png'" class="img" />
               <span class="name hide-xs">
                 <span>{{ h.displayName }}</span>
                 <b class="victorias">{{

@@ -51,12 +51,8 @@
         </div>
         <img
           class="hero-img"
-          :src="
-            !result.bot
-              ? $store.state.strapi + getHero(result.hero).picture.url
-              : $store.state.strapi + '/uploads/bot_0db0ba3b71.png'
-          "
-          :alt="getHero(result.hero).picture.url"
+          :src="!result.bot?`npc/${getHero(result.hero).name}.png`:'npc/bot.png'"
+          :alt="getHero(result.hero).name"
         />
       </div>
     </div>

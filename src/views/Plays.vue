@@ -75,7 +75,11 @@
                     />
                   </div>
                   <select class="item-form" v-if="!pr.bot" v-model="pr.hero" required>
-                    <option :value="h.id" v-for="h in $store.state.heroes" :key="h.id">{{ h.displayName }}</option>
+                    <option
+                      :value="h.id"
+                      v-for="h in $store.state.heroes"
+                      :key="h.id"
+                    >{{ h.displayName }}</option>
                   </select>
                   <div class="black-shadow" :class="pr.side + (pr.bot ? ' bot' : '')"></div>
 
@@ -83,10 +87,10 @@
                     class="hero-img"
                     :src="
                       !pr.bot
-                        ? $store.state.strapi + getHero(pr.hero).picture.url
-                        : $store.state.strapi + '/uploads/bot_0db0ba3b71.png'
+                        ? `npc/${getHero(pr.hero).name}.png`
+                        : 'npc/bot.png'
                     "
-                    :alt="getHero(pr.hero).picture.url"
+                    :alt="getHero(pr.hero).name"
                   />
                 </div>
               </div>

@@ -46,6 +46,22 @@
     }
 }
 
+.slide-top {
+    &-enter-active {
+        transition: all 0.3s ease-out;
+    }
+
+    &-leave-active {
+        transition: all 0.3s ease-in;
+    }
+
+    &-enter-from,
+    &-leave-to {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+}
+
 .scale-player-img {
 
     &-enter-active,

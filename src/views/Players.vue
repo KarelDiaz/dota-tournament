@@ -68,61 +68,63 @@
       </tr>
     </table>
 
-    <div class="info-container" v-if="idPlayerInfo">
-      <b class="info-name">{{ playerInfo.nick }}</b>
-      <div class="info">
-        <div class="line p1500">
-          <span class="text">1500</span>
-        </div>
+    <transition name="slide-top">
+      <div class="info-container" v-if="idPlayerInfo">
+        <b class="info-name">{{ playerInfo.nick }}</b>
+        <div class="info">
+          <div class="line p1500">
+            <span class="text">1500</span>
+          </div>
 
-        <div class="line p1400">
-          <span class="text">1400</span>
-        </div>
+          <div class="line p1400">
+            <span class="text">1400</span>
+          </div>
 
-        <div class="line p1300">
-          <span class="text">1300</span>
-        </div>
+          <div class="line p1300">
+            <span class="text">1300</span>
+          </div>
 
-        <div class="line" :style="'transform: translateY(' + (1400 - playerInfo.elo) + 'px)'">
-          <span class="text">{{ playerInfo.elo }}</span>
-        </div>
+          <div class="line" :style="'transform: translateY(' + (1400 - playerInfo.elo) + 'px)'">
+            <span class="text">{{ playerInfo.elo }}</span>
+          </div>
 
-        <div
-          class="info-item"
-          v-for="pr in playerResultsInfo"
-          :key="pr.id"
-          :style="'width:' + 98 / playerResultsInfo.length + 'vw'"
-          @click="idPlayerResultInfo = pr.id"
-        >
           <div
-            :class="['info-hover', {waching:pr.id==idPlayerResultInfo}]"
+            class="info-item"
+            v-for="pr in playerResultsInfo"
+            :key="pr.id"
             :style="'width:' + 98 / playerResultsInfo.length + 'vw'"
-          ></div>
-          <span class="info-text">
-            <b class="result">{{ pr.elo + pr.eloPlus }}</b>
-            <span v-if="false">{{pr.id}}</span>
-            <i>
-              <span>{{ pr.elo }}</span>
-              <span :class="[pr.eloPlus > 0 ? 'good' : 'bad', 'val']">
-                <span v-if="pr.eloPlus > 0">+</span>
-                <span v-else>-</span>
-                {{ Math.abs(pr.eloPlus) }}
-              </span>
-            </i>
-          </span>
-          <div
-            class="info-item-val"
-            :class="pr.eloPlus > 0 ? 'good' : 'bad'"
-            :style="[
+            @click="idPlayerResultInfo = pr.id"
+          >
+            <div
+              :class="['info-hover', {waching:pr.id==idPlayerResultInfo}]"
+              :style="'width:' + 98 / playerResultsInfo.length + 'vw'"
+            ></div>
+            <span class="info-text">
+              <b class="result">{{ pr.elo + pr.eloPlus }}</b>
+              <span v-if="false">{{pr.id}}</span>
+              <i>
+                <span>{{ pr.elo }}</span>
+                <span :class="[pr.eloPlus > 0 ? 'good' : 'bad', 'val']">
+                  <span v-if="pr.eloPlus > 0">+</span>
+                  <span v-else>-</span>
+                  {{ Math.abs(pr.eloPlus) }}
+                </span>
+              </i>
+            </span>
+            <div
+              class="info-item-val"
+              :class="pr.eloPlus > 0 ? 'good' : 'bad'"
+              :style="[
               'min-height:' + Math.abs(pr.eloPlus) + 'px',
               'transform:translateY(' +
                 (pr.elo - 1400 + pr.eloPlus / 2) * -1 +
                 'px)'
             ]"
-          ></div>
+            ></div>
+          </div>
         </div>
       </div>
-    </div>
+    </transition>
 
     <PlayComponent v-if="playInfo" :playIn="playInfo"></PlayComponent>
   </div>
@@ -287,11 +289,14 @@ export default {
   }
 }
 
+$width: calc(calc(calc(100vw / 10) - 5px) * 10);
+
 .info-container {
   $width-info: 25px;
   display: flex;
   flex-direction: column;
-  margin: 1.5vw;
+  align-items: center;
+  padding-top: 10px;
 
   .info-name {
     display: flex;
@@ -304,7 +309,7 @@ export default {
   .info {
     display: flex;
     flex-direction: row;
-    width: 97vw;
+    width: $width;
     overflow-x: auto;
     height: 400px;
     align-items: center;
@@ -313,7 +318,7 @@ export default {
     .line {
       position: absolute;
       border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-      width: 97vw;
+      width: $width;
       display: flex;
       flex-direction: column;
       justify-content: center;

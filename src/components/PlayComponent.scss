@@ -4,6 +4,7 @@ $height-hero: $width-hero;
 
 $width-hero-xs: calc(calc(100vw / 5) - 5px);
 $height-hero-xs: $width-hero-xs;
+
 .play {
     display: flex;
     flex-direction: column;

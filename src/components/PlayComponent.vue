@@ -2,6 +2,7 @@
   <div class="play">
     <div class="result-content">
       <div
+        v-for="result in play.player_results"
         :class="[
           'result',
           'result-list',
@@ -9,7 +10,6 @@
           { win: play.side_win == result.side },
           { bot: result.bot == true }
         ]"
-        v-for="result in play.player_results"
         :key="result.id"
       >
         <b class="item" v-if="!result.bot">{{ getPlayer(result.player).nick }}</b>
@@ -96,7 +96,7 @@ export default {
     }
   },
   created() {
-    this.play = new Play(this.playIn.player_results, this.playIn.win_side);
+    this.play = new Play(this.playIn.player_results, this.playIn.side_win);
     let m = moment(this.playIn.createdAt).format("MMMM");
     let y = moment(this.playIn.createdAt).format("YYYY");
     let d = moment(this.playIn.createdAt).format("D");

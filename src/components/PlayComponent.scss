@@ -2,7 +2,7 @@
 $width-hero: calc(calc(100vw / 10) - 5px);
 $height-hero: $width-hero;
 
-$width-hero-xs: calc(calc(100vw / 5) - 5px);
+$width-hero-xs: calc(100vw / 5);
 $height-hero-xs: $width-hero-xs;
 
 .play {

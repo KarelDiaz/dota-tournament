@@ -241,12 +241,14 @@ export default {
         });
     },
     idPlayerResultInfo(val) {
+      this.$store.commit(START_LOADING);
       axios
         .get(this.$store.state.strapi + "/plays?_limit=-1")
         .then(({ data }) => {
           this.playInfo = data.find(p =>
             p.player_results.find(pr => pr.id == val)
           );
+          this.$store.commit(END_LOADING);
         });
     }
   }
@@ -290,9 +292,9 @@ export default {
 }
 
 $width: calc(calc(calc(100vw / 10) - 5px) * 10);
+$width-xs: calc(calc(100vw / 10) * 10);
 
 .info-container {
-  $width-info: 25px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -310,10 +312,17 @@ $width: calc(calc(calc(100vw / 10) - 5px) * 10);
     display: flex;
     flex-direction: row;
     width: $width;
+
     overflow-x: auto;
     height: 400px;
     align-items: center;
     border: 1px solid rgba(255, 255, 255, 0.3);
+
+    @media screen and (max-width: 899px) {
+      & {
+        width: $width-xs;
+      }
+    }
 
     .line {
       position: absolute;
@@ -322,6 +331,12 @@ $width: calc(calc(calc(100vw / 10) - 5px) * 10);
       display: flex;
       flex-direction: column;
       justify-content: center;
+
+      @media screen and (max-width: 899px) {
+        & {
+          width: $width-xs;
+        }
+      }
 
       &.p1500 {
         transform: translateY(-100px);
@@ -389,6 +404,7 @@ $width: calc(calc(calc(100vw / 10) - 5px) * 10);
           display: flex;
           flex-direction: column;
         }
+
         .info-item-val {
           &.bad {
             background-color: map-get($map: $color, $key: bad);

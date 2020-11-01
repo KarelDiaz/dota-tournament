@@ -1,7 +1,12 @@
 <template>
   <div>
     <div class="options">
-      <input type="text" placeholder="Filtrar" v-model="textFilter" @keyUp="filter" />
+      <input
+        type="text"
+        placeholder="Filtrar"
+        v-model="textFilter"
+        @keyUp="filter"
+      />
 
       <form class="hide-xs add-player" @submit.prevent="send">
         <input
@@ -53,7 +58,7 @@
         <td>{{ p.elo }}</td>
         <td>{{ p.p }}</td>
         <td class="hide-xs">{{ p.v }}</td>
-        <td>{{p.p>0?Math.round((p.v / p.p)*1000):0}}</td>
+        <td>{{ p.p > 0 ? Math.round((p.v / p.p) * 1000) : 0 }}</td>
         <td>{{ p.k }}</td>
         <td class="hide-xs">{{ Math.round(p.k / p.p) }}</td>
         <td>{{ p.d }}</td>
@@ -61,7 +66,9 @@
         <td>{{ p.a }}</td>
         <td class="hide-xs">{{ Math.round(p.a / p.p) }}</td>
         <td class="hide-xs">
-          <button v-if="false" class="danger" @click="del(p.id)">Eliminar</button>
+          <button v-if="false" class="danger" @click="del(p.id)">
+            Eliminar
+          </button>
           <button @click="preMod(p.id)">Edit</button>
           <button v-if="false" @click="idPlayerInfo = p.id">Info</button>
         </td>
@@ -84,7 +91,10 @@
             <span class="text">1300</span>
           </div>
 
-          <div class="line" :style="'transform: translateY(' + (1400 - playerInfo.elo) + 'px)'">
+          <div
+            class="line"
+            :style="'transform: translateY(' + (1400 - playerInfo.elo) + 'px)'"
+          >
             <span class="text">{{ playerInfo.elo }}</span>
           </div>
 
@@ -96,12 +106,12 @@
             @click="idPlayerResultInfo = pr.id"
           >
             <div
-              :class="['info-hover', {waching:pr.id==idPlayerResultInfo}]"
+              :class="['info-hover', { waching: pr.id == idPlayerResultInfo }]"
               :style="'width:' + 98 / playerResultsInfo.length + 'vw'"
             ></div>
             <span class="info-text">
               <b class="result">{{ pr.elo + pr.eloPlus }}</b>
-              <span v-if="false">{{pr.id}}</span>
+              <span v-if="false">{{ pr.id }}</span>
               <i>
                 <span>{{ pr.elo }}</span>
                 <span :class="[pr.eloPlus > 0 ? 'good' : 'bad', 'val']">
@@ -115,11 +125,11 @@
               class="info-item-val"
               :class="pr.eloPlus > 0 ? 'good' : 'bad'"
               :style="[
-              'min-height:' + Math.abs(pr.eloPlus) + 'px',
-              'transform:translateY(' +
-                (pr.elo - 1400 + pr.eloPlus / 2) * -1 +
-                'px)'
-            ]"
+                'min-height:' + Math.abs(pr.eloPlus) + 'px',
+                'transform:translateY(' +
+                  (pr.elo - 1400 + pr.eloPlus / 2) * -1 +
+                  'px)'
+              ]"
             ></div>
           </div>
         </div>

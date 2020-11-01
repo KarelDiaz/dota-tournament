@@ -12,7 +12,9 @@
         ]"
         :key="result.id"
       >
-        <b class="item" v-if="!result.bot">{{ getPlayer(result.player).nick }}</b>
+        <b class="item" v-if="!result.bot">{{
+          getPlayer(result.player).nick
+        }}</b>
         <span class="item elo" v-if="!result.bot">
           {{ result.elo }}
           <b class="elo-plus" :class="result.win ? 'success' : 'danger'">
@@ -40,8 +42,13 @@
           </tr>
         </table>
 
-        <span class="item" v-if="!result.bot">{{ getHero(result.hero).displayName }}</span>
-        <div class="black-shadow" :class="result.side + (result.bot ? ' bot' : '')"></div>
+        <span class="item" v-if="!result.bot">{{
+          getHero(result.hero).displayName
+        }}</span>
+        <div
+          class="black-shadow"
+          :class="result.side + (result.bot ? ' bot' : '')"
+        ></div>
         <div class="player-img">
           <img
             :class="['player-img-item', result.side]"
@@ -51,7 +58,9 @@
         </div>
         <img
           class="hero-img"
-          :src="!result.bot?`npc/${getHero(result.hero).name}.png`:'npc/bot.png'"
+          :src="
+            !result.bot ? `npc/${getHero(result.hero).name}.png` : 'npc/bot.png'
+          "
           :alt="getHero(result.hero).name"
         />
       </div>

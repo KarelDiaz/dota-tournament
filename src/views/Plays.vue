@@ -12,7 +12,13 @@
                   { wining: playForm.side_win == 'good' }
                 ]"
               >
-                <input v-model="playForm.side_win" type="radio" name="radio" value="good" hidden />
+                <input
+                  v-model="playForm.side_win"
+                  type="radio"
+                  name="radio"
+                  value="good"
+                  hidden
+                />
                 Good ganó
               </label>
               <div>
@@ -26,7 +32,13 @@
                   { wining: playForm.side_win == 'bad' }
                 ]"
               >
-                <input v-model="playForm.side_win" type="radio" name="radio" value="bad" hidden />
+                <input
+                  v-model="playForm.side_win"
+                  type="radio"
+                  name="radio"
+                  value="bad"
+                  hidden
+                />
                 Bad ganó
               </label>
             </div>
@@ -44,8 +56,18 @@
                   <span class="item-form">
                     <input v-model="pr.bot" type="checkbox" /> Bot
                   </span>
-                  <select required class="item-form" v-model="pr.player" v-if="!pr.bot">
-                    <option :value="p.id" v-for="p in $store.state.players" :key="p.id">{{ p.nick }}</option>
+                  <select
+                    required
+                    class="item-form"
+                    v-model="pr.player"
+                    v-if="!pr.bot"
+                  >
+                    <option
+                      :value="p.id"
+                      v-for="p in $store.state.players"
+                      :key="p.id"
+                      >{{ p.nick }}</option
+                    >
                   </select>
 
                   <div class="item-form kda" v-if="!pr.bot">
@@ -74,14 +96,23 @@
                       placeholder="Asist"
                     />
                   </div>
-                  <select class="item-form" v-if="!pr.bot" v-model="pr.hero" required>
+                  <select
+                    class="item-form"
+                    v-if="!pr.bot"
+                    v-model="pr.hero"
+                    required
+                  >
                     <option
                       :value="h.id"
                       v-for="h in $store.state.heroes"
                       :key="h.id"
-                    >{{ h.displayName }}</option>
+                      >{{ h.displayName }}</option
+                    >
                   </select>
-                  <div class="black-shadow" :class="pr.side + (pr.bot ? ' bot' : '')"></div>
+                  <div
+                    class="black-shadow"
+                    :class="pr.side + (pr.bot ? ' bot' : '')"
+                  ></div>
 
                   <img
                     class="hero-img"
@@ -117,11 +148,11 @@
         <div class="info-plays-win" v-if="fPlayer">
           <b>
             {{
-            plays.filter(p => {
-            return p.player_results.find(
-            pr => pr.player == fPlayer && pr.side == p.side_win
-            );
-            }).length
+              plays.filter(p => {
+                return p.player_results.find(
+                  pr => pr.player == fPlayer && pr.side == p.side_win
+                );
+              }).length
             }}
           </b>
           victorias
@@ -136,14 +167,19 @@
             v-for="p in $store.state.players"
             :key="p.id"
             :style="p.nick == 'bot' ? 'display:none' : ''"
-          >{{ p.nick }}</option>
+            >{{ p.nick }}</option
+          >
         </select>
       </div>
     </div>
 
     <div class="plays">
       <transition-group name="slide-right" tag="p">
-        <PlayComponent v-for="play in plays" :key="play.id" :playIn="play"></PlayComponent>
+        <PlayComponent
+          v-for="play in plays"
+          :key="play.id"
+          :playIn="play"
+        ></PlayComponent>
       </transition-group>
     </div>
   </div>
@@ -152,7 +188,11 @@
 <script>
 import axios from "axios";
 
-import { START_LOADING, END_LOADING, INIT_PLAYERS } from "@/store/mutations-type";
+import {
+  START_LOADING,
+  END_LOADING,
+  INIT_PLAYERS
+} from "@/store/mutations-type";
 import Elo from "@/store/model/elo";
 import Player from "@/store/model/player";
 import Hero from "@/store/model/hero";

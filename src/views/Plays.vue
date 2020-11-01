@@ -152,7 +152,7 @@
 <script>
 import axios from "axios";
 
-import { START_LOADING, END_LOADING } from "@/store/mutations-type";
+import { START_LOADING, END_LOADING, INIT_PLAYERS } from "@/store/mutations-type";
 import Elo from "@/store/model/elo";
 import Player from "@/store/model/player";
 import Hero from "@/store/model/hero";
@@ -230,6 +230,7 @@ export default {
                 .then(() => {
                   this.resetForm();
                   this.filter();
+                  this.$store.commit(INIT_PLAYERS);
                 });
             }
           });

@@ -1,16 +1,11 @@
 <template>
   <div>
     <div class="heroes-container">
-      <input
-        class="buscar"
-        type="text"
-        placeholder="Buscar"
-        v-model="filterText"
-      />
+      <input class="buscar" type="text" placeholder="Buscar" v-model="filterText" />
 
       <div class="heroes">
         <transition-group name="slide-right">
-          <template v-for="(h, i) in hs">
+          <template v-for="(h, i) in $store.state.heroes">
             <div
               :key="h.id"
               :class="['hero', { selected: hSelected == h }]"
@@ -20,9 +15,11 @@
               <img :src="'npc/' + h.name + '.png'" class="img" />
               <span class="name hide-xs">
                 <span>{{ h.displayName }}</span>
-                <b class="victorias">{{
+                <b class="victorias">
+                  {{
                   prs.filter(pr => pr.hero.id == h.id).length
-                }}</b>
+                  }}
+                </b>
               </span>
             </div>
           </template>
@@ -33,11 +30,7 @@
     <div class="players-contianer">
       <transition name="fade-slide">
         <div class="hero-selected" v-if="hSelected">
-          <img
-            class="img"
-            :src="$store.state.strapi + hSelected.picture.url"
-            alt
-          />
+          <img class="img" :src="'./npc/'+hSelected.name+'.png'" alt />
           <div>
             <span class="name">{{ hSelected.displayName }}</span>
             <table class="table">
@@ -118,7 +111,6 @@ export default {
     return {
       ps: [],
       prs: [],
-      hs: [],
       hsVisible: [],
       filterText: "",
       hSelected: null,
@@ -145,13 +137,8 @@ export default {
         .then(({ data }) => (this.prs = data.filter(d => !d.bot)));
     },
     initHs() {
-      axios
-        .get(this.$store.state.strapi + "/heroes?_limit=-1")
-        .then(({ data }) => {
-          this.hsVisible = [];
-          data.forEach(() => this.hsVisible.push(true));
-          this.hs = data.sort((a, b) => a.displayName > b.displayName);
-        });
+      this.hsVisible = new Array(1000);
+      this.hsVisible.fill(true);
     },
     getV(id) {
       return this.prs.filter(pr => {
@@ -218,7 +205,7 @@ export default {
   },
   watch: {
     filterText(text) {
-      this.hs.forEach((h, i) => {
+      this.$store.state.heroes.forEach((h, i) => {
         this.hsVisible[i] =
           h.displayName.toLowerCase().indexOf(text.toLowerCase()) >= 0;
         if (text == "") {

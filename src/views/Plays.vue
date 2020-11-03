@@ -45,7 +45,7 @@
                     <input v-model="pr.bot" type="checkbox" /> Bot
                   </span>
                   <select required class="item-form" v-model="pr.player" v-if="!pr.bot">
-                    <option :value="p.id" v-for="p in $store.state.players" :key="p.id">{{ p.nick }}</option>
+                    <option :value="p.id" v-for="p in players" :key="p.id">{{ p.nick }}</option>
                   </select>
 
                   <div class="item-form kda" v-if="!pr.bot">
@@ -77,7 +77,7 @@
                   <select class="item-form" v-if="!pr.bot" v-model="pr.hero" required>
                     <option
                       :value="h.id"
-                      v-for="h in $store.state.heroes"
+                      v-for="h in heroes"
                       :key="h.id"
                     >{{ h.displayName }}</option>
                   </select>
@@ -133,7 +133,7 @@
           <option value>Todos</option>
           <option
             :value="p.id"
-            v-for="p in $store.state.players"
+            v-for="p in players"
             :key="p.id"
             :style="p.nick == 'bot' ? 'display:none' : ''"
           >{{ p.nick }}</option>
@@ -151,7 +151,7 @@
 
 <script>
 import axios from "axios";
-import { mapMutations } from "vuex";
+import { mapState, mapMutations } from "vuex";
 
 import {
   START_LOADING,
@@ -169,12 +169,17 @@ export default {
   data() {
     return {
       plays: [],
-      players: [],
-      heroes: [],
       playForm: Play,
       fCant: 10,
       fPlayer: ""
     };
+  },
+  computed: {
+    ...mapState({
+      strapi: state => state.strapi,
+      players: state => state.players,
+      heroes: state => state.heroes
+    })
   },
   components: {
     PlayComponent
@@ -223,24 +228,22 @@ export default {
             pr.eloPlus = telo.getPlusB();
           }
         }
-        axios
-          .post(this.$store.state.strapi + "/player-results", pr)
-          .then(({ data }) => {
-            out.push(data.id);
+        axios.post(this.strapi + "/player-results", pr).then(({ data }) => {
+          out.push(data.id);
 
-            if (out.length === 10) {
-              axios
-                .post(
-                  this.$store.state.strapi + "/plays",
-                  new Play(out, this.playForm.side_win)
-                )
-                .then(() => {
-                  this.resetForm();
-                  this.filter();
-                  this.initPlayers();
-                });
-            }
-          });
+          if (out.length === 10) {
+            axios
+              .post(
+                this.strapi + "/plays",
+                new Play(out, this.playForm.side_win)
+              )
+              .then(() => {
+                this.resetForm();
+                this.filter();
+                this.initPlayers();
+              });
+          }
+        });
       });
     },
 
@@ -277,11 +280,9 @@ export default {
         );
 
         this.startLoading();
-        axios
-          .put(`${this.$store.state.strapi}/players/${player.id}`, playerOut)
-          .then(() => {
-            this.endLoading();
-          });
+        axios.put(`${this.strapi}/players/${player.id}`, playerOut).then(() => {
+          this.endLoading();
+        });
       });
 
       // update elo de los q pierden
@@ -295,53 +296,49 @@ export default {
         );
 
         this.startLoading();
-        axios
-          .put(`${this.$store.state.strapi}/players/${player.id}`, playerOut)
-          .then(() => {
-            this.endLoading();
-          });
+        axios.put(`${this.strapi}/players/${player.id}`, playerOut).then(() => {
+          this.endLoading();
+        });
       });
     },
 
     filter() {
       this.startLoading();
-      axios
-        .get(this.$store.state.strapi + "/plays?_limit=-1")
-        .then(({ data }) => {
-          this.plays = data.reverse();
-          if (this.fPlayer != "")
-            this.plays = this.plays.filter(p => {
-              return p.player_results.find(pr => pr.player == this.fPlayer);
-            });
-          if (this.fCant != -1) this.plays = this.plays.slice(0, this.fCant);
-          this.plays.forEach(play => {
-            play.player_results = play.player_results.sort((a, b) => {
-              if (a.side == b.side) {
-                return a.bot;
-              }
-              return a.side < b.side;
-            });
+      axios.get(this.strapi + "/plays?_limit=-1").then(({ data }) => {
+        this.plays = data.reverse();
+        if (this.fPlayer != "")
+          this.plays = this.plays.filter(p => {
+            return p.player_results.find(pr => pr.player == this.fPlayer);
           });
-          this.endLoading();
+        if (this.fCant != -1) this.plays = this.plays.slice(0, this.fCant);
+        this.plays.forEach(play => {
+          play.player_results = play.player_results.sort((a, b) => {
+            if (a.side == b.side) {
+              return a.bot;
+            }
+            return a.side < b.side;
+          });
         });
+        this.endLoading();
+      });
     },
 
     del(id) {
       if (confirm("Seguro de eliminar el Play?")) {
         this.startLoading();
-        axios.delete(`${this.$store.state.strapi}/plays/${id}`).then(() => {
+        axios.delete(`${this.strapi}/plays/${id}`).then(() => {
           this.filter();
         });
       }
     },
 
     getPlayer(id) {
-      const temp = this.$store.state.players.find(p => p.id == id);
+      const temp = this.players.find(p => p.id == id);
       return temp ? temp : new Player();
     },
 
     getHero(id) {
-      const temp = this.$store.state.heroes.find(p => p.id == id);
+      const temp = this.heroes.find(p => p.id == id);
       return temp ? temp : new Hero();
     },
 

@@ -43,7 +43,7 @@
       </tr>
       <tr
         class="players-item"
-        v-for="(p, i) in $store.state.players.sort((a, b) => a.elo < b.elo)"
+        v-for="(p, i) in players.sort((a, b) => a.elo < b.elo)"
         :key="p.nick"
         :style="p.nick == 'bot' ? 'display:none' : ''"
         @click="idPlayerInfo = p.id"
@@ -132,7 +132,7 @@
 
 <script>
 import axios from "axios";
-import { mapMutations } from "vuex";
+import { mapState, mapMutations } from "vuex";
 
 import PlayComponent from "@/components/PlayComponent";
 import Player from "@/store/model/player";
@@ -152,6 +152,12 @@ export default {
       playInfo: null
     };
   },
+  computed: {
+    ...mapState({
+      strapi: state => state.strapi,
+      players: state => state.players
+    })
+  },
   components: {
     PlayComponent
   },
@@ -159,7 +165,7 @@ export default {
     ...mapMutations([START_LOADING, END_LOADING]),
 
     filter() {
-      axios.get(this.$store.state.strapi + "/players").then(({ data }) => {
+      /*axios.get(this.strapi + "/players").then(({ data }) => {
         this.players = data
           .filter(player => {
             // normalize texts
@@ -181,43 +187,36 @@ export default {
             }
             return a.elo < b.elo;
           });
-      });
+      });*/
     },
 
     send() {
       if (this.idMod >= 0) {
         axios
-          .put(
-            this.$store.state.strapi + "/players/" + this.idMod,
-            this.playerForm
-          )
+          .put(this.strapi + "/players/" + this.idMod, this.playerForm)
           .then(() => {
             this.filter();
             this.playerForm = new Player();
           });
       } else {
-        axios
-          .post(this.$store.state.strapi + "/players", this.playerForm)
-          .then(() => {
-            this.playerForm = new Player();
-            this.filter();
-          });
+        axios.post(this.strapi + "/players", this.playerForm).then(() => {
+          this.playerForm = new Player();
+          this.filter();
+        });
       }
       this.idMod = -1;
     },
 
     preMod(id) {
-      axios
-        .get(this.$store.state.strapi + "/players/" + id)
-        .then(({ data }) => {
-          this.idMod = id;
-          this.playerForm = new Player(
-            data.fullName,
-            data.nick,
-            data.elo,
-            data.active
-          );
-        });
+      axios.get(this.strapi + "/players/" + id).then(({ data }) => {
+        this.idMod = id;
+        this.playerForm = new Player(
+          data.fullName,
+          data.nick,
+          data.elo,
+          data.active
+        );
+      });
     },
 
     del(id) {
@@ -233,26 +232,20 @@ export default {
     idPlayerInfo(id) {
       this.startLoading();
       this.idPlayerResultInfo = "";
-      axios
-        .get(this.$store.state.strapi + "/player-results?_limit=-1")
-        .then(({ data }) => {
-          this.playerResultsInfo = data
-            .filter(p => p.player.id == id)
-            .reverse();
-          this.playerInfo = this.$store.state.players.find(p => p.id == id);
-          this.endLoading();
-        });
+      axios.get(this.strapi + "/player-results?_limit=-1").then(({ data }) => {
+        this.playerResultsInfo = data.filter(p => p.player.id == id).reverse();
+        this.playerInfo = this.players.find(p => p.id == id);
+        this.endLoading();
+      });
     },
     idPlayerResultInfo(val) {
       this.startLoading();
-      axios
-        .get(this.$store.state.strapi + "/plays?_limit=-1")
-        .then(({ data }) => {
-          this.playInfo = data.find(p =>
-            p.player_results.find(pr => pr.id == val)
-          );
-          this.endLoading();
-        });
+      axios.get(this.strapi + "/plays?_limit=-1").then(({ data }) => {
+        this.playInfo = data.find(p =>
+          p.player_results.find(pr => pr.id == val)
+        );
+        this.endLoading();
+      });
     }
   }
 };

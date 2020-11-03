@@ -5,7 +5,7 @@
 
       <div class="heroes">
         <transition-group name="slide-right">
-          <template v-for="(h, i) in $store.state.heroes">
+          <template v-for="(h, i) in heroes">
             <div
               :key="h.id"
               :class="['hero', { selected: hSelected == h }]"
@@ -105,6 +105,7 @@
 
 <script>
 import axios from "axios";
+import { mapState } from "vuex";
 
 export default {
   data() {
@@ -125,15 +126,21 @@ export default {
       hAP: 0
     };
   },
+  computed: {
+    ...mapState({
+      strapi: state => state.strapi,
+      heroes: state => state.heroes
+    })
+  },
   methods: {
     initPs() {
       axios
-        .get(this.$store.state.strapi + "/players?_limit=-1")
+        .get(this.strapi + "/players?_limit=-1")
         .then(({ data }) => (this.ps = data.sort((a, b) => a.nick > b.nick)));
     },
     initPrs() {
       axios
-        .get(this.$store.state.strapi + "/player-results?_limit=-1")
+        .get(this.strapi + "/player-results?_limit=-1")
         .then(({ data }) => (this.prs = data.filter(d => !d.bot)));
     },
     initHs() {
@@ -205,7 +212,7 @@ export default {
   },
   watch: {
     filterText(text) {
-      this.$store.state.heroes.forEach((h, i) => {
+      this.heroes.forEach((h, i) => {
         this.hsVisible[i] =
           h.displayName.toLowerCase().indexOf(text.toLowerCase()) >= 0;
         if (text == "") {

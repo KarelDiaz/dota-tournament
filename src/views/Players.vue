@@ -42,7 +42,7 @@
         <th class="hide-xs"></th>
       </tr>
       <tr
-        class="players-item"
+        class="item"
         v-for="(p, i) in players.sort((a, b) => a.elo < b.elo)"
         :key="p.nick"
         :style="p.nick == 'bot' ? 'display:none' : ''"
@@ -253,6 +253,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/theme/theme.scss";
+
 .options {
   display: flex;
   justify-content: space-between;
@@ -272,13 +273,33 @@ export default {
   width: 100%;
   text-align: left;
 
-  &-item {
+  .item {
     &:nth-child(even) {
       background-color: map-get($map: $bg, $key: 2);
     }
 
+    &:nth-child(2) {
+      background-color: map-get($map: $color, $key: gold-player);
+      color: map-get($map: $bg, $key: 1);
+      font-style:oblique;
+      font-weight: bold;
+    }
+    &:nth-child(3) {
+      background-color: map-get($map: $color, $key: silver-player);
+      color: map-get($map: $bg, $key: 1);
+      font-style:oblique;
+      font-weight: bold;
+    }
+    &:nth-child(4) {
+      background-color: map-get($map: $color, $key: bronce-player);
+      color: map-get($map: $bg, $key: 1);
+      font-style:oblique;
+      font-weight: bold;
+    }
+
     &:hover {
       background-color: map-get($map: $bg, $key: 3);
+      color: whitesmoke;
     }
   }
 

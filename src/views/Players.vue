@@ -1,12 +1,7 @@
 <template>
   <div>
     <div class="options">
-      <input
-        type="text"
-        placeholder="Filtrar"
-        v-model="textFilter"
-        @keyUp="filter"
-      />
+      <input type="text" placeholder="Filtrar" v-model="textFilter" @keyUp="filter" />
 
       <form class="hide-xs add-player" @submit.prevent="send">
         <input
@@ -66,9 +61,7 @@
         <td>{{ p.a }}</td>
         <td class="hide-xs">{{ Math.round(p.a / p.p) }}</td>
         <td class="hide-xs">
-          <button v-if="false" class="danger" @click="del(p.id)">
-            Eliminar
-          </button>
+          <button v-if="false" class="danger" @click="del(p.id)">Eliminar</button>
           <button @click="preMod(p.id)">Edit</button>
           <button v-if="false" @click="idPlayerInfo = p.id">Info</button>
         </td>
@@ -91,10 +84,7 @@
             <span class="text">1300</span>
           </div>
 
-          <div
-            class="line"
-            :style="'transform: translateY(' + (1400 - playerInfo.elo) + 'px)'"
-          >
+          <div class="line" :style="'transform: translateY(' + (1400 - playerInfo.elo) + 'px)'">
             <span class="text">{{ playerInfo.elo }}</span>
           </div>
 
@@ -142,6 +132,7 @@
 
 <script>
 import axios from "axios";
+import { mapMutations } from "vuex";
 
 import PlayComponent from "@/components/PlayComponent";
 import Player from "@/store/model/player";
@@ -165,6 +156,8 @@ export default {
     PlayComponent
   },
   methods: {
+    ...mapMutations([START_LOADING, END_LOADING]),
+
     filter() {
       axios.get(this.$store.state.strapi + "/players").then(({ data }) => {
         this.players = data
@@ -238,7 +231,7 @@ export default {
   },
   watch: {
     idPlayerInfo(id) {
-      this.$store.commit(START_LOADING);
+      this.startLoading();
       this.idPlayerResultInfo = "";
       axios
         .get(this.$store.state.strapi + "/player-results?_limit=-1")
@@ -247,18 +240,18 @@ export default {
             .filter(p => p.player.id == id)
             .reverse();
           this.playerInfo = this.$store.state.players.find(p => p.id == id);
-          this.$store.commit(END_LOADING);
+          this.endLoading();
         });
     },
     idPlayerResultInfo(val) {
-      this.$store.commit(START_LOADING);
+      this.startLoading();
       axios
         .get(this.$store.state.strapi + "/plays?_limit=-1")
         .then(({ data }) => {
           this.playInfo = data.find(p =>
             p.player_results.find(pr => pr.id == val)
           );
-          this.$store.commit(END_LOADING);
+          this.endLoading();
         });
     }
   }

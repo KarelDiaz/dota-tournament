@@ -1,12 +1,13 @@
 import axios from "axios";
-
 import { createStore } from "vuex";
+
 import {
   START_LOADING,
   END_LOADING,
   INIT_PLAYERS,
   INIT_HEROES
 } from "./mutations-type";
+import { INIT } from "./actions-type";
 
 export default createStore({
   state: {
@@ -51,6 +52,11 @@ export default createStore({
       });
     }
   },
-  actions: {},
+  actions: {
+    async [INIT]({commit}) {
+      await commit(INIT_HEROES);
+      await commit(INIT_PLAYERS);
+    }
+  },
   modules: {}
 });

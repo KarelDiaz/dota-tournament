@@ -1,7 +1,12 @@
 <template>
   <div>
     <div class="options">
-      <input type="text" placeholder="Filtrar" v-model="textFilter" @keyUp="filter" />
+      <input
+        type="text"
+        placeholder="Filtrar"
+        v-model="textFilter"
+        @keyUp="filter"
+      />
 
       <form class="hide-xs add-player" @submit.prevent="send">
         <input
@@ -48,7 +53,7 @@
         :style="p.nick == 'bot' ? 'display:none' : ''"
         @click="idPlayerInfo = p.id"
       >
-        <td style="text-align:center">{{ i + 1 }}</td>
+        <td style="text-align: center">{{ i + 1 }}</td>
         <td class="nick">{{ p.nick }}</td>
         <td>{{ p.elo }}</td>
         <td>{{ p.p }}</td>
@@ -61,7 +66,9 @@
         <td>{{ p.a }}</td>
         <td class="hide-xs">{{ Math.round(p.a / p.p) }}</td>
         <td class="hide-xs">
-          <button v-if="false" class="danger" @click="del(p.id)">Eliminar</button>
+          <button v-if="false" class="danger" @click="del(p.id)">
+            Eliminar
+          </button>
           <button @click="preMod(p.id)">Edit</button>
           <button v-if="false" @click="idPlayerInfo = p.id">Info</button>
         </td>
@@ -84,7 +91,10 @@
             <span class="text">1300</span>
           </div>
 
-          <div class="line" :style="'transform: translateY(' + (1400 - playerInfo.elo) + 'px)'">
+          <div
+            class="line"
+            :style="'transform: translateY(' + (1400 - playerInfo.elo) + 'px)'"
+          >
             <span class="text">{{ playerInfo.elo }}</span>
           </div>
 
@@ -118,7 +128,7 @@
                 'min-height:' + Math.abs(pr.eloPlus) + 'px',
                 'transform:translateY(' +
                   (pr.elo - 1400 + pr.eloPlus / 2) * -1 +
-                  'px)'
+                  'px)',
               ]"
             ></div>
           </div>
@@ -149,17 +159,17 @@ export default {
       playerInfo: "",
       playerResultsInfo: [],
       idPlayerResultInfo: "",
-      playInfo: null
+      playInfo: null,
     };
   },
   computed: {
     ...mapState({
-      strapi: state => state.strapi,
-      players: state => state.players
-    })
+      strapi: (state) => state.strapi,
+      players: (state) => state.players,
+    }),
   },
   components: {
-    PlayComponent
+    PlayComponent,
   },
   methods: {
     ...mapMutations([START_LOADING, END_LOADING]),
@@ -223,7 +233,7 @@ export default {
       console.log("del", id);
 
       if (confirm("Estas seguro de eliminar el player")) this.filter();
-    }
+    },
   },
   created() {
     this.filter();
@@ -233,21 +243,23 @@ export default {
       this.startLoading();
       this.idPlayerResultInfo = "";
       axios.get(this.strapi + "/player-results?_limit=-1").then(({ data }) => {
-        this.playerResultsInfo = data.filter(p => p.player.id == id).reverse();
-        this.playerInfo = this.players.find(p => p.id == id);
+        this.playerResultsInfo = data
+          .filter((p) => p.player.id == id)
+          .reverse();
+        this.playerInfo = this.players.find((p) => p.id == id);
         this.endLoading();
       });
     },
     idPlayerResultInfo(val) {
       this.startLoading();
       axios.get(this.strapi + "/plays?_limit=-1").then(({ data }) => {
-        this.playInfo = data.find(p =>
-          p.player_results.find(pr => pr.id == val)
+        this.playInfo = data.find((p) =>
+          p.player_results.find((pr) => pr.id == val)
         );
         this.endLoading();
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -281,19 +293,19 @@ export default {
     &:nth-child(2) {
       background-color: map-get($map: $color, $key: gold-player);
       color: map-get($map: $bg, $key: 1);
-      font-style:oblique;
+      font-style: oblique;
       font-weight: bold;
     }
     &:nth-child(3) {
       background-color: map-get($map: $color, $key: silver-player);
       color: map-get($map: $bg, $key: 1);
-      font-style:oblique;
+      font-style: oblique;
       font-weight: bold;
     }
     &:nth-child(4) {
       background-color: map-get($map: $color, $key: bronce-player);
       color: map-get($map: $bg, $key: 1);
-      font-style:oblique;
+      font-style: oblique;
       font-weight: bold;
     }
 
@@ -398,7 +410,7 @@ $width-xs: calc(calc(100vw / 10) * 10);
         cursor: default;
         display: none;
         position: absolute;
-        transform: translateY(-165px);
+        transform: translate(20px, -165px);
         font-size: small;
 
         .val {

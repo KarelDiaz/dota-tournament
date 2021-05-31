@@ -1,21 +1,7 @@
 <template>
   <div>
     <div class="options">
-      <input
-        type="text"
-        placeholder="Filtrar"
-        v-model="textFilter"
-        @keyUp="filter"
-      />
-
       <form class="hide-xs add-player" @submit.prevent="send">
-        <input
-          class="name"
-          v-model="playerForm.fullName"
-          required
-          type="text"
-          placeholder="Escriba el nombre"
-        />
         <input
           class="nick"
           v-model="playerForm.nick"
@@ -34,7 +20,7 @@
       <tr>
         <th></th>
         <th>Nick</th>
-        <th>ELO ↓</th>
+        <th>Puntos ↓</th>
         <th>P</th>
         <th class="hide-xs">V</th>
         <th>Ave.</th>
@@ -44,27 +30,30 @@
         <th class="hide-xs">D/P</th>
         <th>A</th>
         <th class="hide-xs">A/P</th>
+        <th class="hide-xs">Bet</th>
+        <th class="hide-xs">Bet+</th>
         <th class="hide-xs"></th>
       </tr>
       <tr
         class="item"
-        v-for="(p, i) in players.sort((a, b) => a.elo < b.elo)"
+        v-for="(p, i) in players.filter(p=>p.nick!='bot').sort((a, b) => a.elo < b.elo)"
         :key="p.nick"
-        :style="p.nick == 'bot' ? 'display:none' : ''"
         @click="idPlayerInfo = p.id"
       >
-        <td style="text-align: center">{{ i + 1 }}</td>
+        <td style="text-align:center">{{ i + 1 }}</td>
         <td class="nick">{{ p.nick }}</td>
         <td>{{ p.elo }}</td>
         <td>{{ p.p }}</td>
         <td class="hide-xs">{{ p.v }}</td>
         <td>{{ p.p > 0 ? Math.round((p.v / p.p) * 1000) : 0 }}</td>
         <td>{{ p.k }}</td>
-        <td class="hide-xs">{{ Math.round(p.k / p.p) }}</td>
+        <td class="hide-xs">{{ p.p > 0 ? Math.round(p.k / p.p) : 0 }}</td>
         <td>{{ p.d }}</td>
-        <td class="hide-xs">{{ Math.round(p.d / p.p) }}</td>
+        <td class="hide-xs">{{ p.p > 0 ? Math.round(p.d / p.p) : 0 }}</td>
         <td>{{ p.a }}</td>
-        <td class="hide-xs">{{ Math.round(p.a / p.p) }}</td>
+        <td class="hide-xs">{{ p.p > 0 ? Math.round(p.a / p.p) : 0 }}</td>
+        <td class="hide-xs">{{ p.b }}</td>
+        <td class="hide-xs">{{ p.bp }}</td>
         <td class="hide-xs">
           <button v-if="false" class="danger" @click="del(p.id)">
             Eliminar
@@ -123,12 +112,12 @@
             </span>
             <div
               class="info-item-val"
-              :class="pr.eloPlus > 0 ? 'good' : 'bad'"
+              :class="[pr.eloPlus > 0 ? 'good' : 'bad', { bet: pr.bet }]"
               :style="[
                 'min-height:' + Math.abs(pr.eloPlus) + 'px',
                 'transform:translateY(' +
                   (pr.elo - 1400 + pr.eloPlus / 2) * -1 +
-                  'px)',
+                  'px)'
               ]"
             ></div>
           </div>
@@ -146,7 +135,11 @@ import { mapState, mapMutations } from "vuex";
 
 import PlayComponent from "@/components/PlayComponent";
 import Player from "@/store/model/player";
-import { START_LOADING, END_LOADING } from "@/store/mutations-type";
+import {
+  START_LOADING,
+  END_LOADING,
+  INIT_PLAYERS
+} from "@/store/mutations-type";
 
 export default {
   name: "Players",
@@ -159,20 +152,20 @@ export default {
       playerInfo: "",
       playerResultsInfo: [],
       idPlayerResultInfo: "",
-      playInfo: null,
+      playInfo: null
     };
   },
   computed: {
     ...mapState({
-      strapi: (state) => state.strapi,
-      players: (state) => state.players,
-    }),
+      strapi: state => state.strapi,
+      players: state => state.players
+    })
   },
   components: {
-    PlayComponent,
+    PlayComponent
   },
   methods: {
-    ...mapMutations([START_LOADING, END_LOADING]),
+    ...mapMutations([START_LOADING, END_LOADING, INIT_PLAYERS]),
 
     filter() {
       /*axios.get(this.strapi + "/players").then(({ data }) => {
@@ -207,11 +200,13 @@ export default {
           .then(() => {
             this.filter();
             this.playerForm = new Player();
+            this.initPlayers();
           });
       } else {
         axios.post(this.strapi + "/players", this.playerForm).then(() => {
           this.playerForm = new Player();
           this.filter();
+          this.initPlayers();
         });
       }
       this.idMod = -1;
@@ -233,7 +228,7 @@ export default {
       console.log("del", id);
 
       if (confirm("Estas seguro de eliminar el player")) this.filter();
-    },
+    }
   },
   created() {
     this.filter();
@@ -243,23 +238,21 @@ export default {
       this.startLoading();
       this.idPlayerResultInfo = "";
       axios.get(this.strapi + "/player-results?_limit=-1").then(({ data }) => {
-        this.playerResultsInfo = data
-          .filter((p) => p.player.id == id)
-          .reverse();
-        this.playerInfo = this.players.find((p) => p.id == id);
+        this.playerResultsInfo = data.filter(p => p.player.id == id).reverse();
+        this.playerInfo = this.players.find(p => p.id == id);
         this.endLoading();
       });
     },
     idPlayerResultInfo(val) {
       this.startLoading();
       axios.get(this.strapi + "/plays?_limit=-1").then(({ data }) => {
-        this.playInfo = data.find((p) =>
-          p.player_results.find((pr) => pr.id == val)
+        this.playInfo = data.find(p =>
+          p.player_results.find(pr => pr.id == val)
         );
         this.endLoading();
       });
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -268,7 +261,7 @@ export default {
 
 .options {
   display: flex;
-  justify-content: space-between;
+  justify-content: right;
   margin-bottom: 2rem;
   padding: 0 5px;
 
@@ -444,6 +437,9 @@ $width-xs: calc(calc(100vw / 10) * 10);
             background-color: map-get($map: $color, $key: good);
             clip-path: polygon(0% 0%, 20% 60%, 100% 100%, 60% 20%);
           }
+          &.bet {
+            background-color: map-get($map: $color, $key: win);
+          }
         }
       }
 
@@ -458,6 +454,9 @@ $width-xs: calc(calc(100vw / 10) * 10);
           transition: clip-path 0.3s;
           background-color: map-get($map: $color, $key: good-plus);
           clip-path: polygon(0% 0%, 80% 100%, 100% 100%, 20% 0%);
+        }
+        &.bet {
+          background-color: map-get($map: $color, $key: win-line);
         }
       }
     }

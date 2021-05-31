@@ -31,7 +31,11 @@ export default createStore({
           state.players = ps.sort((a, b) => a.nick > b.nick);
 
           state.players.forEach(p => {
-            const arr_prs = prs.filter(pr => pr.player.id == p.id);
+            const arr_prs = prs.filter(pr => {
+              if (pr.player)
+                return pr.player.id == p.id;
+              return false;
+            });
             p.p = arr_prs.length;
             p.v = arr_prs.filter(_p => _p.win).length;
             p.k = 0;
@@ -53,7 +57,7 @@ export default createStore({
     }
   },
   actions: {
-    async [INIT]({commit}) {
+    async [INIT]({ commit }) {
       await commit(INIT_HEROES);
       await commit(INIT_PLAYERS);
     }

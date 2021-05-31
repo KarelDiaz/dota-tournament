@@ -30,30 +30,28 @@
         <th class="hide-xs">D/P</th>
         <th>A</th>
         <th class="hide-xs">A/P</th>
-        <th class="hide-xs">Bet</th>
-        <th class="hide-xs">Bet+</th>
         <th class="hide-xs"></th>
       </tr>
       <tr
         class="item"
-        v-for="(p, i) in players.filter(p=>p.nick!='bot').sort((a, b) => a.elo < b.elo)"
+        v-for="(p, i) in players
+          .filter((p) => p.nick != 'bot')
+          .sort((a, b) => a.elo < b.elo)"
         :key="p.nick"
         @click="idPlayerInfo = p.id"
       >
-        <td style="text-align:center">{{ i + 1 }}</td>
+        <td style="text-align: center">{{ i + 1 }}</td>
         <td class="nick">{{ p.nick }}</td>
-        <td>{{ p.elo }}</td>
-        <td>{{ p.p }}</td>
-        <td class="hide-xs">{{ p.v }}</td>
+        <td>{{ p.elo || 0 }}</td>
+        <td>{{ p.p || 0 }}</td>
+        <td class="hide-xs">{{ p.v || 0 }}</td>
         <td>{{ p.p > 0 ? Math.round((p.v / p.p) * 1000) : 0 }}</td>
-        <td>{{ p.k }}</td>
-        <td class="hide-xs">{{ p.p > 0 ? Math.round(p.k / p.p) : 0 }}</td>
-        <td>{{ p.d }}</td>
-        <td class="hide-xs">{{ p.p > 0 ? Math.round(p.d / p.p) : 0 }}</td>
-        <td>{{ p.a }}</td>
-        <td class="hide-xs">{{ p.p > 0 ? Math.round(p.a / p.p) : 0 }}</td>
-        <td class="hide-xs">{{ p.b }}</td>
-        <td class="hide-xs">{{ p.bp }}</td>
+        <td>{{ p.k || 0 }}</td>
+        <td class="hide-xs">{{ Math.round(p.k / p.p) || 0 }}</td>
+        <td>{{ p.d || 0 }}</td>
+        <td class="hide-xs">{{ Math.round(p.d / p.p) || 0 }}</td>
+        <td>{{ p.a || 0 }}</td>
+        <td class="hide-xs">{{ Math.round(p.a / p.p) || 0 }}</td>
         <td class="hide-xs">
           <button v-if="false" class="danger" @click="del(p.id)">
             Eliminar
@@ -117,7 +115,7 @@
                 'min-height:' + Math.abs(pr.eloPlus) + 'px',
                 'transform:translateY(' +
                   (pr.elo - 1400 + pr.eloPlus / 2) * -1 +
-                  'px)'
+                  'px)',
               ]"
             ></div>
           </div>
@@ -138,7 +136,7 @@ import Player from "@/store/model/player";
 import {
   START_LOADING,
   END_LOADING,
-  INIT_PLAYERS
+  INIT_PLAYERS,
 } from "@/store/mutations-type";
 
 export default {
@@ -152,17 +150,17 @@ export default {
       playerInfo: "",
       playerResultsInfo: [],
       idPlayerResultInfo: "",
-      playInfo: null
+      playInfo: null,
     };
   },
   computed: {
     ...mapState({
-      strapi: state => state.strapi,
-      players: state => state.players
-    })
+      strapi: (state) => state.strapi,
+      players: (state) => state.players,
+    }),
   },
   components: {
-    PlayComponent
+    PlayComponent,
   },
   methods: {
     ...mapMutations([START_LOADING, END_LOADING, INIT_PLAYERS]),
@@ -228,7 +226,7 @@ export default {
       console.log("del", id);
 
       if (confirm("Estas seguro de eliminar el player")) this.filter();
-    }
+    },
   },
   created() {
     this.filter();
@@ -238,21 +236,26 @@ export default {
       this.startLoading();
       this.idPlayerResultInfo = "";
       axios.get(this.strapi + "/player-results?_limit=-1").then(({ data }) => {
-        this.playerResultsInfo = data.filter(p => p.player.id == id).reverse();
-        this.playerInfo = this.players.find(p => p.id == id);
+        this.playerResultsInfo = data
+          .filter((p) => {
+            if (p.player) return p.player.id == id;
+            return false;
+          })
+          .reverse();
+        this.playerInfo = this.players.find((p) => p.id == id);
         this.endLoading();
       });
     },
     idPlayerResultInfo(val) {
       this.startLoading();
       axios.get(this.strapi + "/plays?_limit=-1").then(({ data }) => {
-        this.playInfo = data.find(p =>
-          p.player_results.find(pr => pr.id == val)
+        this.playInfo = data.find((p) =>
+          p.player_results.find((pr) => pr.id == val)
         );
         this.endLoading();
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

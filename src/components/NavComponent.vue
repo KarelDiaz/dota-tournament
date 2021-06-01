@@ -19,17 +19,20 @@
 
   justify-content: center;
   .nav-separator {
-    color: rgb(190, 230, 190);
+    color: rgb(190, 224, 230);
     margin: 0 0.5rem;
   }
   .nav-link {
     text-transform: uppercase;
     text-decoration: none;
     padding: 1px 5px;
+    color: black;
+    background-color: rgba(44, 167, 204, 0.5);
+    border: 1px solid rgba(0, 217, 255, 0.5);
 
     &.router-link-exact-active {
-      background-color: map-get($map: $bg, $key: 2);
-      border: 1px solid rgb(170, 210, 170);
+      background-color: rgb(44, 167, 204);
+      border: 1px solid rgb(0, 217, 255);
     }
   }
 }

@@ -65,7 +65,7 @@
     </table>
 
     <transition name="slide-top">
-      <div class="info-container" v-if="playerInfo">
+      <div class="info-container" v-if="playerInfo.id">
         <b class="info-name">{{ playerInfo.nick }}</b>
         <div class="info">
           <div class="line p1500">
@@ -99,8 +99,7 @@
               :style="'width:' + 98 / playerInfoResults.length + 'vw'"
             ></div>
             <span class="info-text">
-              <b class="result">{{ pr.elo + pr.eloPlus }}</b>
-              <span v-if="false">{{ pr.id }}</span>
+              <i>{{ moment(pr.createdAt).format("MMMM D, YYYY, HH:mm") }}</i>
               <i>
                 <span>{{ pr.elo }}</span>
                 <span :class="[pr.eloPlus > 0 ? 'good' : 'bad', 'val']">
@@ -109,6 +108,7 @@
                   {{ Math.abs(pr.eloPlus) }}
                 </span>
               </i>
+              <b class="result">{{ pr.elo + pr.eloPlus }}</b>
             </span>
             <div
               class="info-item-val"
@@ -125,13 +125,15 @@
       </div>
     </transition>
 
-    <PlayComponent v-if="playInfo" :playIn="playInfo"></PlayComponent>
+    <PlayComponent v-if="playInfo.id" :play="playInfo"></PlayComponent>
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import { mapState, mapMutations } from "vuex";
+
+import moment from "moment";
 
 import PlayComponent from "@/components/PlayComponent";
 import Player from "@/store/model/player";
@@ -147,6 +149,7 @@ export default {
   name: "Players",
   data() {
     return {
+      moment,
       playerForm: new Player(),
       textFilter: "",
       idMod: -1,
@@ -379,7 +382,7 @@ $width-xs: calc(calc(100vw / 10) * 10);
         cursor: default;
         display: none;
         position: absolute;
-        transform: translate(20px, -165px);
+        transform: translate(10px, -165px);
         font-size: small;
 
         .val {
@@ -408,13 +411,9 @@ $width-xs: calc(calc(100vw / 10) * 10);
             background-color: map-get($map: $color, $key: bad);
             clip-path: polygon(40% 30%, 0% 100%, 60% 60%, 100% 0%);
           }
-
           &.good {
             background-color: map-get($map: $color, $key: good);
             clip-path: polygon(0% 0%, 20% 60%, 100% 100%, 60% 20%);
-          }
-          &.bet {
-            background-color: map-get($map: $color, $key: win);
           }
         }
       }
@@ -430,9 +429,6 @@ $width-xs: calc(calc(100vw / 10) * 10);
           transition: clip-path 0.3s;
           background-color: map-get($map: $color, $key: good-plus);
           clip-path: polygon(0% 0%, 80% 100%, 100% 100%, 20% 0%);
-        }
-        &.bet {
-          background-color: map-get($map: $color, $key: win-line);
         }
       }
     }

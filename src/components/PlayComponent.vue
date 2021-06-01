@@ -8,7 +8,7 @@
           'result-list',
           result.side,
           { win: play.side_win == result.side },
-          { bot: result.bot == true }
+          { bot: result.bot == true },
         ]"
         :key="result.id"
       >
@@ -68,7 +68,7 @@
 
     <div class="play-date">
       <span class="play-date-content">
-        {{ play.createdAtMoment }}
+        {{ moment(play.createdAt).format("MMMM D, YYYY, HH:mm") }}
         <button v-if="false" class="danger" @click="del(play.id)">
           <i class="fa fa-trash"></i>
         </button>
@@ -81,61 +81,39 @@
 import moment from "moment";
 
 import Player from "@/store/model/player";
-import Play from "@/store/model/play";
+//import Play from "@/store/model/play";
 import Hero from "@/store/model/hero";
 
 export default {
   name: "PlayComponent",
   data() {
     return {
-      play: {}
+      moment,
     };
   },
   props: {
-    playIn: {}
+    play: {},
   },
   methods: {
     getPlayer(id) {
-      const temp = this.$store.state.players.find(p => p.id == id);
+      const temp = this.$store.state.players.find((p) => p.id == id);
       return temp ? temp : new Player();
     },
     getHero(id) {
-      const temp = this.$store.state.heroes.find(p => p.id == id);
+      const temp = this.$store.state.heroes.find((p) => p.id == id);
       return temp ? temp : new Hero();
-    }
-  },
-  created() {
-    this.play = new Play(this.playIn.player_results, this.playIn.side_win);
-    let m = moment(this.playIn.createdAt).format("MMMM");
-    let y = moment(this.playIn.createdAt).format("YYYY");
-    let d = moment(this.playIn.createdAt).format("D");
-    let h = moment(this.playIn.createdAt).format("H:mm");
-    this.play.createdAtMoment = `${m} ${d}, ${y}, a las ${h}`;
-
-    this.play.player_results.sort((a, b) => {
-      if (a.side == b.side) {
-        return a.bot;
-      }
-      return a.side < b.side;
-    });
+    },
   },
   watch: {
-    playIn(val) {
-      this.play = new Play(val.player_results, val.win_side);
-      let m = moment(val.createdAt).format("MMMM");
-      let y = moment(val.createdAt).format("YYYY");
-      let d = moment(val.createdAt).format("D");
-      let h = moment(val.createdAt).format("H:mm");
-      this.play.createdAtMoment = `${m} ${d}, ${y}, at ${h}`;
-
-      this.play.player_results.sort((a, b) => {
+    play(val) {
+      val.player_results.sort((a, b) => {
         if (a.side == b.side) {
           return a.bot;
         }
         return a.side < b.side;
       });
     }
-  }
+  },
 };
 </script>
 

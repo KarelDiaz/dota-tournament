@@ -117,7 +117,6 @@ import {
   END_LOADING,
   INIT_HEROES,
 } from "@/store/mutations-type";
-import Hero from "@/store/model/hero";
 
 export default {
   data() {

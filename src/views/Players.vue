@@ -38,9 +38,11 @@
           .filter((p) => p.nick != 'bot')
           .sort((a, b) => a.elo < b.elo)"
         :key="p.nick"
-        @click="idPlayerInfo = p.id"
+        @click="setPlayerInfo(p)"
       >
-        <td style="text-align: center">{{ i + 1 }}</td>
+        <td :class="['position' + (i + 1)]" style="text-align: center">
+          {{ i + 1 }}
+        </td>
         <td class="nick">{{ p.nick }}</td>
         <td>{{ p.elo || 0 }}</td>
         <td>{{ p.p || 0 }}</td>
@@ -57,13 +59,13 @@
             Eliminar
           </button>
           <button @click="preMod(p.id)">Edit</button>
-          <button v-if="false" @click="idPlayerInfo = p.id">Info</button>
+          <button v-if="false" @click="setPlayerInfo(p)">Info</button>
         </td>
       </tr>
     </table>
 
     <transition name="slide-top">
-      <div class="info-container" v-if="idPlayerInfo">
+      <div class="info-container" v-if="playerInfo">
         <b class="info-name">{{ playerInfo.nick }}</b>
         <div class="info">
           <div class="line p1500">
@@ -82,19 +84,19 @@
             class="line"
             :style="'transform: translateY(' + (1400 - playerInfo.elo) + 'px)'"
           >
-            <span class="text">{{ playerInfo.elo }}</span>
+            <b class="text">{{ playerInfo.elo }}</b>
           </div>
 
           <div
             class="info-item"
-            v-for="pr in playerResultsInfo"
+            v-for="pr in playerInfoResults"
             :key="pr.id"
-            :style="'width:' + 98 / playerResultsInfo.length + 'vw'"
-            @click="idPlayerResultInfo = pr.id"
+            :style="'width:' + 98 / playerInfoResults.length + 'vw'"
+            @click="setResultInfo(pr)"
           >
             <div
-              :class="['info-hover', { waching: pr.id == idPlayerResultInfo }]"
-              :style="'width:' + 98 / playerResultsInfo.length + 'vw'"
+              :class="['info-hover', { waching: pr.id == resultInfo.id }]"
+              :style="'width:' + 98 / playerInfoResults.length + 'vw'"
             ></div>
             <span class="info-text">
               <b class="result">{{ pr.elo + pr.eloPlus }}</b>
@@ -137,6 +139,8 @@ import {
   START_LOADING,
   END_LOADING,
   INIT_PLAYERS,
+  SET_PLAYER_INFO,
+  SET_RESULT_INFO,
 } from "@/store/mutations-type";
 
 export default {
@@ -146,24 +150,29 @@ export default {
       playerForm: new Player(),
       textFilter: "",
       idMod: -1,
-      idPlayerInfo: "",
-      playerInfo: "",
-      playerResultsInfo: [],
-      idPlayerResultInfo: "",
-      playInfo: null,
     };
   },
   computed: {
     ...mapState({
       strapi: (state) => state.strapi,
       players: (state) => state.players,
+      playerInfo: (state) => state.playerInfo,
+      playerInfoResults: (state) => state.playerInfoResults,
+      resultInfo: (state) => state.resultInfo,
+      playInfo: (state) => state.playInfo,
     }),
   },
   components: {
     PlayComponent,
   },
   methods: {
-    ...mapMutations([START_LOADING, END_LOADING, INIT_PLAYERS]),
+    ...mapMutations([
+      START_LOADING,
+      END_LOADING,
+      INIT_PLAYERS,
+      SET_PLAYER_INFO,
+      SET_RESULT_INFO,
+    ]),
 
     filter() {
       /*axios.get(this.strapi + "/players").then(({ data }) => {
@@ -221,40 +230,6 @@ export default {
         );
       });
     },
-
-    del(id) {
-      console.log("del", id);
-
-      if (confirm("Estas seguro de eliminar el player")) this.filter();
-    },
-  },
-  created() {
-    this.filter();
-  },
-  watch: {
-    idPlayerInfo(id) {
-      this.startLoading();
-      this.idPlayerResultInfo = "";
-      axios.get(this.strapi + "/player-results?_limit=-1").then(({ data }) => {
-        this.playerResultsInfo = data
-          .filter((p) => {
-            if (p.player) return p.player.id == id;
-            return false;
-          })
-          .reverse();
-        this.playerInfo = this.players.find((p) => p.id == id);
-        this.endLoading();
-      });
-    },
-    idPlayerResultInfo(val) {
-      this.startLoading();
-      axios.get(this.strapi + "/plays?_limit=-1").then(({ data }) => {
-        this.playInfo = data.find((p) =>
-          p.player_results.find((pr) => pr.id == val)
-        );
-        this.endLoading();
-      });
-    },
   },
 };
 </script>
@@ -281,28 +256,26 @@ export default {
   width: 100%;
   text-align: left;
 
+  .position {
+    &1 {
+      background-color: map-get($map: $color, $key: gold-player);
+      color: map-get($map: $bg, $key: 1);
+      font-weight: bold;
+    }
+    &2 {
+      background-color: map-get($map: $color, $key: silver-player);
+      color: map-get($map: $bg, $key: 1);
+      font-weight: bold;
+    }
+    &3 {
+      background-color: map-get($map: $color, $key: bronce-player);
+      color: map-get($map: $bg, $key: 1);
+      font-weight: bold;
+    }
+  }
   .item {
     &:nth-child(even) {
       background-color: map-get($map: $bg, $key: 2);
-    }
-
-    &:nth-child(2) {
-      background-color: map-get($map: $color, $key: gold-player);
-      color: map-get($map: $bg, $key: 1);
-      font-style: oblique;
-      font-weight: bold;
-    }
-    &:nth-child(3) {
-      background-color: map-get($map: $color, $key: silver-player);
-      color: map-get($map: $bg, $key: 1);
-      font-style: oblique;
-      font-weight: bold;
-    }
-    &:nth-child(4) {
-      background-color: map-get($map: $color, $key: bronce-player);
-      color: map-get($map: $bg, $key: 1);
-      font-style: oblique;
-      font-weight: bold;
     }
 
     &:hover {
@@ -323,7 +296,7 @@ $width-xs: calc(calc(100vw / 10) * 10);
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 10px;
+  padding-top: 30px;
 
   .info-name {
     display: flex;

@@ -5,7 +5,9 @@ import {
   START_LOADING,
   END_LOADING,
   INIT_PLAYERS,
-  INIT_HEROES
+  INIT_HEROES,
+  SET_PLAYER_INFO,
+  SET_RESULT_INFO
 } from "./mutations-type";
 import { INIT } from "./actions-type";
 
@@ -14,7 +16,12 @@ export default createStore({
     loading: false,
     strapi: "http://localhost:1337",
     players: [],
-    heroes: []
+    heroes: [],
+    playerInfo: {},
+    playerInfoResults: [],
+    playerInfoPlays: [],
+    resultInfo: {},
+    playInfo: {}
   },
   mutations: {
     [START_LOADING](state) {
@@ -53,6 +60,27 @@ export default createStore({
     [INIT_HEROES](state) {
       axios.get(state.strapi + "/heroes?_limit=-1").then(({ data }) => {
         state.heroes = data.sort((a, b) => a.displayName > b.displayName);
+      });
+    },
+    [SET_PLAYER_INFO](state, dataIn) {
+      state.playerInfo = dataIn;
+      state.resultInfo = {};
+      state.playInfo = {};
+      axios.get(state.strapi + "/player-results?_limit=-1").then(({ data }) => {
+        state.playerInfoResults = data
+          .filter((p) => {
+            if (p.player) return p.player.id == state.playerInfo.id;
+            return false;
+          })
+          .reverse();
+      });
+    },
+    [SET_RESULT_INFO](state, dataIn) {
+      state.resultInfo = dataIn;
+      axios.get(state.strapi + "/plays?_limit=-1").then(({ data }) => {
+        state.playInfo = data.find((p) =>
+          p.player_results.find((pr) => pr.id == state.resultInfo.id)
+        );
       });
     }
   },

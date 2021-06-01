@@ -34,7 +34,7 @@ $height-hero-xs: $width-hero-xs;
         &.wining {
           background-color: map-get($map: $color, $key: win);
           border: 1px solid map-get($map: $color, $key: win-line);
-          color: map-get($map: $color, $key: win-line);
+          color: map-get($map: $bg, $key: 1);
         }
       }
     }

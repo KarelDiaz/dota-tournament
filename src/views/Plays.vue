@@ -142,7 +142,7 @@
     </div>
 
     <div class="plays">
-      <transition-group name="slide-right" tag="p">
+      <transition-group name="slide-top" tag="p">
         <PlayComponent v-for="play in plays" :key="play.id" :play="play"></PlayComponent>
       </transition-group>
     </div>

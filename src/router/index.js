@@ -23,12 +23,12 @@ const routes = [
   },
   {
     path: "/tournament",
-    name: "Lotery",
+    name: "Tournament",
     component: () => import("../views/Tournament.vue")
   },
   {
     path: "/tournament-explore",
-    name: "Lotery",
+    name: "TournamentExplore",
     component: () => import("../views/TournamentExplore.vue")
   }
 ];

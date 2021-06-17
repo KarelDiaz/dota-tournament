@@ -1,8 +1,10 @@
-<template></template>
+<template>
+  <div>TEplore</div>
+</template>
 
 <script>
 export default {};
 </script>
 
-<style scoped lang='scss'>
+<style scoped lang="scss">
 </style>

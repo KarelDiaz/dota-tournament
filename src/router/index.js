@@ -20,6 +20,16 @@ const routes = [
     path: "/lotery",
     name: "Lotery",
     component: () => import("../views/Lotery.vue")
+  },
+  {
+    path: "/tournament",
+    name: "Lotery",
+    component: () => import("../views/Tournament.vue")
+  },
+  {
+    path: "/tournament-explore",
+    name: "Lotery",
+    component: () => import("../views/TournamentExplore.vue")
   }
 ];
 

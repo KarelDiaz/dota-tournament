@@ -1,10 +1,8 @@
 export default class Team {
   name;
   players;
-  tournament;
-  constructor(name = "", tournament = {}) {
+  constructor(name = "") {
     this.name = name;
     this.players = [];
-    this.tournament = tournament;
   }
 }

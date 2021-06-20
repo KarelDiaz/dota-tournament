@@ -1,8 +1,8 @@
-@media screen and (max-width: 899px) {
+/*@media screen and (max-width: 899px) {
     * {
         font-size: xx-small;
     }
-}
+}*/
 
 body,
 html {
@@ -20,8 +20,7 @@ select {
     background-color: rgb(34, 35, 43);
     border: 1px solid rgb(53, 54, 66);
     color: rgb(213, 215, 236);
-    ;
-    padding: 0 5px;
+    padding: 1px 5px;
 }
 
 button,a,.btn {

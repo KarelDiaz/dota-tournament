@@ -6,6 +6,7 @@ import {
   END_LOADING,
   INIT_PLAYERS,
   INIT_HEROES,
+  INIT_TOURNAMENTS,
   SET_PLAYER_INFO,
   SET_RESULT_INFO
 } from "./mutations-type";
@@ -22,7 +23,8 @@ export default createStore({
     playerInfoResults: [],
     playerInfoPlays: [],
     resultInfo: {},
-    playInfo: {}
+    playInfo: {},
+    tournaments: []
   },
   mutations: {
     [START_LOADING](state) {
@@ -211,6 +213,11 @@ export default createStore({
         }
       });
     },
+    [INIT_TOURNAMENTS](state) {
+      axios.get(state.strapi + "/tournaments?_limit=-1").then(({ data }) => {
+        state.tournaments = data.sort((a, b) => a.name > b.name);
+      });
+    },
     [SET_PLAYER_INFO](state, dataIn) {
       state.playerInfo = dataIn;
       state.resultInfo = {};
@@ -237,6 +244,7 @@ export default createStore({
     async [INIT]({ commit }) {
       await commit(INIT_HEROES);
       await commit(INIT_PLAYERS);
+      await commit(INIT_TOURNAMENTS);
     }
   },
   modules: {}

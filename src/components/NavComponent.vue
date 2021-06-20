@@ -8,9 +8,9 @@
     <span class="nav-separator">|</span>
     <router-link class="nav-link" to="/lotery">Lotery</router-link>
     <span class="nav-separator">|</span>
-    <router-link class="nav-link" to="/tournament">Tournmanet</router-link>
+    <router-link class="nav-link" to="/tournament">Tournament</router-link>
     <span class="nav-separator">|</span>
-    <router-link class="nav-link" to="/tournament-explore">TExplore</router-link>
+    <router-link class="nav-link" to="/tournament-explore">T Explore</router-link>
   </div>
 </template>
 
@@ -30,13 +30,14 @@
     text-transform: uppercase;
     text-decoration: none;
     padding: 1px 5px;
-    color: black;
+    color: white;
     background-color: rgba(44, 167, 204, 0.5);
     border: 1px solid rgba(0, 217, 255, 0.5);
 
     &.router-link-exact-active {
       background-color: rgb(44, 167, 204);
       border: 1px solid rgb(0, 217, 255);
+      color: white;
     }
   }
 }

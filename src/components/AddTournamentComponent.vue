@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="add-tournament-container">
     <div class="tournament">
       Tournament
       <input required type="text" v-model="tournamentTemp.name" />
@@ -178,7 +178,7 @@ export default {
 <style scoped lang="scss">
 @import "@/theme/theme.scss";
 
-.container {
+.add-tournament-container {
   border: 1px solid rgb(0, 225, 255);
   background: rgba(0, 247, 255, 0.2);
   padding: map-get($map: $spacings, $key: 3);

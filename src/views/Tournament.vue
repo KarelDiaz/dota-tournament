@@ -1,30 +1,62 @@
 <template>
-  <div class="t-container">
-    <div class="t-actives">
-      <span>T Activos</span>
-      <button @click="tAdd = !tAdd">
-        <span v-if="!tAdd">Start Trounament</span>
-        <span v-else>Cancel Trounament</span>
-      </button>
-      <div class="t-list" v-if="tournaments.length > 0">
-        <div class="t-itme" v-for="t in tournaments" :key="t.id">
-          {{ t.name }}
-        </div>
+  <div class="tournament-container">
+    <div class="actives">
+      <div class="header">
+        <b class="text">Tournaments</b>
+        <button
+          :class="[add - tournament, { success: !tAdd }, { danger: tAdd }]"
+          @click="tAdd = !tAdd"
+        >
+          <i class="fa fa-plus" v-if="!tAdd"></i>
+          <i class="fa fa-trash" v-else></i>
+        </button>
+      </div>
+      <div class="list" v-if="tournaments.length > 0">
+        <button
+          :class="['item', { success: tournamentSelected == t }]"
+          v-for="t in tournaments"
+          :key="t.id"
+          @click="tournamentSelected = t"
+        >
+          <b>{{ t.name }}</b>
+          <hr />
+          Teams {{ t.teams.length }}
+          <hr />
+          <i>{{ moment(t.createdAt).format("MMMM D, YYYY, HH:mm") }}</i>
+        </button>
       </div>
       <div v-if="tournaments.length == 0">No hay torneos</div>
     </div>
-    <add-tournament-component v-if="tAdd"></add-tournament-component>
+    <div class="t-content">
+      <transition name="fade">
+        <add-tournament-component
+          class="add-t"
+          v-if="tAdd"
+        ></add-tournament-component>
+      </transition>
+      <transition name="fade">
+        <view-tournament-component
+          v-if="tournamentSelected.name"
+          :tournament="tournamentSelected"
+        >
+        </view-tournament-component>
+      </transition>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
+import moment from "moment";
 import AddTournamentComponent from "@/components/AddTournamentComponent";
+import ViewTournamentComponent from "@/components/ViewTournamentComponent";
 
 export default {
   data() {
     return {
+      moment: moment,
       tAdd: false,
+      tournamentSelected: {},
     };
   },
   computed: {
@@ -34,22 +66,46 @@ export default {
   },
   components: {
     AddTournamentComponent,
+    ViewTournamentComponent,
   },
 };
 </script>
 
 <style scoped lang="scss">
-.t-container {
+@import "@/theme/theme.scss";
+
+.tournament-container {
   display: flex;
 
-  .t-actives {
+  .header {
+    display: flex;
+    justify-content: space-between;
+    padding: map-get($map: $spacings, $key: 2);
+
+    .text {
+      font-size: 1.1rem;
+    }
+  }
+
+  .actives {
     display: flex;
     flex-direction: column;
+    min-width: 200px;
+    max-width: 200px;
 
-    .t-list {
+    .list {
       display: flex;
       flex-direction: column;
+      padding: map-get($map: $spacings, $key: 2);
+
+      .item {
+        margin-top: map-get($map: $spacings, $key: 2);
+      }
     }
+  }
+
+  .t-content {
+    width: 100%;
   }
 }
 </style>

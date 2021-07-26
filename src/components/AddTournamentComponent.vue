@@ -5,7 +5,7 @@
       <input required type="text" v-model="tournamentTemp.name" />
       <button
         class="success"
-        @click="addTournament()"
+        @click="submitTournament()"
         v-if="(tournamentTemp.teams.length > 2 && tournamentTemp.name) || true"
       >
         Add
@@ -41,7 +41,7 @@
             v-model="teamTemp.name"
             placeholder="Team name ..."
           />
-          <i class="elo">
+          <i v-if="teamTemp.players.length > 0" class="elo">
             {{ eloMediaTeam(teamTemp) }}
           </i>
         </div>
@@ -86,9 +86,9 @@
 
 <script>
 import axios from "axios";
-import { mapState, mapActions } from "vuex";
+import { mapState, mapMutations } from "vuex";
 
-import { INIT_TOURNAMENTS } from "@/store/mutations-type";
+import { ADD_TOURNAMENT } from "@/store/mutations-type";
 import Tournament from "@/store/model/tournament";
 import Team from "@/store/model/team";
 
@@ -110,11 +110,11 @@ export default {
     },
   },
   created() {
-    this.players = this.$store.state.players;
+    this.players = this.$store.state.players; // clone the players from store
   },
   methods: {
-    ...mapActions([INIT_TOURNAMENTS]),
-    async addTournament() {
+    ...mapMutations([ADD_TOURNAMENT]),
+    async submitTournament() {
       var arr = [];
       await this.tournamentTemp.teams.forEach((t) => {
         axios.post(this.strapi + "/teams", t).then(({ data }) => {
@@ -122,13 +122,13 @@ export default {
         });
       });
       this.tournamentTemp.teams = arr.copyWithin(-1);
-      console.log(this.tournamentTemp);
       await axios
         .post(this.strapi + "/tournaments", this.tournamentTemp)
-        .then(({data}) => {
-          console.log("data",data);
-          this.initTournaments();
-          /*this.tournamentTemp = new Tournament();*/
+        .then(({ data }) => {
+          this.$emit("tournament:add", data);
+          this.tournamentTemp = new Tournament();
+          this.teamTemp = new Team();
+          this.addTournament(data);
         });
     },
     eloMediaTeam(team) {
@@ -179,10 +179,8 @@ export default {
 @import "@/theme/theme.scss";
 
 .add-tournament-container {
-  border: 1px solid rgb(0, 225, 255);
-  background: rgba(0, 247, 255, 0.2);
   padding: map-get($map: $spacings, $key: 3);
-  
+
   .tournament {
   }
 
@@ -199,8 +197,9 @@ export default {
       justify-content: space-between;
       padding: map-get($map: $spacings, $key: 2);
       border: 1px solid rgba(0, 225, 255, 0.5);
-      background: rgba(0, 247, 255, 0.1);
+      background: rgba(0, 247, 255, 0.3);
       min-width: 100px;
+      margin-right: map-get($map: $spacings, $key: 3);
       .elo {
         font-size: 0.7rem;
       }
@@ -229,6 +228,7 @@ export default {
     }
 
     .new-team {
+      background: rgba(0, 247, 255, 0.1);
       .add-player-container {
         margin-top: map-get($map: $spacings, $key: 2);
         height: 100%;

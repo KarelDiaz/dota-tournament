@@ -4,7 +4,7 @@
       <div class="header">
         <b class="text">Tournaments</b>
         <button
-          :class="[add - tournament, { success: !tAdd }, { danger: tAdd }]"
+          :class="['add-tournament', { success: !tAdd }, { danger: tAdd }]"
           @click="tAdd = !tAdd"
         >
           <i class="fa fa-plus" v-if="!tAdd"></i>
@@ -34,13 +34,8 @@
           v-if="tAdd"
         ></add-tournament-component>
       </transition>
-      <transition name="fade">
-        <view-tournament-component
-          v-if="tournamentSelected.name"
-          :tournament="tournamentSelected"
-        >
-        </view-tournament-component>
-      </transition>
+      <view-tournament-component :tournament="tournamentSelected">
+      </view-tournament-component>
     </div>
   </div>
 </template>
@@ -67,7 +62,7 @@ export default {
   components: {
     AddTournamentComponent,
     ViewTournamentComponent,
-  },
+  }
 };
 </script>
 
@@ -105,7 +100,7 @@ export default {
   }
 
   .t-content {
-    width: 100%;
+    padding-right: map-get($map: $spacings, $key: 2);
   }
 }
 </style>

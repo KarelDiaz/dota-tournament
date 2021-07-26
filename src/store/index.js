@@ -8,7 +8,8 @@ import {
   INIT_HEROES,
   INIT_TOURNAMENTS,
   SET_PLAYER_INFO,
-  SET_RESULT_INFO
+  SET_RESULT_INFO,
+  ADD_TOURNAMENT
 } from "./mutations-type";
 import { INIT } from "./actions-type";
 import Hero from './model/hero'
@@ -238,6 +239,10 @@ export default createStore({
           p.player_results.find((pr) => pr.id == state.resultInfo.id)
         );
       });
+    },
+    [ADD_TOURNAMENT](state, dataIn) {
+      state.tournaments.push(dataIn)
+      state.tournaments.sort((a, b) => a.createdAt < b.createdAt)
     }
   },
   actions: {

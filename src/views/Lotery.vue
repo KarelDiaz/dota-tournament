@@ -1,55 +1,60 @@
 <template>
-  <div class="players-container">
-    <div class="players">
-      <span class="top">
-        <b class="text">Seleccione los players =></b>
-      </span>
-      <transition-group name="slide-right">
-        <div class="player" v-for="p in ps1" :key="p.id" @click="from1To2(p)">
-          <span class="name">
-            {{ p.nick }}
-            <span class="arrow">
-              <i class="fa fa-arrow-right"></i>
+  <div>
+    <div v-if="!nonePlayers" class="players-container">
+      <div class="players">
+        <span class="top">
+          <b class="text">Seleccione los players =></b>
+        </span>
+        <transition-group name="slide-right">
+          <div class="player" v-for="p in ps1" :key="p.id" @click="from1To2(p)">
+            <span class="name">
+              {{ p.nick }}
+              <span class="arrow">
+                <i class="fa fa-arrow-right"></i>
+              </span>
             </span>
-          </span>
-        </div>
-      </transition-group>
-    </div>
-    <div class="players">
-      <span class="top">
-        <b class="text">Players</b>
-        <transition name="fade">
-          <button v-if="ps2.length > 0" class="success" @click="from2To3()">
-            Seleccionar =>
-          </button>
-        </transition>
-      </span>
-      <transition-group name="slide-left-in-fade-out">
-        <div class="player" v-for="p in ps2" :key="p.id" @click="from2To1(p)">
-          <span class="name">
-            {{ p.nick }}
-            <span class="arrow">
-              <i class="fa fa-arrow-left"></i>
+          </div>
+        </transition-group>
+      </div>
+      <div class="players">
+        <span class="top">
+          <b class="text">Players</b>
+          <transition name="fade">
+            <button v-if="ps2.length > 0" class="success" @click="from2To3()">
+              Seleccionar =>
+            </button>
+          </transition>
+        </span>
+        <transition-group name="slide-left-in-fade-out">
+          <div class="player" v-for="p in ps2" :key="p.id" @click="from2To1(p)">
+            <span class="name">
+              {{ p.nick }}
+              <span class="arrow">
+                <i class="fa fa-arrow-left"></i>
+              </span>
             </span>
-          </span>
-        </div>
-      </transition-group>
+          </div>
+        </transition-group>
+      </div>
+      <div class="players">
+        <span class="top">
+          <b class="text">Seleccion aleatoria</b>
+          <transition name="fade">
+            <button v-if="ps2.length > 0 || ps3.length > 0" @click="reset()">
+              Reset
+            </button>
+          </transition>
+        </span>
+        <transition-group name="slide-left">
+          <div class="player" v-for="(p, i) in ps3" :key="p.id">
+            <span class="name" v-html="p.nick"></span>
+            <b class="number" v-html="i + 1"></b>
+          </div>
+        </transition-group>
+      </div>
     </div>
-    <div class="players">
-      <span class="top">
-        <b class="text">Seleccion aleatoria</b>
-        <transition name="fade">
-          <button v-if="ps2.length > 0 || ps3.length > 0" @click="reset()">
-            Reset
-          </button>
-        </transition>
-      </span>
-      <transition-group name="slide-left">
-        <div class="player" v-for="(p, i) in ps3" :key="p.id">
-          <span class="name" v-html="p.nick"></span>
-          <b class="number" v-html="i + 1"></b>
-        </div>
-      </transition-group>
+    <div v-else class="none-players">
+      <h1>No hay players disponibles</h1>
     </div>
   </div>
 </template>
@@ -62,8 +67,13 @@ export default {
     return {
       ps1: [],
       ps2: [],
-      ps3: []
+      ps3: [],
     };
+  },
+  computed: {
+    nonePlayers() {
+      return this.ps1.length === 0 && this.ps2.length === 0 && this.ps3.length === 0;
+    },
   },
   methods: {
     initPs() {
@@ -71,24 +81,24 @@ export default {
         .get(this.$store.state.strapi + "/players?_limit=-1")
         .then(({ data }) => {
           this.ps1 = data
-            .filter(p => p.nick != "bot")
+            .filter((p) => p.nick != "bot")
             .sort((a, b) => a.nick > b.nick);
         });
     },
     from1To2(p) {
-      this.ps1 = this.ps1.filter(pp => pp != p);
+      this.ps1 = this.ps1.filter((pp) => pp != p);
       this.ps2.push(p);
       this.ps2.sort((a, b) => a.nick > b.nick);
     },
     from2To1(p) {
-      this.ps2 = this.ps2.filter(pp => pp != p);
+      this.ps2 = this.ps2.filter((pp) => pp != p);
       this.ps1.push(p);
       this.ps1.sort((a, b) => a.nick > b.nick);
     },
     from2To3() {
       var pos = Math.floor(Math.random() * this.ps2.length);
       var p = this.ps2[pos];
-      this.ps2 = this.ps2.filter(pp => pp != p);
+      this.ps2 = this.ps2.filter((pp) => pp != p);
       this.ps3.push(p);
     },
     reset() {
@@ -96,11 +106,11 @@ export default {
       this.ps2 = [];
       this.ps3 = [];
       this.initPs();
-    }
+    },
   },
   created() {
     this.initPs();
-  }
+  },
 };
 </script>
 
@@ -165,5 +175,9 @@ export default {
       }
     }
   }
+}
+.none-players{
+  display: flex;
+  justify-content: center;
 }
 </style>

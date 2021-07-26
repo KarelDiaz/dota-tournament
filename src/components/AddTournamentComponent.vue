@@ -1,85 +1,95 @@
 <template>
-  <div class="add-tournament-container">
-    <div class="tournament">
-      Tournament
-      <input required type="text" v-model="tournamentTemp.name" />
-      <button
-        class="success"
-        @click="submitTournament()"
-        v-if="(tournamentTemp.teams.length > 2 && tournamentTemp.name) || true"
-      >
-        Add
-      </button>
-    </div>
-
-    <div class="teams-container">
-      <transition-group name="slide-right">
-        <div class="team" v-for="team in tournamentTemp.teams" :key="team">
-          <div class="header">
-            {{ team.name }}
-            <i class="elo">{{ eloMediaTeam(team) }}</i>
+  <div>
+    <div
+      v-if="$store.state.players.length > 0"
+      class="add-tournament-container"
+    >
+      <div class="tournament">
+        Tournament
+        <input required type="text" v-model="tournamentTemp.name" />
+        <button
+          class="success"
+          @click="submitTournament()"
+          v-if="
+            (tournamentTemp.teams.length > 2 && tournamentTemp.name) || true
+          "
+        >
+          Add
+        </button>
+      </div>
+      <div class="teams-container">
+        <transition-group name="slide-right">
+          <div class="team" v-for="team in tournamentTemp.teams" :key="team">
+            <div class="header">
+              {{ team.name }}
+              <i class="elo">{{ eloMediaTeam(team) }}</i>
+            </div>
+            <div class="player-container">
+              <span class="player" v-for="p in team.players" :key="p">
+                {{ p.nick }}
+                <i class="elo">{{ p.elo }}</i>
+              </span>
+            </div>
+            <div class="footer">
+              <button class="danger" @click="delTeam(team)">
+                <i class="fa fa-trash"></i>
+              </button>
+            </div>
           </div>
-          <div class="player-container">
-            <span class="player" v-for="p in team.players" :key="p">
-              {{ p.nick }}
-              <i class="elo">{{ p.elo }}</i>
-            </span>
+        </transition-group>
+
+        <div class="team new-team" v-if="newTeamVisibility">
+          <div class="header">
+            <input
+              required
+              type="text"
+              v-model="teamTemp.name"
+              placeholder="Team name ..."
+            />
+            <i v-if="teamTemp.players.length > 0" class="elo">
+              {{ eloMediaTeam(teamTemp) }}
+            </i>
+          </div>
+          <div class="add-player-container">
+            <button class="success" @click="addRandomPlayerToTeamTemp">
+              random
+            </button>
+            <select v-model="playerSelected">
+              <option v-for="p in players" :key="p" :value="p">
+                {{ p.nick }}
+              </option>
+            </select>
+            <button @click="addPlayerToTeamTemp">add</button>
+            <div class="player-container">
+              <transition-group name="slide-top">
+                <span
+                  class="player"
+                  v-for="p in teamTemp.players"
+                  :key="p"
+                  @click="cancelPlayerToTeamTemp(p)"
+                >
+                  {{ p.nick }}
+                  <i class="elo">{{ p.elo }}</i>
+                  <i class="fa fa-arrow-up"></i>
+                </span>
+              </transition-group>
+            </div>
           </div>
           <div class="footer">
-            <button class="danger" @click="delTeam(team)">
-              <i class="fa fa-trash"></i>
+            <button
+              class="success"
+              @click="addTeamTempToTournamentTemp"
+              v-if="teamTemp.players.length > 0 && teamTemp.name"
+            >
+              Add team
             </button>
           </div>
         </div>
-      </transition-group>
-
-      <div class="team new-team" v-if="newTeamVisibility">
-        <div class="header">
-          <input
-            required
-            type="text"
-            v-model="teamTemp.name"
-            placeholder="Team name ..."
-          />
-          <i v-if="teamTemp.players.length > 0" class="elo">
-            {{ eloMediaTeam(teamTemp) }}
-          </i>
-        </div>
-        <div class="add-player-container">
-          <button class="success" @click="addRandomPlayerToTeamTemp">
-            random
-          </button>
-          <select v-model="playerSelected">
-            <option v-for="p in players" :key="p" :value="p">
-              {{ p.nick }}
-            </option>
-          </select>
-          <button @click="addPlayerToTeamTemp">add</button>
-          <div class="player-container">
-            <transition-group name="slide-top">
-              <span
-                class="player"
-                v-for="p in teamTemp.players"
-                :key="p"
-                @click="cancelPlayerToTeamTemp(p)"
-              >
-                {{ p.nick }}
-                <i class="elo">{{ p.elo }}</i>
-                <i class="fa fa-arrow-up"></i>
-              </span>
-            </transition-group>
-          </div>
-        </div>
-        <div class="footer">
-          <button
-            class="success"
-            @click="addTeamTempToTournamentTemp"
-            v-if="teamTemp.players.length > 0 && teamTemp.name"
-          >
-            Add team
-          </button>
-        </div>
       </div>
+    </div>
+    <div v-else class="add-tournament-container">
+      <h3>Es necesario agregar players para poder iniciar un torneo</h3>
+      <p>Pude agragar players <a href="/">aqui</a>.</p>
     </div>
   </div>
 </template>
@@ -110,7 +120,7 @@ export default {
     },
   },
   created() {
-    this.players = this.$store.state.players; // clone the players from store
+    this.players = this.$store.state.players.copyWithin(-1); // clone the players from store
   },
   methods: {
     ...mapMutations([ADD_TOURNAMENT]),
@@ -125,10 +135,9 @@ export default {
       await axios
         .post(this.strapi + "/tournaments", this.tournamentTemp)
         .then(({ data }) => {
-          this.$emit("tournament:add", data);
+          this.addTournament(data);
           this.tournamentTemp = new Tournament();
           this.teamTemp = new Team();
-          this.addTournament(data);
         });
     },
     eloMediaTeam(team) {
@@ -179,6 +188,8 @@ export default {
 @import "@/theme/theme.scss";
 
 .add-tournament-container {
+  border: 1px solid rgba(0, 225, 255, 0.5);
+  background: rgba(0, 247, 255, 0.3);
   padding: map-get($map: $spacings, $key: 3);
 
   .tournament {

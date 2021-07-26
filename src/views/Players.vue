@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="options">
-      <form class="hide-xs add-player" @submit.prevent="send">
+      <form class="add-player" @submit.prevent="send">
         <input
           class="nick"
           v-model="playerForm.nick"
@@ -10,13 +10,13 @@
           placeholder="Escriba el nick"
         />
         <button class="success" type="submit">
-          <span v-if="idMod == -1">Agregar</span>
+          <span v-if="!idMod">Agregar</span>
           <span v-else>Editar</span>
         </button>
       </form>
     </div>
 
-    <table class="players">
+    <table v-if="players.length > 0" class="players">
       <tr>
         <th></th>
         <th>Nick</th>
@@ -63,6 +63,10 @@
         </td>
       </tr>
     </table>
+
+    <div v-else class="no-players">
+      <h1>No hay players disponibles</h1>
+    </div>
 
     <transition name="slide-top">
       <div class="info-container" v-if="playerInfo.id">
@@ -152,7 +156,7 @@ export default {
       moment,
       playerForm: new Player(),
       textFilter: "",
-      idMod: -1,
+      idMod: null,
     };
   },
   computed: {
@@ -204,7 +208,8 @@ export default {
     },
 
     send() {
-      if (this.idMod >= 0) {
+      if (this.idMod) {
+        // edit a player
         axios
           .put(this.strapi + "/players/" + this.idMod, this.playerForm)
           .then(() => {
@@ -213,13 +218,22 @@ export default {
             this.initPlayers();
           });
       } else {
-        axios.post(this.strapi + "/players", this.playerForm).then(() => {
-          this.playerForm = new Player();
-          this.filter();
-          this.initPlayers();
-        });
+        // add a player
+        if (
+          this.players.filter(
+            (p) => p.nick.toLowerCase() == this.playerForm.nick.toLowerCase()
+          ).length === 0
+        ) {
+          axios.post(this.strapi + "/players", this.playerForm).then(() => {
+            this.playerForm = new Player();
+            this.filter();
+            this.initPlayers();
+          });
+        } else {
+          alert("El usuario ya existe");
+        }
       }
-      this.idMod = -1;
+      this.idMod = null;
     },
 
     preMod(id) {
@@ -242,9 +256,8 @@ export default {
 
 .options {
   display: flex;
-  justify-content: right;
-  margin-bottom: 2rem;
-  padding: 0 5px;
+  justify-content: center;
+  margin: map-get($map: $spacings, $key: 3) 0;
 
   .add-player {
     display: flex;
@@ -290,6 +303,11 @@ export default {
   .nick {
     text-transform: capitalize;
   }
+}
+
+.no-players {
+  display: flex;
+  justify-content: center;
 }
 
 $width: calc(calc(calc(100vw / 10) - 5px) * 10);

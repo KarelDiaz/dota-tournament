@@ -25,7 +25,7 @@
           <i>{{ moment(t.createdAt).format("MMMM D, YYYY, HH:mm") }}</i>
         </button>
       </div>
-      <div v-if="tournaments.length == 0">No hay torneos</div>
+      <div class="list" v-if="tournaments.length == 0">No hay torneos</div>
     </div>
     <div class="t-content">
       <transition name="fade">

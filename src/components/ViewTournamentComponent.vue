@@ -1,22 +1,25 @@
 <template>
   <div>
-    <h1 v-if="tournament.name">{{tournament.name}}</h1>
-    <h1 v-if="!tournament.name">No hay tourneo seleccionado</h1>
-    <h3>{{tournament.teams.length}}</h3>
-    <div v-for="team in tournament.teams" :key="team">
-      {{team}}
+    <div v-if="tournament.name">
+      <h1>{{ tournament.name }}</h1>
+      <h3>{{ tournament.teams.length }}</h3>
+      <div v-for="team in tournament.teams" :key="team">
+        {{ team }}
+      </div>
     </div>
+    <div v-else>
+      <h1>No hay tourneo seleccionado</h1>
+    </div>    
   </div>
 </template>
 
 <script>
 export default {
   props: {
-    tournament: {},
+    tournament:{},
   },
-}
+};
 </script>
 
 <style>
-
 </style>

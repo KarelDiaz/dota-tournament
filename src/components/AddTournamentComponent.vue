@@ -128,7 +128,7 @@ export default {
         .then(({data}) => {
           console.log("data",data);
           this.initTournaments();
-          this.tournamentTemp = new Tournament();
+          /*this.tournamentTemp = new Tournament();*/
         });
     },
     eloMediaTeam(team) {
@@ -175,14 +175,14 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 @import "@/theme/theme.scss";
 
 .add-tournament-container {
   border: 1px solid rgb(0, 225, 255);
   background: rgba(0, 247, 255, 0.2);
   padding: map-get($map: $spacings, $key: 3);
-  width: 100%;
+  
   .tournament {
   }
 

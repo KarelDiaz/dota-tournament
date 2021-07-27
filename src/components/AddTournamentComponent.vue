@@ -120,7 +120,7 @@ export default {
     },
   },
   created() {
-    this.players = this.$store.state.players.copyWithin(-1); // clone the players from store
+    this.players = this.$store.state.players; // clone the players from store
   },
   methods: {
     ...mapMutations([ADD_TOURNAMENT]),

@@ -25,11 +25,6 @@ const routes = [
     path: "/tournament",
     name: "Tournament",
     component: () => import("../views/Tournament.vue")
-  },
-  {
-    path: "/tournament-explore",
-    name: "TournamentExplore",
-    component: () => import("../views/TournamentExplore.vue")
   }
 ];
 

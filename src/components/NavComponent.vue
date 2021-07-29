@@ -1,12 +1,10 @@
 <template>
   <div class="nav">
     <router-link class="nav-link" to="/">Players</router-link>
-    <span class="nav-separator">|</span>
     <router-link class="nav-link" to="/plays">Plays</router-link>
-    <span class="nav-separator">|</span>
     <router-link class="nav-link" to="/hero">Heroes</router-link>
-    <span class="nav-separator">|</span>
     <router-link class="nav-link" to="/lotery">Lotery</router-link>
+    <router-link class="nav-link" to="/tournament">Tournament</router-link>
   </div>
 </template>
 
@@ -14,25 +12,25 @@
 @import "@/theme/theme.scss";
 
 .nav {
-  padding: 10px 0;
+  padding: map-get($map: $spacings, $key: 3);
   display: flex;
+  justify-content: right;
+  flex-wrap: wrap;
 
-  justify-content: center;
-  .nav-separator {
-    color: rgb(190, 224, 230);
-    margin: 0 0.5rem;
-  }
   .nav-link {
     text-transform: uppercase;
     text-decoration: none;
     padding: 1px 5px;
-    color: black;
+    margin: 0 0 map-get($map: $spacings, $key: 3)
+      map-get($map: $spacings, $key: 3);
+    color: white;
     background-color: rgba(44, 167, 204, 0.5);
     border: 1px solid rgba(0, 217, 255, 0.5);
 
     &.router-link-exact-active {
       background-color: rgb(44, 167, 204);
       border: 1px solid rgb(0, 217, 255);
+      color: white;
     }
   }
 }

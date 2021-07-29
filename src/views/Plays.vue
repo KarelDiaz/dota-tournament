@@ -9,10 +9,16 @@
                 :class="[
                   'btn',
                   'side-win',
-                  { wining: playForm.side_win == 'good' }
+                  { wining: playForm.side_win == 'good' },
                 ]"
               >
-                <input v-model="playForm.side_win" type="radio" name="radio" value="good" hidden />
+                <input
+                  v-model="playForm.side_win"
+                  type="radio"
+                  name="radio"
+                  value="good"
+                  hidden
+                />
                 Good ganó
               </label>
               <div>
@@ -23,10 +29,16 @@
                 :class="[
                   'btn',
                   'side-win',
-                  { wining: playForm.side_win == 'bad' }
+                  { wining: playForm.side_win == 'bad' },
                 ]"
               >
-                <input v-model="playForm.side_win" type="radio" name="radio" value="bad" hidden />
+                <input
+                  v-model="playForm.side_win"
+                  type="radio"
+                  name="radio"
+                  value="bad"
+                  hidden
+                />
                 Bad ganó
               </label>
             </div>
@@ -36,7 +48,7 @@
                   :class="[
                     'result',
                     pr.side,
-                    { win: playForm.side_win == pr.side }
+                    { win: playForm.side_win == pr.side },
                   ]"
                   v-for="(pr, index) in playForm.player_results"
                   :key="index"
@@ -44,8 +56,15 @@
                   <span class="item-form">
                     <input v-model="pr.bot" type="checkbox" /> Bot
                   </span>
-                  <select required class="item-form" v-model="pr.player" v-if="!pr.bot">
-                    <option :value="p.id" v-for="p in players" :key="p.id">{{ p.nick }}</option>
+                  <select
+                    required
+                    class="item-form"
+                    v-model="pr.player"
+                    v-if="!pr.bot"
+                  >
+                    <option :value="p.id" v-for="p in players" :key="p.id">
+                      {{ p.nick }}
+                    </option>
                   </select>
 
                   <div class="item-form kda" v-if="!pr.bot">
@@ -74,14 +93,20 @@
                       placeholder="Asist"
                     />
                   </div>
-                  <select class="item-form" v-if="!pr.bot" v-model="pr.hero" required>
-                    <option
-                      :value="h.id"
-                      v-for="h in heroes"
-                      :key="h.id"
-                    >{{ h.displayName }}</option>
+                  <select
+                    class="item-form"
+                    v-if="!pr.bot"
+                    v-model="pr.hero"
+                    required
+                  >
+                    <option :value="h.id" v-for="h in heroes" :key="h.id">
+                      {{ h.displayName }}
+                    </option>
                   </select>
-                  <div class="black-shadow" :class="pr.side + (pr.bot ? ' bot' : '')"></div>
+                  <div
+                    class="black-shadow"
+                    :class="pr.side + (pr.bot ? ' bot' : '')"
+                  ></div>
 
                   <img
                     class="hero-img"
@@ -117,11 +142,11 @@
         <div class="info-plays-win" v-if="fPlayer">
           <b>
             {{
-            plays.filter(p => {
-            return p.player_results.find(
-            pr => pr.player == fPlayer && pr.side == p.side_win
-            );
-            }).length
+              plays.filter((p) => {
+                return p.player_results.find(
+                  (pr) => pr.player == fPlayer && pr.side == p.side_win
+                );
+              }).length
             }}
           </b>
           victorias
@@ -136,14 +161,20 @@
             v-for="p in players"
             :key="p.id"
             :style="p.nick == 'bot' ? 'display:none' : ''"
-          >{{ p.nick }}</option>
+          >
+            {{ p.nick }}
+          </option>
         </select>
       </div>
     </div>
 
     <div class="plays">
       <transition-group name="slide-top" tag="p">
-        <PlayComponent v-for="play in plays" :key="play.id" :play="play"></PlayComponent>
+        <PlayComponent
+          v-for="play in plays"
+          :key="play.id"
+          :play="play"
+        ></PlayComponent>
       </transition-group>
     </div>
   </div>
@@ -153,11 +184,7 @@
 import axios from "axios";
 import { mapState, mapMutations } from "vuex";
 
-import {
-  START_LOADING,
-  END_LOADING,
-  INIT_PLAYERS
-} from "@/store/mutations-type";
+import { INIT_PLAYERS } from "@/store/mutations-type";
 import Elo from "@/store/model/elo";
 import Player from "@/store/model/player";
 import Hero from "@/store/model/hero";
@@ -171,24 +198,23 @@ export default {
       plays: [],
       playForm: Play,
       fCant: 10,
-      fPlayer: ""
+      fPlayer: "",
     };
   },
   computed: {
     ...mapState({
-      strapi: state => state.strapi,
-      players: state => state.players,
-      heroes: state => state.heroes
-    })
+      strapi: (state) => state.strapi,
+      players: (state) => state.players,
+      heroes: (state) => state.heroes,
+    }),
   },
   components: {
-    PlayComponent
+    PlayComponent,
   },
   methods: {
-    ...mapMutations([START_LOADING, END_LOADING, INIT_PLAYERS]),
+    ...mapMutations([INIT_PLAYERS]),
 
     send() {
-      this.startLoading();
       var out = [];
 
       // players to win or lose
@@ -196,7 +222,7 @@ export default {
       var mediaWin = 0;
       var playersLose = [];
       var mediaLose = 0;
-      this.playForm.player_results.forEach(pr => {
+      this.playForm.player_results.forEach((pr) => {
         pr.win = this.playForm.side_win == pr.side;
 
         if (!pr.bot) {
@@ -217,7 +243,7 @@ export default {
         mediaLose /= playersLose.length;
       }
 
-      this.playForm.player_results.forEach(pr => {
+      this.playForm.player_results.forEach((pr) => {
         if (!pr.bot) {
           pr.elo = this.getPlayer(pr.player).elo;
           if (pr.win) {
@@ -253,7 +279,7 @@ export default {
 
       // media del ELO q ganan
       let eloWin = 0;
-      win.forEach(id => {
+      win.forEach((id) => {
         let ptemp = this.getPlayer(id);
         eloWin += ptemp.elo;
         pWin.push(ptemp);
@@ -262,7 +288,7 @@ export default {
 
       // media del ELO q pierden
       let eloLose = 0;
-      lose.forEach(id => {
+      lose.forEach((id) => {
         let ptemp = this.getPlayer(id);
         eloLose += ptemp.elo;
         pLose.push(ptemp);
@@ -270,7 +296,7 @@ export default {
       eloLose /= lose.length;
 
       // update elo de los q ganana
-      pWin.forEach(player => {
+      pWin.forEach((player) => {
         let elo = new Elo(player.elo, eloLose);
         let playerOut = new Player(
           player.fullName,
@@ -279,14 +305,13 @@ export default {
           player.active
         );
 
-        this.startLoading();
-        axios.put(`${this.strapi}/players/${player.id}`, playerOut).then(() => {
-          this.endLoading();
-        });
+        axios
+          .put(`${this.strapi}/players/${player.id}`, playerOut)
+          .then(() => {});
       });
 
       // update elo de los q pierden
-      pLose.forEach(player => {
+      pLose.forEach((player) => {
         let elo = new Elo(eloWin, player.elo);
         let playerOut = new Player(
           player.fullName,
@@ -295,23 +320,21 @@ export default {
           player.active
         );
 
-        this.startLoading();
-        axios.put(`${this.strapi}/players/${player.id}`, playerOut).then(() => {
-          this.endLoading();
-        });
+        axios
+          .put(`${this.strapi}/players/${player.id}`, playerOut)
+          .then(() => {});
       });
     },
 
     filter() {
-      this.startLoading();
       axios.get(this.strapi + "/plays?_limit=-1").then(({ data }) => {
         this.plays = data.reverse();
         if (this.fPlayer != "")
-          this.plays = this.plays.filter(p => {
-            return p.player_results.find(pr => pr.player == this.fPlayer);
+          this.plays = this.plays.filter((p) => {
+            return p.player_results.find((pr) => pr.player == this.fPlayer);
           });
         if (this.fCant != -1) this.plays = this.plays.slice(0, this.fCant);
-        this.plays.forEach(play => {
+        this.plays.forEach((play) => {
           play.player_results = play.player_results.sort((a, b) => {
             if (a.side == b.side) {
               return a.bot;
@@ -319,13 +342,11 @@ export default {
             return a.side < b.side;
           });
         });
-        this.endLoading();
       });
     },
 
     del(id) {
       if (confirm("Seguro de eliminar el Play?")) {
-        this.startLoading();
         axios.delete(`${this.strapi}/plays/${id}`).then(() => {
           this.filter();
         });
@@ -333,18 +354,18 @@ export default {
     },
 
     getPlayer(id) {
-      const temp = this.players.find(p => p.id == id);
+      const temp = this.players.find((p) => p.id == id);
       return temp ? temp : new Player();
     },
 
     getHero(id) {
-      const temp = this.heroes.find(p => p.id == id);
+      const temp = this.heroes.find((p) => p.id == id);
       return temp ? temp : new Hero();
     },
 
     resetForm() {
       this.playForm = new Play();
-    }
+    },
   },
   watch: {
     fCant() {
@@ -354,15 +375,15 @@ export default {
       this.filter();
     },
     playForm(val) {
-      val.player_results.forEach(pr => {
+      val.player_results.forEach((pr) => {
         pr.win = val.side_win === pr.side;
       });
-    }
+    },
   },
   mounted() {
     this.resetForm();
     this.filter();
-  }
+  },
 };
 </script>
 

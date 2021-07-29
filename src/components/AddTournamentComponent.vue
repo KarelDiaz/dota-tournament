@@ -352,7 +352,7 @@ export default {
             axios
               .post(this.strapi + "/tournaments", this.tournamentTemp)
               .then(({ data }) => {
-                this.$emit("tournament:add", data);
+                this.$emit("tournament-add", data);
                 this.addTournament(data);
                 this.tournamentTemp = new Tournament();
                 this.teamTemp = new Team();

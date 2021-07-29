@@ -30,7 +30,7 @@
     <div class="t-content">
       <transition name="fade">
         <add-tournament-component
-          @tournament:add="tAdd = false"
+          @tournament-add="tAdd = false"
           class="add-t"
           v-if="tAdd"
         ></add-tournament-component>

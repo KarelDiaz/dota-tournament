@@ -30,7 +30,7 @@ export default {
   },
 };
 </script>
-
+  
 <style lang="scss">
 @import "@/theme/theme.scss";
 

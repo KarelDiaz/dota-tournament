@@ -290,6 +290,7 @@ export default {
     }
   }
   .item {
+    cursor: pointer;
     &:nth-child(even) {
       background-color: map-get($map: $bg, $key: 2);
     }

@@ -7,12 +7,15 @@ import {
   INIT_PLAYERS,
   INIT_HEROES,
   INIT_TOURNAMENTS,
+  INIT_TOURNAMENT_TYPE,
   SET_PLAYER_INFO,
   SET_RESULT_INFO,
   ADD_TOURNAMENT
 } from "./mutations-type";
+import { ALL } from './tournament-type'
 import { INIT } from "./actions-type";
 import Hero from './model/hero'
+import TournamentType from './model/tournament_type'
 
 export default createStore({
   state: {
@@ -25,7 +28,8 @@ export default createStore({
     playerInfoPlays: [],
     resultInfo: {},
     playInfo: {},
-    tournaments: []
+    tournaments: [],
+    tournamentTypes: []
   },
   mutations: {
     [START_LOADING](state) {
@@ -219,6 +223,23 @@ export default createStore({
         state.tournaments = data.sort((a, b) => a.createdAt < b.createdAt);
       });
     },
+    [INIT_TOURNAMENT_TYPE](state) {
+      axios.get(state.strapi + "/tournament-types").then(({ data }) => {
+        state.tournamentTypes = data
+        state.tournamentTypes.sort((a, b) => a.name > b.name)
+
+        // in case of not have any type... add from scratch :)
+        if (data.length === 0) {
+          ALL.forEach(tt => {
+            axios.post(state.strapi + "/tournament-types", new TournamentType(tt))
+              .then(({ data }) => {
+                state.tournamentTypes.push(data)
+                state.tournamentTypes.sort((a, b) => a.name > b.name)
+              });
+          });
+        }
+      });
+    },
     [SET_PLAYER_INFO](state, dataIn) {
       state.playerInfo = dataIn;
       state.resultInfo = {};
@@ -250,6 +271,7 @@ export default createStore({
       await commit(INIT_HEROES);
       await commit(INIT_PLAYERS);
       await commit(INIT_TOURNAMENTS);
+      await commit(INIT_TOURNAMENT_TYPE);
     }
   },
   modules: {}

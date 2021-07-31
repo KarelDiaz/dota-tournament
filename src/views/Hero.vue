@@ -11,6 +11,7 @@
         overflow-auto
         bg-white
         border-r
+        z-10
       "
     >
       <input

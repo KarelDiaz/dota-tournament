@@ -43,19 +43,19 @@
     </div>
     <table v-if="players.length > 0" class="w-full mt-3 text-left">
       <tr>
-        <th></th>
+        <th class="hidden sm:block"></th>
         <th>Nick</th>
-        <th>Puntos ↓</th>
+        <th>ELO ↓</th>
         <th>P</th>
-        <th class="invisible sm:visible">V</th>
+        <th class="hidden sm:block">V</th>
         <th>Ave.</th>
         <th>K</th>
-        <th class="hide-xs">K/P</th>
+        <th class="hidden sm:block">K/P</th>
         <th>D</th>
-        <th class="hide-xs">D/P</th>
+        <th class="hidden sm:block">D/P</th>
         <th>A</th>
-        <th class="hide-xs">A/P</th>
-        <th class="hide-xs"></th>
+        <th class="hidden sm:block">A/P</th>
+        <th class="hidden sm:block"></th>
       </tr>
       <tr
         class="
@@ -71,7 +71,7 @@
         :key="p.nick"
         @click="setPlayerInfo(p)"
       >
-        <td class="text-center">
+        <td class="text-center hidden sm:block">
           <span
             :class="[
               {
@@ -121,15 +121,15 @@
         </td>
         <td>{{ p.elo || 0 }}</td>
         <td>{{ p.p || 0 }}</td>
-        <td class="invisible sm:visible">{{ p.v || 0 }}</td>
+        <td class="hidden sm:block">{{ p.v || 0 }}</td>
         <td>{{ p.p > 0 ? Math.round((p.v / p.p) * 1000) : 0 }}</td>
         <td>{{ p.k || 0 }}</td>
-        <td class="hide-xs">{{ Math.round(p.k / p.p) || 0 }}</td>
+        <td class="hidden sm:block">{{ Math.round(p.k / p.p) || 0 }}</td>
         <td>{{ p.d || 0 }}</td>
-        <td class="hide-xs">{{ Math.round(p.d / p.p) || 0 }}</td>
+        <td class="hidden sm:block">{{ Math.round(p.d / p.p) || 0 }}</td>
         <td>{{ p.a || 0 }}</td>
-        <td class="hide-xs">{{ Math.round(p.a / p.p) || 0 }}</td>
-        <td class="hide-xs">
+        <td class="hidden sm:block">{{ Math.round(p.a / p.p) || 0 }}</td>
+        <td class="hidden sm:block">
           <button v-if="false" class="danger" @click="del(p.id)">
             Eliminar
           </button>

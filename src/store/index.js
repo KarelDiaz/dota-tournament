@@ -20,7 +20,7 @@ import TournamentType from './model/tournament_type'
 export default createStore({
   state: {
     loading: false,
-    strapi: "http://localhost:1337",
+    strapi: "http://192.168.1.103:1337",
     players: [],
     heroes: [],
     playerInfo: {},

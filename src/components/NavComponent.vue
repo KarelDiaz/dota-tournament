@@ -1,37 +1,105 @@
 <template>
-  <div class="nav">
-    <router-link class="nav-link" to="/">Players</router-link>
-    <router-link class="nav-link" to="/plays">Plays</router-link>
-    <router-link class="nav-link" to="/hero">Heroes</router-link>
-    <router-link class="nav-link" to="/lotery">Lotery</router-link>
-    <router-link class="nav-link" to="/tournament">Tournament</router-link>
+  <div class="flex flex-wrap p-3 justify-between sm:justify-end">
+    <router-link
+      class="
+        py-1
+        px-2
+        shadow-sm
+        bg-gradient-to-b
+        from-blue-100
+        to-blue-300
+        hover:from-blue-50
+        hover:to-blue-200
+        border border-blue-400
+        hover:border-blue-300
+        transform
+        -skew-x-12
+      "
+      to="/"
+    >
+      Players
+    </router-link>
+    <router-link
+      class="
+        py-1
+        px-2
+        shadow-sm
+        bg-gradient-to-b
+        from-blue-100
+        to-blue-300
+        hover:from-blue-50
+        hover:to-blue-200
+        border border-blue-400
+        hover:border-blue-300
+        transform
+        -skew-x-12
+      "
+      to="/plays"
+    >
+      Plays
+    </router-link>
+    <router-link
+      class="
+        py-1
+        px-2
+        shadow-sm
+        bg-gradient-to-b
+        from-blue-100
+        to-blue-300
+        hover:from-blue-50
+        hover:to-blue-200
+        border border-blue-400
+        hover:border-blue-300
+        transform
+        -skew-x-12
+      "
+      to="/hero"
+    >
+      Heroes
+    </router-link>
+    <router-link
+      class="
+        py-1
+        px-2
+        shadow-sm
+        bg-gradient-to-b
+        from-blue-100
+        to-blue-300
+        hover:from-blue-50
+        hover:to-blue-200
+        border border-blue-400
+        hover:border-blue-300
+        transform
+        -skew-x-12
+      "
+      to="/lotery"
+    >
+      Lotery
+    </router-link>
+    <router-link
+      class="
+        py-1
+        px-2
+        shadow-sm
+        bg-gradient-to-b
+        from-blue-100
+        to-blue-300
+        hover:from-blue-50
+        hover:to-blue-200
+        border border-blue-400
+        hover:border-blue-300
+        transform
+        -skew-x-12
+      "
+      to="/tournament"
+    >
+      Tournament
+    </router-link>
   </div>
 </template>
 
 <style lang="scss" scoped>
-@import "@/theme/theme.scss";
-
-.nav {
-  padding: map-get($map: $spacings, $key: 3);
-  display: flex;
-  justify-content: right;
-  flex-wrap: wrap;
-
-  .nav-link {
-    text-transform: uppercase;
-    text-decoration: none;
-    padding: 1px 5px;
-    margin: 0 0 map-get($map: $spacings, $key: 3)
-      map-get($map: $spacings, $key: 3);
-    color: white;
-    background-color: rgba(44, 167, 204, 0.5);
-    border: 1px solid rgba(0, 217, 255, 0.5);
-
-    &.router-link-exact-active {
-      background-color: rgb(44, 167, 204);
-      border: 1px solid rgb(0, 217, 255);
-      color: white;
-    }
-  }
+.router-link-exact-active {
+  @apply from-green-50 to-green-200 border-green-400;
 }
 </style>

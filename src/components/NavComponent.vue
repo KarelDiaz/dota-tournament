@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-wrap p-3 justify-between sm:justify-end">
+  <div class="flex flex-wrap p-3 justify-between sm:justify-end h-14">
     <router-link
       class="
         py-1

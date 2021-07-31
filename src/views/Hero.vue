@@ -1,30 +1,53 @@
 <template>
-  <div>
-    <div class="heroes-container">
-      <div class="filter-container">
-        <input
-          class="buscar"
-          type="text"
-          placeholder="Buscar"
-          v-model="filterText"
-        />
-      </div>
+  <div class="flex justify-end">
+    <div
+      class="
+        flex flex-col
+        h-screen
+        w-1/4
+        top-0
+        fixed
+        left-0
+        overflow-auto
+        bg-white
+        border-r
+      "
+    >
+      <input
+        class="
+          px-2
+          py-1
+          border border-gray-200
+          bg-gradient-to-b
+          from-gray-50
+          to-gray-200
+          focus:border-blue-300
+          sticky
+          top-0
+        "
+        type="text"
+        placeholder="Buscar"
+        v-model="filterText"
+      />
 
-      <div class="heroes">
+      <div class="flex flex-col">
         <transition-group name="slide-right">
           <template v-for="(h, i) in heroes">
             <div
               :key="h.id"
-              :class="['hero', { selected: hSelected == h }]"
+              :class="[
+                'flex justify-start px-3 py-2 bg-gradient-to-t cursor-pointer hover:from-blue-200 hover:to-blue-50',
+                { 'from-green-200 to-green-50': hSelected == h },
+              ]"
               v-if="hsVisible[i]"
               @click="hSelected = h"
             >
-              <img :src="'npc/' + h.name + '.png'" class="img" />
-              <span class="name hide-xs">
+              <img :src="'npc/' + h.name + '.png'" class="w-10 rounded-full" />
+              <span class="sm:flex justify-between w-full ml-3 my-auto hidden">
                 <span>{{ h.displayName }}</span>
-                <b class="victorias">{{
-                  prs.filter((pr) => pr.hero.id == h.id).length
-                }}</b>
+                <b>
+                  {{ prs.filter((pr) => pr.hero.id == h.id).length }}
+                </b>
               </span>
             </div>
           </template>
@@ -32,91 +55,89 @@
       </div>
     </div>
 
-    <div class="players-contianer">
-      <transition name="fade-slide">
-        <div class="hero-selected" v-if="hSelected">
-          <img class="img" :src="'./npc/' + hSelected.name + '.png'" alt />
-          <div>
-            <span class="name">{{ hSelected.displayName }}</span>
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>P</th>
-                  <th>V</th>
-                  <th>Ave.</th>
-                  <th>K</th>
-                  <th>K/P</th>
-                  <th>D</th>
-                  <th>D/P</th>
-                  <th>A</th>
-                  <th>A/P</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr class="player">
-                  <td>{{ hP }}</td>
-                  <td>{{ hV }}</td>
-                  <td>{{ hAve }}</td>
-                  <td>{{ hK }}</td>
-                  <td>{{ hKP }}</td>
-                  <td>{{ hD }}</td>
-                  <td>{{ hDP }}</td>
-                  <td>{{ hA }}</td>
-                  <td>{{ hAP }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </transition>
-
+    <div class="w-3/4 px-3 pb-3">
       <div v-if="!hSelected">Seleccione un heroe para ver estadisticas</div>
-
-      <table class="players" v-if="hSelected">
-        <thead>
-          <tr>
-            <th>Nick</th>
-            <th>P</th>
-            <th>V</th>
-            <th>Ave.</th>
-            <th>K</th>
-            <th>K/P</th>
-            <th>D</th>
-            <th>D/P</th>
-            <th>A</th>
-            <th>A/P</th>
-          </tr>
-        </thead>
-        <tbody>
-          <template v-for="p in ps">
-            <tr class="player" v-if="p.nick != 'bot'" :key="p.id">
-              <td>{{ p.nick }}</td>
-              <td>{{ getP(p.id) }}</td>
-              <td>{{ getV(p.id) }}</td>
-              <td>{{ getAve(p.id) }}</td>
-              <td>{{ getK(p.id) }}</td>
-              <td>{{ getKP(p.id) }}</td>
-              <td>{{ getD(p.id) }}</td>
-              <td>{{ getDP(p.id) }}</td>
-              <td>{{ getA(p.id) }}</td>
-              <td>{{ getAP(p.id) }}</td>
+      <!--Hero info-->
+      <div class="flex flex-col sm:flex-row mb-3" v-if="hSelected">
+        <img
+          class="rounded-full"
+          :src="'./npc/' + hSelected.name + '.png'"
+          alt
+        />
+        <div class="w-full pl-3 my-auto">
+          <span class="font-extrabold">{{ hSelected.displayName }}</span>
+          <table class="w-full text-left">
+            <thead>
+              <tr>
+                <th>P</th>
+                <th>V</th>
+                <th>Ave.</th>
+                <th>K</th>
+                <th>K/P</th>
+                <th>D</th>
+                <th>D/P</th>
+                <th>A</th>
+                <th>A/P</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="player">
+                <td>{{ hP }}</td>
+                <td>{{ hV }}</td>
+                <td>{{ hAve }}</td>
+                <td>{{ hK }}</td>
+                <td>{{ hKP }}</td>
+                <td>{{ hD }}</td>
+                <td>{{ hDP }}</td>
+                <td>{{ hA }}</td>
+                <td>{{ hAP }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!--All user info-->
+      <div class="hidden sm:flex">
+        <table class="w-full text-left" v-if="hSelected">
+          <thead>
+            <tr>
+              <th>Nick</th>
+              <th>P</th>
+              <th>V</th>
+              <th>Ave.</th>
+              <th>K</th>
+              <th>K/P</th>
+              <th>D</th>
+              <th>D/P</th>
+              <th>A</th>
+              <th>A/P</th>
             </tr>
-          </template>
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            <template v-for="p in ps">
+              <tr class="player" v-if="p.nick != 'bot'" :key="p.id">
+                <td>{{ p.nick }}</td>
+                <td>{{ getP(p.id) }}</td>
+                <td>{{ getV(p.id) }}</td>
+                <td>{{ getAve(p.id) }}</td>
+                <td>{{ getK(p.id) }}</td>
+                <td>{{ getKP(p.id) }}</td>
+                <td>{{ getD(p.id) }}</td>
+                <td>{{ getDP(p.id) }}</td>
+                <td>{{ getA(p.id) }}</td>
+                <td>{{ getAP(p.id) }}</td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import { mapState, mapMutations } from "vuex";
-
-import {
-  START_LOADING,
-  END_LOADING,
-  INIT_HEROES,
-} from "@/store/mutations-type";
+import { mapState } from "vuex";
 
 export default {
   data() {
@@ -144,7 +165,6 @@ export default {
     }),
   },
   methods: {
-    ...mapMutations([START_LOADING, END_LOADING, INIT_HEROES]),
     initPs() {
       axios
         .get(this.strapi + "/players?_limit=-1")
@@ -262,7 +282,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/theme/theme.scss";
+/*@import "@/theme/theme.scss";
 
 .heroes-container {
   position: fixed;
@@ -368,5 +388,5 @@ export default {
       }
     }
   }
-}
+}*/
 </style>

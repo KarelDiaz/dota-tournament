@@ -1,10 +1,11 @@
 <template>
   <div>
     <transition name="fade">
-      <div v-if="!nonePlayers" class="players-container">
-        <div class="players">
-          <span class="top">
-            <b class="text">Seleccione los players =></b>
+      <div v-if="!nonePlayers" class="flex">
+        <!--Left-->
+        <div class="flex-grow w-32 px-3 my-3 border-r">
+          <span>
+            <b>Seleccione los players <i class="fa fa-arrow-right"></i></b>
           </span>
           <transition-group name="slide-right">
             <div
@@ -13,58 +14,104 @@
               :key="p.id"
               @click="from1To2(p)"
             >
-              <span class="name">
+              <span>
                 {{ p.nick }}
-                <span class="arrow">
-                  <i class="fa fa-arrow-right"></i>
-                </span>
+                <i class="fa fa-arrow-right"></i>
               </span>
             </div>
           </transition-group>
         </div>
-        <div class="players">
-          <span class="top">
-            <b class="text">Players</b>
-            <transition name="fade">
-              <button v-if="ps2.length > 0" class="success" @click="from2To3()">
-                R =>
+        <!--Center-->
+        <div class="flex-grow w-32 px-3 my-3 border-r">
+          <span>
+            <b>Players</b>
+            <transition-group name="fade">
+              <button
+                v-if="ps2.length > 0"
+                @click="from2To3()"
+                class="
+                  px-4
+                  ml-3
+                  text-green-900
+                  border border-green-400
+                  hover:border-green-300
+                  bg-gradient-to-b
+                  from-green-200
+                  to-green-400
+                  hover:from-green-100
+                  hover:to-green-300
+                "
+              >
+                <i class="fa fa-arrow-right"></i>
               </button>
-            </transition>
+              <button
+                v-if="ps2.length > 0"
+                @click="clearPs2()"
+                class="
+                  px-4
+                  ml-3
+                  text-gray-900
+                  border border-gray-400
+                  hover:border-gray-300
+                  bg-gradient-to-b
+                  from-gray-100
+                  to-gray-400
+                  hover:from-gray-100
+                  hover:to-gray-300
+                "
+              >
+                <i class="fa fa-trash"></i>
+              </button>
+            </transition-group>
           </span>
           <transition-group name="slide-left-in-fade-out">
             <div
-              class="player"
               v-for="p in ps2"
               :key="p.id"
               @click="from2To1(p)"
+              class="player"
             >
-              <span class="name">
+              <span>
                 {{ p.nick }}
-                <span class="arrow">
-                  <i class="fa fa-arrow-left"></i>
-                </span>
+                <i class="fa fa-arrow-left"></i>
               </span>
             </div>
           </transition-group>
         </div>
-        <div class="players">
-          <span class="top">
-            <b class="text">Seleccion aleatoria</b>
+        <!--Right-->
+        <div class="flex-grow w-32 px-3 my-3">
+          <span>
+            <b>Seleccion</b>
             <transition name="fade">
-              <button v-if="ps2.length > 0 || ps3.length > 0" @click="initPs()">
-                Reset
+              <button
+                v-if="ps3.length > 0"
+                @click="clearPs3()"
+                class="
+                  px-4
+                  ml-3
+                  text-gray-900
+                  border border-gray-400
+                  hover:border-gray-300
+                  bg-gradient-to-b
+                  from-gray-100
+                  to-gray-400
+                  hover:from-gray-100
+                  hover:to-gray-300
+                "
+              >
+                <i class="fa fa-trash"></i>
               </button>
             </transition>
           </span>
           <transition-group name="slide-left">
-            <div class="player" v-for="(p, i) in ps3" :key="p.id">
-              <span class="name" v-html="p.nick"></span>
-              <b class="number" v-html="i + 1"></b>
+            <div v-for="(p, i) in ps3" :key="p.id" class="flex justify-between">
+              <span v-html="p.nick"></span>
+              <b v-html="i + 1"></b>
             </div>
           </transition-group>
         </div>
       </div>
-      <div v-else class="none-players">
+      <div v-else>
         <h1>No hay players disponibles</h1>
       </div>
     </transition>
@@ -90,17 +137,6 @@ export default {
     },
   },
   methods: {
-    initPs() {
-      axios
-        .get(this.$store.state.strapi + "/players?_limit=-1")
-        .then(({ data }) => {
-          this.ps1 = data
-            .filter((p) => p.nick != "bot")
-            .sort((a, b) => a.nick > b.nick);
-          this.ps2 = [];
-          this.ps3 = [];
-        });
-    },
     from1To2(p) {
       this.ps1 = this.ps1.filter((pp) => pp != p);
       this.ps2.push(p);
@@ -117,77 +153,58 @@ export default {
       this.ps2 = this.ps2.filter((pp) => pp != p);
       this.ps3.push(p);
     },
+    clearPs2() {
+      this.ps2.forEach((element) => {
+        this.ps1.push(element);
+      });
+      this.ps1.sort((a, b) => a.nick > b.nick);
+      this.ps2 = [];
+    },
+    clearPs3() {
+      this.ps3.forEach((element) => {
+        this.ps1.push(element);
+      });
+      this.ps1.sort((a, b) => a.nick > b.nick);
+      this.ps3 = [];
+    },
   },
   created() {
-    this.initPs();
+    axios
+      .get(this.$store.state.strapi + "/players?_limit=-1")
+      .then(({ data }) => {
+        this.ps1 = data
+          .filter((p) => p.nick != "bot")
+          .sort((a, b) => a.nick > b.nick);
+        this.ps2 = [];
+        this.ps3 = [];
+      });
   },
 };
 </script>
 
 <style lang="scss" scoped>
-@import "@/theme/theme.scss";
-
-.players-container {
-  display: flex;
-  flex-direction: row;
-
-  .players {
-    display: flex;
-    flex-direction: column;
-    width: 33vw;
-    padding: 10px;
-
-    &:nth-of-type(1) {
-      background-color: map-get($map: $bg, $key: 1);
+.player {
+  @apply cursor-pointer;
+  &:hover {
+    i {
+      opacity: 1;
+      animation-play-state: running;
     }
-    .top {
-      padding-bottom: 10px;
+  }
 
-      .text {
-        font-size: 1.1rem;
-        padding-right: 10px;
+  i {
+    opacity: 0;
+    animation: atent 0.3s infinite alternate;
+    animation-play-state: paused;
+
+    @keyframes atent {
+      0% {
+        transform: translateX(0px);
       }
-    }
-    .player {
-      cursor: pointer;
-      padding: 5px 10px;
-      display: flex;
-      justify-content: space-between;
-
-      &:hover {
-        background-color: map-get($map: $bg, $key: 3);
-
-        .name {
-          i {
-            opacity: 1;
-            animation-play-state: running;
-          }
-        }
-      }
-
-      .name {
-        text-transform: capitalize;
-
-        i {
-          opacity: 0;
-          animation: atent 0.3s infinite alternate;
-          animation-play-state: paused;
-
-          @keyframes atent {
-            0% {
-              transform: translateX(0px);
-            }
-            100% {
-              transform: translateX(15px);
-            }
-          }
-        }
+      100% {
+        transform: translateX(15px);
       }
     }
   }
-}
-.none-players {
-  display: flex;
-  justify-content: center;
 }
 </style>

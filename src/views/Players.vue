@@ -3,14 +3,33 @@
     <div class="flex justify-center">
       <form @submit.prevent="send">
         <input
-          class="px-2 py-1 border border-gray-200  bg-gradient-to-b from-gray-50 to-gray-200 focus:border-blue-300"
+          class="
+            px-2
+            py-1
+            border border-gray-200
+            bg-gradient-to-b
+            from-gray-50
+            to-gray-200
+            focus:border-blue-300
+          "
           v-model="playerForm.nick"
           required
           type="text"
           placeholder="Escriba el nick"
         />
         <button
-          class="px-5 py-1 text-green-900 border border-green-400  bg-gradient-to-b from-green-200 to-green-400 hover:from-green-100 hover:to-green-300 disabled:bg-gray-400"
+          class="
+            px-5
+            py-1
+            text-green-900
+            border border-green-400
+            hover:border-green-300
+            bg-gradient-to-b
+            from-green-200
+            to-green-400
+            hover:from-green-100
+            hover:to-green-300
+          "
           type="submit"
         >
           <span v-if="!idMod">
@@ -39,7 +58,13 @@
         <th class="hide-xs"></th>
       </tr>
       <tr
-        class="border cursor-pointer  bg-gradient-to-t hover:from-blue-100 hover:to-blue-50"
+        class="
+          border
+          cursor-pointer
+          bg-gradient-to-t
+          hover:from-blue-100
+          hover:to-blue-50
+        "
         v-for="(p, i) in players
           .filter((p) => p.nick != 'bot')
           .sort((a, b) => a.elo < b.elo)"
@@ -73,7 +98,19 @@
         <td>
           <button
             @click="preMod(p.id)"
-            class="px-2 py-1 text-left border border-opacity-0  nick hover:border-opacity-100 hover:border-gray-300 bg-gradient-to-b hover:from-gray-100 hover:to-gray-300 active:from-gray-200 active:to-gray-400"
+            class="
+              px-2
+              py-1
+              text-left
+              border border-opacity-0
+              nick
+              hover:border-opacity-100 hover:border-gray-300
+              bg-gradient-to-b
+              hover:from-gray-100
+              hover:to-gray-300
+              active:from-gray-200
+              active:to-gray-400
+            "
           >
             <span>
               {{ p.nick }}

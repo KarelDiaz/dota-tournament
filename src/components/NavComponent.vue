@@ -10,8 +10,8 @@
         to-blue-300
         hover:from-blue-50
         hover:to-blue-200
-        border border-blue-400
-        hover:border-blue-300
+        border border-blue-300
+        hover:border-blue-200
         transform
         -skew-x-12
       "
@@ -29,8 +29,8 @@
         to-blue-300
         hover:from-blue-50
         hover:to-blue-200
-        border border-blue-400
-        hover:border-blue-300
+        border border-blue-300
+        hover:border-blue-200
         transform
         -skew-x-12
       "
@@ -48,8 +48,8 @@
         to-blue-300
         hover:from-blue-50
         hover:to-blue-200
-        border border-blue-400
-        hover:border-blue-300
+        border border-blue-300
+        hover:border-blue-200
         transform
         -skew-x-12
       "
@@ -67,8 +67,8 @@
         to-blue-300
         hover:from-blue-50
         hover:to-blue-200
-        border border-blue-400
-        hover:border-blue-300
+        border border-blue-300
+        hover:border-blue-200
         transform
         -skew-x-12
       "
@@ -86,8 +86,8 @@
         to-blue-300
         hover:from-blue-50
         hover:to-blue-200
-        border border-blue-400
-        hover:border-blue-300
+        border border-blue-300
+        hover:border-blue-200
         transform
         -skew-x-12
       "
@@ -100,6 +100,9 @@
 
 <style lang="scss" scoped>
 .router-link-exact-active {
-  @apply from-green-50 to-green-200 border-green-400;
+  @apply from-green-50 to-green-200 border-green-200;
+  &:hover {
+    @apply from-green-50 to-green-200 border-green-200 cursor-default;
+  }
 }
 </style>

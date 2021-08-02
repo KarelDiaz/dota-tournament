@@ -115,7 +115,7 @@
           ]"
         ></div>
       </button>
-      <transition name="slide-left">
+      <transition name="slide-left-full">
         <div
           v-if="open"
           class="
@@ -123,11 +123,11 @@
             z-50
             left-0
             top-0
-            w-1/2
+            w-2/3
             h-screen
             fixed
             bg-white
-            shadow-lg
+            shadow-2xl
             p-3
           "
         >

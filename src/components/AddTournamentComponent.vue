@@ -1,94 +1,230 @@
 <template>
-  <div>
-    <div
-      v-if="$store.state.players.length > 0"
-      class="add-tournament-container"
-    >
-      <div class="title">New <b>Tournament</b></div>
-      <div class="tournament">
-        <button
-          class="success"
-          @click="
-            tournamentTemp.name =
-              'Tournament ' + ($store.state.tournaments.length + 1)
+  <div class="border border-gray-400 border-dashed p-3">
+    <div v-if="$store.state.players.length > 0">
+      <div class="text-xl">
+        <span class="font-extrabold">Tournament</span>
+      </div>
+      <!--Torunament name and type-->
+      <div class="py-3 flex flex-col sm:flex-row">
+        <div class="flex">
+          <button
+            class="
+              px-5
+              text-gray-900
+              border border-gray-400
+              hover:border-gray-300
+              bg-gradient-to-b
+              from-gray-200
+              to-gray-400
+              hover:from-gray-100
+              hover:to-gray-300
+            "
+            title="Generar el nombre del torneo de forma aleatoria"
+            @click="
+              tournamentTemp.name =
+                'Tournament ' + ($store.state.tournaments.length + 1)
+            "
+          >
+            <i class="fa fa-plus"></i>
+          </button>
+          <input
+            class="
+              px-2
+              w-full
+              border border-gray-200
+              bg-gradient-to-b
+              from-gray-50
+              to-gray-200
+            "
+            required
+            type="text"
+            v-model="tournamentTemp.name"
+            placeholder="Name"
+          />
+        </div>
+        <select
+          class="
+            px-3
+            py-1
+            mt-3
+            sm:mt-0
+            sm:ml-3
+            border border-gray-200
+            bg-gradient-to-b
+            from-gray-50
+            to-gray-200
+            focus:border-blue-300
           "
+          v-model="tournamentTemp.type"
+          placeholder="Type"
         >
-          R <i class="fa fa-plus"></i>
-        </button>
-        <input
-          required
-          type="text"
-          v-model="tournamentTemp.name"
-          placeholder="Name"
-        />
-        <select v-model="tournamentTemp.type" placeholder="Type">
           <option v-for="t in tournamentTypes" :key="t.id" :value="t">
             {{ normalizeTounamentTypeName(t.name) }}
           </option>
         </select>
       </div>
-      <div class="teams-container">
+      <!--Teams-->
+      <div class="flex flex-col sm:flex-row space-y-3 sm:space-x-3 mb-3">
+        <!--Teams in-->
         <transition-group name="slide-right">
-          <div class="team" v-for="team in tournamentTemp.teams" :key="team">
-            <div class="header">
+          <div
+            v-for="team in tournamentTemp.teams"
+            :key="team"
+            class="
+              flex flex-col
+              space-y-3
+              border
+              p-3
+              bg-gradient-to-t
+              from-gray-200
+              to-gray-50
+            "
+          >
+            <div class="flex flex-col">
               {{ team.name }}
-              <i class="elo">{{ eloMediaTeam(team) }}</i>
+              <i class="text-xs">{{ eloMediaTeam(team) }}</i>
             </div>
-            <div class="player-container">
-              <span class="player" v-for="p in team.players" :key="p">
+            <div class="flex flex-col h-full">
+              <span v-for="p in team.players" :key="p">
                 {{ p.nick }}
-                <i class="elo">{{ p.elo }}</i>
+                <i class="text-xs">{{ p.elo }}</i>
               </span>
             </div>
-            <div class="footer">
-              <button class="" @click="delTeam(team)">
-                <i class="fa fa-trash"></i>
-              </button>
-            </div>
+            <button
+              class="
+                px-4
+                bg-gradient-to-b
+                border border-red-400
+                hover:border-green-300
+                text-red-900
+                from-red-200
+                to-red-400
+                hover:from-red-100
+                hover:to-red-300
+              "
+              @click="delTeam(team)"
+            >
+              <i class="fa fa-trash"></i>
+            </button>
           </div>
         </transition-group>
-
-        <div class="team new-team" v-if="newTeamVisibility">
-          <div class="header">
-            <div>
+        <!--New team-->
+        <div
+          class="
+            flex flex-col
+            border border-dashed border-gray-400
+            p-3
+            space-y-3
+          "
+          v-if="newTeamVisibility"
+        >
+          <!--Team name and type-->
+          <div>
+            <div class="mb-1 font-bold">Team</div>
+            <div class="flex mb-1">
               <button
-                class="success"
+                class="
+                  px-5
+                  text-gray-900
+                  border border-gray-400
+                  hover:border-gray-300
+                  bg-gradient-to-b
+                  from-gray-200
+                  to-gray-400
+                  hover:from-gray-100
+                  hover:to-gray-300
+                "
                 @click="
                   teamTemp.name = 'Team ' + (tournamentTemp.teams.length + 1)
                 "
               >
-                R <i class="fa fa-plus"></i>
+                <i class="fa fa-plus"></i>
               </button>
               <input
+                class="
+                  px-2
+                  w-full
+                  border border-gray-200
+                  bg-gradient-to-b
+                  from-gray-50
+                  to-gray-200
+                "
                 required
                 type="text"
                 v-model="teamTemp.name"
                 placeholder="Team name"
               />
             </div>
-            <small class="elo">
+            <div class="text-xs" v-if="teamTemp.players.length > 0">
               Team ELO:
-              <i v-if="teamTemp.players.length > 0" class="elo">
+              <i>
                 {{ eloMediaTeam(teamTemp) }}
               </i>
-            </small>
+            </div>
           </div>
-          <div class="add-player-container">
-            <small class="header">Players</small>
-            <div class="options">
-              <button class="success" @click="addRandomPlayerToTeamTemp">
-                R <i class="fa fa-plus"></i>
+          <!--Players-->
+          <div>
+            <div>
+              <b> Players </b>
+              <i v-if="teamTemp.players.length >= 5" class="text-green-500">
+                Full
+              </i>
+            </div>
+            <div
+              v-if="teamTemp.players.length < 5 && players.length > 0"
+              class="flex mt-1"
+            >
+              <button
+                class="
+                  px-5
+                  text-gray-900
+                  border border-gray-400
+                  hover:border-gray-300
+                  bg-gradient-to-b
+                  from-gray-200
+                  to-gray-400
+                  hover:from-gray-100
+                  hover:to-gray-300
+                "
+                @click="addRandomPlayerToTeamTemp"
+              >
+                <i class="fa fa-plus"></i>
               </button>
-              <select v-model="playerSelected" class="add-player-players">
+              <select
+                class="
+                  px-2
+                  py-1
+                  w-full
+                  border border-gray-200
+                  bg-gradient-to-b
+                  from-gray-50
+                  to-gray-200
+                "
+                v-model="playerSelected"
+              >
                 <option v-for="p in players" :key="p" :value="p">
                   {{ p.nick }}
                 </option>
               </select>
-              <button @click="addPlayerToTeamTemp">
+              <button
+                v-if="playerSelected"
+                class="
+                  px-5
+                  text-green-900
+                  border border-green-400
+                  hover:border-green-300
+                  bg-gradient-to-b
+                  from-green-200
+                  to-green-400
+                  hover:from-green-100
+                  hover:to-green-300
+                "
+                @click="addPlayerToTeamTemp"
+              >
                 <i class="fa fa-plus"></i>
               </button>
             </div>
-            <div class="player-container">
+            <div class="flex flex-col space-y-1 mt-1">
               <transition-group name="slide-top">
                 <span
                   class="player"
@@ -97,15 +233,27 @@
                   @click="cancelPlayerToTeamTemp(p)"
                 >
                   {{ p.nick }}
-                  <i class="elo">{{ p.elo }}</i>
+                  <span class="elo text-xs mr-3 italic">{{ p.elo }}</span>
                   <i class="fa fa-arrow-up"></i>
                 </span>
               </transition-group>
             </div>
           </div>
-          <div class="footer">
+          <!--Button add team-->
+          <div>
             <button
-              class="success"
+              class="
+                px-4
+                w-full
+                bg-gradient-to-b
+                border border-green-400
+                hover:border-green-300
+                text-green-900
+                from-green-200
+                to-green-400
+                hover:from-green-100
+                hover:to-green-300
+              "
               @click="addTeamTempToTournamentTemp"
               v-if="teamTemp.players.length > 0 && teamTemp.name"
             >
@@ -114,8 +262,8 @@
           </div>
         </div>
       </div>
-
-      <div v-if="!addTournamentOk" class="errors-tourn">
+      <!--Errors-->
+      <div v-if="!addTournamentOk">
         <small>
           <span v-if="!tournamentTemp.name">
             El torneo necesita un nombre.
@@ -129,10 +277,10 @@
           </span>
         </small>
       </div>
-
-      <div v-if="addTournamentOk" class="teams-add-button">
+      <!--Info and add button-->
+      <div v-if="addTournamentOk">
+        <!--Info-->
         <small v-if="tournamentTemp.type && tournamentTemp.name" class="info">
-          <!--Info-->
           <div>
             <span>
               El torneo <b>{{ tournamentTemp.name.toUpperCase() }}</b>
@@ -256,12 +404,27 @@
             </span>
           </div>
         </small>
-        <button class="btn success" @click="submitTournament()">
+        <button
+          class="
+            mt-3
+            w-full
+            text-green-900
+            border border-green-400
+            hover:border-green-300
+            bg-gradient-to-b
+            from-green-200
+            to-green-400
+            hover:from-green-100
+            hover:to-green-300
+          "
+          @click="submitTournament()"
+        >
           <i class="fa fa-plus"></i>
         </button>
       </div>
     </div>
-    <div v-else class="add-tournament-container">
+    <!--No players error -->
+    <div v-else>
       <h3>Es necesario agregar players para poder iniciar un torneo</h3>
       <p>Pude agragar players <a href="/">aqui</a>.</p>
     </div>
@@ -294,7 +457,7 @@ export default {
       DIRECT_3,
       DIRECT_5,
       players: [],
-      playerSelected: {},
+      playerSelected: null,
       teamTemp: new Team(),
       tournamentTemp: new Tournament(),
     };
@@ -356,13 +519,14 @@ export default {
                 this.addTournament(data);
                 this.tournamentTemp = new Tournament();
                 this.teamTemp = new Team();
+                this.players = this.$store.state.players;
               });
           }
         });
       });
     },
     eloMediaTeam(team) {
-      if (team.players.length == 0) return 0;
+      if (!team.players || team.players.length == 0) return 0;
       let s = 0;
       team.players.forEach((p) => {
         s += p.elo;
@@ -374,7 +538,7 @@ export default {
       this.teamTemp.players.push(this.playerSelected);
       this.teamTemp.players.sort((a, b) => a.nick > b.nick);
       this.players = this.players.filter((p) => p != this.playerSelected);
-      this.playerSelected = {};
+      this.playerSelected = null;
     },
     addRandomPlayerToTeamTemp() {
       if (this.players.length == 0) return;
@@ -383,7 +547,7 @@ export default {
       this.teamTemp.players.push(pTemp);
       this.teamTemp.players.sort((a, b) => a.nick > b.nick);
       this.players = this.players.filter((p) => p != pTemp);
-      this.playerSelected = {};
+      this.playerSelected = null;
     },
     cancelPlayerToTeamTemp(player) {
       this.players.push(player);
@@ -412,124 +576,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/theme/theme.scss";
-
-.add-tournament-container {
-  border: 1px solid rgba(0, 225, 255, 0.5);
-  background: rgba(0, 247, 255, 0.3);
-  padding: map-get($map: $spacings, $key: 3);
-
-  .title {
-    margin-bottom: map-get($map: $spacings, $key: 3);
-  }
-
-  .team-header {
-    margin-top: map-get($map: $spacings, $key: 3);
-  }
-  .teams-container {
-    display: flex;
-    flex-wrap: wrap;
-
-    .team {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: map-get($map: $spacings, $key: 2);
-      margin-top: map-get($map: $spacings, $key: 3);
-      border: 1px solid rgba(0, 225, 255, 0.5);
-      background: rgba(0, 247, 255, 0.3);
-      min-width: 100px;
-      margin-right: map-get($map: $spacings, $key: 3);
-      &:last-of-type {
-        margin-right: 0;
-      }
-      .elo {
-        font-size: 0.7rem;
-      }
-      .header {
-        display: flex;
-        flex-direction: column;
-      }
-      .player-container {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        margin-top: map-get($map: $spacings, $key: 3);
-
-        .player {
-          padding: map-get($map: $spacings, $key: 1);
-        }
-      }
-
-      .footer {
-        margin-top: map-get($map: $spacings, $key: 3);
-
-        button {
-          width: 100%;
-        }
-      }
-    }
-
-    .new-team {
-      background: rgba(0, 247, 255, 0.1);
-
-      .header {
-        .elo {
-          margin-top: map-get($map: $spacings, $key: 1);
-        }
-      }
-      .add-player-container {
-        margin-top: map-get($map: $spacings, $key: 3);
-        height: 100%;
-
-        .header {
-          margin-bottom: map-get($map: $spacings, $key: 1);
-
-          .elo {
-            margin-top: map-get($map: $spacings, $key: 1);
-          }
-        }
-      }
-      .player {
-        cursor: pointer;
-        .fa {
-          padding-left: map-get($map: $spacings, $key: 2);
-          color: transparentize($color: white, $amount: 0.5);
-          opacity: 0;
-          animation: atent 0.3s infinite alternate;
-          animation-play-state: paused;
-
-          @keyframes atent {
-            0% {
-              transform: translateY(-5px);
-            }
-            100% {
-              transform: translateY(5px);
-            }
-          }
-        }
-
-        &:hover {
-          background: transparentize($color: white, $amount: 0.9);
-          i {
-            opacity: 1;
-            animation-play-state: running;
-          }
-        }
-      }
+.player {
+  @apply cursor-pointer;
+  &:hover {
+    i {
+      opacity: 1;
+      animation-play-state: running;
     }
   }
 
-  .errors-tourn {
-    margin-top: map-get($map: $spacings, $key: 3);
-    color: map-get($map: $color, $key: win);
-  }
+  i {
+    opacity: 0;
+    animation: atent 0.3s infinite alternate;
+    animation-play-state: paused;
 
-  .teams-add-button {
-    margin-top: map-get($map: $spacings, $key: 3);
-    .btn {
-      margin-top: map-get($map: $spacings, $key: 3);
-      width: 100%;
+    @keyframes atent {
+      0% {
+        transform: translateY(5px);
+      }
+      100% {
+        transform: translateY(-5px);
+      }
     }
   }
 }

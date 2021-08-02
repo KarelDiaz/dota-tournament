@@ -1,41 +1,73 @@
 <template>
-  <div class="tournament-container">
-    <div class="actives">
-      <div class="header">
-        <b class="text">Tournaments</b>
+  <div class="flex">
+    <!--Tournaments list-->
+    <div class="p-3">
+      <!--Tournaments header-->
+      <div class="flex justify-between pb-3">
         <button
-          :class="['add-tournament', { success: !tAdd }, { danger: tAdd }]"
+          :class="[
+            'px-4 bg-gradient-to-b border',
+            {
+              'border-green-400 hover:border-green-300 text-green-900 from-green-200 to-green-400 hover:from-green-100 hover:to-green-300':
+                !tAdd,
+            },
+            {
+              'border-gray-400 hover:border-gray-300 text-gray-900 border from-gray-100 to-gray-400 hover:from-gray-100 hover:to-gray-300':
+                tAdd,
+            },
+          ]"
           @click="tAdd = !tAdd"
         >
           <i class="fa fa-plus" v-if="!tAdd"></i>
           <i class="fa fa-trash" v-else></i>
         </button>
+        <b :class="['ml-3', { 'hidden sm:flex': tAdd }, { flex: !tAdd }]">
+          Tournaments
+        </b>
       </div>
-      <div class="list" v-if="tournaments.length > 0">
+      <!--Tornements-->
+      <div
+        :class="[
+          'flex-col space-y-3',
+          { 'hidden sm:flex': tAdd },
+          { flex: !tAdd },
+        ]"
+        v-if="tournaments.length > 0"
+      >
         <button
-          :class="['item', { success: tournamentSelected == t }]"
+          :class="[
+            'bg-gradient-to-bl border p-3 flex flex-col space-y-1',
+            {
+              'text-blue-900 border-blue-400 hover:border-blue-300 from-blue-100 to-blue-400 hover:from-blue-100 hover:to-blue-300':
+                tournamentSelected != t,
+            },
+            {
+              'text-green-900 border-green-200  from-green-50 to-green-200 cursor-default':
+                tournamentSelected == t,
+            },
+          ]"
           v-for="t in tournaments"
           :key="t.id"
           @click="tournamentSelected = t"
         >
           <b>{{ t.name }}</b>
-          <hr />
-          Teams {{ t.teams.length }}
-          <hr />
-          <i>{{ moment(t.createdAt).format("MMMM D, YYYY, HH:mm") }}</i>
+          <i class="text-sm">{{
+            moment(t.createdAt).format("MMMM D, YYYY")
+          }}</i>
         </button>
       </div>
-      <div class="list" v-if="tournaments.length == 0">No hay torneos</div>
+      <div v-if="tournaments.length == 0">No hay torneos</div>
     </div>
-    <div class="t-content">
-      <transition name="fade">
-        <add-tournament-component
-          @tournament-add="tAdd = false"
-          class="add-t"
-          v-if="tAdd"
-        ></add-tournament-component>
-      </transition>
-      <view-tournament-component :tournament="tournamentSelected">
+    <div class="my-3 mr-3">
+      <add-tournament-component
+        class="mr-3 mb-3"
+        @tournament-add="this.tAdd = false"
+        v-if="tAdd"
+      ></add-tournament-component>
+      <view-tournament-component
+        :class="[{ 'hidden sm:flex': tAdd }, { flex: !tAdd }]"
+        :tournament="tournamentSelected"
+      >
       </view-tournament-component>
     </div>
   </div>
@@ -66,42 +98,3 @@ export default {
   },
 };
 </script>
-
-<style scoped lang="scss">
-@import "@/theme/theme.scss";
-
-.tournament-container {
-  display: flex;
-
-  .header {
-    display: flex;
-    justify-content: space-between;
-    padding: map-get($map: $spacings, $key: 2);
-
-    .text {
-      font-size: 1.1rem;
-    }
-  }
-
-  .actives {
-    display: flex;
-    flex-direction: column;
-    min-width: 200px;
-    max-width: 200px;
-
-    .list {
-      display: flex;
-      flex-direction: column;
-      padding: map-get($map: $spacings, $key: 2);
-
-      .item {
-        margin-top: map-get($map: $spacings, $key: 2);
-      }
-    }
-  }
-
-  .t-content {
-    padding-right: map-get($map: $spacings, $key: 2);
-  }
-}
-</style>

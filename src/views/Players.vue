@@ -41,103 +41,106 @@
         </button>
       </form>
     </div>
-    <table v-if="players.length > 0" class="w-full mt-3 text-left">
-      <tr>
-        <th class="hidden sm:block"></th>
-        <th>Nick</th>
-        <th>ELO ↓</th>
-        <th>P</th>
-        <th class="hidden sm:block">V</th>
-        <th>Ave.</th>
-        <th>K</th>
-        <th class="hidden sm:block">K/P</th>
-        <th>D</th>
-        <th class="hidden sm:block">D/P</th>
-        <th>A</th>
-        <th class="hidden sm:block">A/P</th>
-        <th class="hidden sm:block"></th>
-      </tr>
-      <tr
-        class="
-          border
-          cursor-pointer
-          bg-gradient-to-t
-          hover:from-blue-100
-          hover:to-blue-50
-        "
-        v-for="(p, i) in players
-          .filter((p) => p.nick != 'bot')
-          .sort((a, b) => a.elo < b.elo)"
-        :key="p.nick"
-        @click="setPlayerInfo(p)"
-      >
-        <td class="text-center hidden sm:block">
-          <span
-            :class="[
-              {
-                'from-yellow-100 to-yellow-400 border border-yellow-400 text-yellow-600':
-                  i == 0,
-              },
-              {
-                'from-gray-100 to-gray-400 border border-gray-400 text-gray-600':
-                  i == 1,
-              },
-              {
-                'from-yellow-400 to-yellow-700 border border-yellow-700 text-yellow-900':
-                  i == 2,
-              },
-              {
-                'bg-gradient-to-bl rounded-full font-extrabold px-2 py-1 shadow-md':
-                  i <= 2,
-              },
-            ]"
-          >
-            {{ i }}
-          </span>
-        </td>
-        <td>
-          <button
-            @click="preMod(p.id)"
-            class="
-              px-2
-              py-1
-              text-left
-              border border-opacity-0
-              nick
-              hover:border-opacity-100 hover:border-gray-300
-              bg-gradient-to-b
-              hover:from-gray-100
-              hover:to-gray-300
-              active:from-gray-200
-              active:to-gray-400
-            "
-          >
-            <span>
-              {{ p.nick }}
+    <div v-if="players.length > 0" class="px-3 pb-3">
+      <table class="w-full mt-3 text-left">
+        <tr>
+          <th class="hidden sm:block"></th>
+          <th>Nick</th>
+          <th>ELO ↓</th>
+          <th>P</th>
+          <th class="hidden sm:block">V</th>
+          <th>Ave</th>
+          <th>K</th>
+          <th class="hidden sm:block">K/P</th>
+          <th>D</th>
+          <th class="hidden sm:block">D/P</th>
+          <th>A</th>
+          <th class="hidden sm:block">A/P</th>
+          <th class="hidden sm:block"></th>
+        </tr>
+        <tr
+          class="
+            border
+            cursor-pointer
+            bg-gradient-to-t
+            hover:from-blue-100
+            hover:to-blue-50
+          "
+          v-for="(p, i) in players
+            .filter((p) => p.nick != 'bot')
+            .sort((a, b) => a.elo < b.elo)"
+          :key="p.nick"
+          @click="setPlayerInfo(p)"
+        >
+          <td class="text-center hidden sm:block">
+            <span
+              :class="[
+                {
+                  'from-yellow-100 to-yellow-400 border border-yellow-400 text-yellow-600':
+                    i == 0,
+                },
+                {
+                  'from-gray-100 to-gray-400 border border-gray-400 text-gray-600':
+                    i == 1,
+                },
+                {
+                  'from-yellow-400 to-yellow-700 border border-yellow-700 text-yellow-900':
+                    i == 2,
+                },
+                {
+                  'bg-gradient-to-bl rounded-full font-extrabold px-2 py-1 shadow-md':
+                    i <= 2,
+                },
+              ]"
+            >
+              {{ i }}
             </span>
+          </td>
+          <td>
+            <button
+              @click="preMod(p.id)"
+              class="
+                px-2
+                py-1
+                text-left
+                border border-opacity-0
+                nick
+                hover:border-opacity-100 hover:border-gray-300
+                bg-gradient-to-b
+                hover:from-gray-100
+                hover:to-gray-300
+                active:from-gray-200
+                active:to-gray-400
+              "
+            >
+              <span>
+                {{ p.nick }}
+              </span>
 
-            <i class="ml-3 fa fa-pencil"></i>
-          </button>
-        </td>
-        <td>{{ p.elo || 0 }}</td>
-        <td>{{ p.p || 0 }}</td>
-        <td class="hidden sm:block">{{ p.v || 0 }}</td>
-        <td>{{ p.p > 0 ? Math.round((p.v / p.p) * 1000) : 0 }}</td>
-        <td>{{ p.k || 0 }}</td>
-        <td class="hidden sm:block">{{ Math.round(p.k / p.p) || 0 }}</td>
-        <td>{{ p.d || 0 }}</td>
-        <td class="hidden sm:block">{{ Math.round(p.d / p.p) || 0 }}</td>
-        <td>{{ p.a || 0 }}</td>
-        <td class="hidden sm:block">{{ Math.round(p.a / p.p) || 0 }}</td>
-        <td class="hidden sm:block">
-          <button v-if="false" class="danger" @click="del(p.id)">
-            Eliminar
-          </button>
+              <i class="ml-3 fa fa-pencil"></i>
+            </button>
+          </td>
+          <td>{{ p.elo || 0 }}</td>
+          <td>{{ p.p || 0 }}</td>
+          <td class="hidden sm:block">{{ p.v || 0 }}</td>
+          <td>{{ p.p > 0 ? Math.round((p.v / p.p) * 1000) : 0 }}</td>
+          <td>{{ p.k || 0 }}</td>
+          <td class="hidden sm:block">{{ Math.round(p.k / p.p) || 0 }}</td>
+          <td>{{ p.d || 0 }}</td>
+          <td class="hidden sm:block">{{ Math.round(p.d / p.p) || 0 }}</td>
+          <td>{{ p.a || 0 }}</td>
+          <td class="hidden sm:block">{{ Math.round(p.a / p.p) || 0 }}</td>
+          <td class="hidden sm:block">
+            <button v-if="false" class="danger" @click="del(p.id)">
+              Eliminar
+            </button>
 
-          <button v-if="false" @click="setPlayerInfo(p)">Info</button>
-        </td>
-      </tr>
-    </table>
+            <button v-if="false" @click="setPlayerInfo(p)">Info</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+
     <div v-else class="no-players">
       <h1>No hay players disponibles</h1>
     </div>

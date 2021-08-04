@@ -58,17 +58,6 @@
       </div>
       <div v-if="tournaments.length == 0">No hay torneos</div>
     </div>
-<<<<<<< HEAD
-    <div class="t-content">
-      <transition name="fade">
-        <add-tournament-component
-          @tournament-added="tAdd = false"
-          class="add-t"
-          v-if="tAdd"
-        ></add-tournament-component>
-      </transition>
-      <view-tournament-component :tournament="tournamentSelected">
-=======
     <div class="flex flex-col my-3 mr-3 w-full">
       <add-tournament-component
         class="mr-3 mb-3"
@@ -79,7 +68,6 @@
         :class="[{ 'hidden sm:flex': tAdd }, { flex: !tAdd }]"
         :tournament="tournamentSelected"
       >
->>>>>>> tailwind
       </view-tournament-component>
     </div>
   </div>

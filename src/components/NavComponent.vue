@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- Desktop -->
     <div
       class="
         hidden
@@ -10,10 +11,27 @@
         bg-gradient-to-r
         from-blue-100
         to-white
-        border-b border-blue-100
+        border border-blue-100
+        shadow-md
       "
     >
-      <img src="dota_logo.png" class="filter hue-rotate-180 h-8" />
+      <router-link to="/" class="flex cursor-pointer">
+        <img src="dota_logo.png" class="h-full my-auto" />
+        <div class="text-2xl font-bold ml-3">
+          <span
+            class="
+              bg-clip-text
+              text-transparent
+              bg-gradient-to-b
+              from-blue-500
+              to-blue-800
+              my-auto
+            "
+          >
+            Dota Ranking
+          </span>
+        </div>
+      </router-link>
       <div class="flex">
         <router-link
           class="
@@ -30,7 +48,7 @@
             transform
             -skew-x-12
           "
-          to="/"
+          to="/players"
         >
           Players
         </router-link>
@@ -112,6 +130,7 @@
         </router-link>
       </div>
     </div>
+    <!-- Movile -->
     <div
       class="
         flex
@@ -126,9 +145,14 @@
         from-blue-100
         to-white
         border-b border-blue-100
+        shadow-md
       "
     >
-      <img src="dota_logo.png" class="filter hue-rotate-180" />
+      <div>
+        <router-link to="/" class="cursor-pointer">
+          <img class="h-full" src="dota_logo.png" />
+        </router-link>
+      </div>
       <button class="flex flex-col justify-between" @click="open = !open">
         <div
           v-for="i in 3"
@@ -158,10 +182,13 @@
             p-3
           "
         >
-          <img
-            src="dota_logo.png"
-            class="filter hue-rotate-180 mb-3 w-1/4 mx-auto"
-          />
+          <router-link
+            to="/"
+            class="cursor-pointer"
+            @click.passive="open = false"
+          >
+            <img src="dota_logo.png" class="mb-3 w-1/4 mx-auto" />
+          </router-link>
           <router-link
             @click.passive="open = false"
             class="
@@ -177,7 +204,7 @@
               border border-blue-300
               hover:border-blue-200
             "
-            to="/"
+            to="/players"
           >
             Players
           </router-link>

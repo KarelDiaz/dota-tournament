@@ -28,7 +28,8 @@
         <div>
           <button
             class="
-              w-40
+              px-3
+              sm:w-40
               text-green-900
               border border-green-400
               hover:border-green-300
@@ -68,10 +69,10 @@
         </label>
       </div>
       <!-- Players -->
-      <div class="flex border border-t-0 border-b-0">
+      <div class="flex flex-wrap border border-t-0 border-b-0">
         <!-- Player list -->
         <div
-          class="w-1/10 h-40 flex flex-col"
+          class="w-1/5 sm:w-1/10 h-40 flex flex-col"
           v-for="(pr, index) in playForm.player_results"
           :key="index"
         >

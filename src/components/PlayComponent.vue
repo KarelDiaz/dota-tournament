@@ -1,9 +1,13 @@
 <template>
   <div class="flex flex-col border border-t-0 border-b-0">
-    <div class="flex" @mouseover="date = true" @mouseleave="date = false">
+    <div
+      class="flex flex-wrap"
+      @mouseover="date = true"
+      @mouseleave="date = false"
+    >
       <div
-        v-for="result in play.player_results"
-        class="w-1/10 flex flex-col"
+        v-for="result in playCopy.player_results"
+        class="w-1/5 sm:w-1/10 flex flex-col"
         :key="result.id"
       >
         <!-- Side -->
@@ -128,6 +132,7 @@ export default {
     return {
       moment,
       date: false,
+      playCopy: null,
     };
   },
   props: {
@@ -143,12 +148,14 @@ export default {
       return temp ? temp : new Hero();
     },
   },
+  created() {
+    // the copy is because the watcher doesnt run on props
+    this.playCopy = this.play;
+  },
   watch: {
-    play(val) {
+    playCopy(val) {
       val.player_results.sort((a, b) => {
-        if (a.side == b.side) {
-          return a.bot;
-        }
+        if (a.side == b.side) return a.bot;
         return a.side < b.side;
       });
     },

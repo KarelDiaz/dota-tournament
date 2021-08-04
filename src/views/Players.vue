@@ -1,68 +1,145 @@
 <template>
-  <div>
-    <div class="options">
-      <form class="add-player" @submit.prevent="send">
+  <div class="mt-2">
+    <div class="flex justify-center">
+      <form @submit.prevent="send">
         <input
-          class="nick"
+          class="
+            px-2
+            py-1
+            border border-gray-200
+            bg-gradient-to-b
+            from-gray-50
+            to-gray-200
+            focus:border-blue-300
+          "
           v-model="playerForm.nick"
           required
           type="text"
           placeholder="Escriba el nick"
         />
-        <button class="success" type="submit">
-          <span v-if="!idMod">Agregar</span>
-          <span v-else>Editar</span>
+        <button
+          class="
+            px-5
+            py-1
+            text-green-900
+            border border-green-400
+            hover:border-green-300
+            bg-gradient-to-b
+            from-green-200
+            to-green-400
+            hover:from-green-100
+            hover:to-green-300
+          "
+          type="submit"
+        >
+          <span v-if="!idMod">
+            <i class="fa fa-plus"></i>
+          </span>
+          <span v-else>
+            <i class="fa fa-pencil"></i>
+          </span>
         </button>
       </form>
     </div>
+    <div v-if="players.length > 0" class="px-3 pb-3">
+      <table class="w-full mt-3 text-left">
+        <tr>
+          <th class="hidden sm:block"></th>
+          <th>Nick</th>
+          <th>ELO ↓</th>
+          <th>P</th>
+          <th class="hidden sm:block">V</th>
+          <th>Ave</th>
+          <th>K</th>
+          <th class="hidden sm:block">K/P</th>
+          <th>D</th>
+          <th class="hidden sm:block">D/P</th>
+          <th>A</th>
+          <th class="hidden sm:block">A/P</th>
+          <th class="hidden sm:block"></th>
+        </tr>
+        <tr
+          class="
+            border
+            cursor-pointer
+            bg-gradient-to-t
+            hover:from-blue-100
+            hover:to-blue-50
+          "
+          v-for="(p, i) in players
+            .filter((p) => p.nick != 'bot')
+            .sort((a, b) => a.elo < b.elo)"
+          :key="p.nick"
+          @click="setPlayerInfo(p)"
+        >
+          <td class="text-center hidden sm:block">
+            <span
+              :class="[
+                {
+                  'from-yellow-100 to-yellow-400 border border-yellow-400 text-yellow-600':
+                    i == 0,
+                },
+                {
+                  'from-gray-100 to-gray-400 border border-gray-400 text-gray-600':
+                    i == 1,
+                },
+                {
+                  'from-yellow-400 to-yellow-700 border border-yellow-700 text-yellow-900':
+                    i == 2,
+                },
+                {
+                  'bg-gradient-to-bl rounded-full font-extrabold px-2 py-1 shadow-md':
+                    i <= 2,
+                },
+              ]"
+            >
+              {{ i }}
+            </span>
+          </td>
+          <td>
+            <button
+              @click="preMod(p.id)"
+              class="
+                px-2
+                py-1
+                text-left
+                border border-opacity-0
+                nick
+                hover:border-opacity-100 hover:border-gray-300
+                bg-gradient-to-b
+                hover:from-gray-100
+                hover:to-gray-300
+                active:from-gray-200
+                active:to-gray-400
+              "
+            >
+              <span>
+                {{ p.nick }}
+              </span>
 
-    <table v-if="players.length > 0" class="players">
-      <tr>
-        <th></th>
-        <th>Nick</th>
-        <th>Puntos ↓</th>
-        <th>P</th>
-        <th class="hide-xs">V</th>
-        <th>Ave.</th>
-        <th>K</th>
-        <th class="hide-xs">K/P</th>
-        <th>D</th>
-        <th class="hide-xs">D/P</th>
-        <th>A</th>
-        <th class="hide-xs">A/P</th>
-        <th class="hide-xs"></th>
-      </tr>
-      <tr
-        class="item"
-        v-for="(p, i) in players
-          .filter((p) => p.nick != 'bot')
-          .sort((a, b) => a.elo < b.elo)"
-        :key="p.nick"
-        @click="setPlayerInfo(p)"
-      >
-        <td :class="['position' + (i + 1)]" style="text-align: center">
-          {{ i + 1 }}
-        </td>
-        <td class="nick">{{ p.nick }}</td>
-        <td>{{ p.elo || 0 }}</td>
-        <td>{{ p.p || 0 }}</td>
-        <td class="hide-xs">{{ p.v || 0 }}</td>
-        <td>{{ p.p > 0 ? Math.round((p.v / p.p) * 1000) : 0 }}</td>
-        <td>{{ p.k || 0 }}</td>
-        <td class="hide-xs">{{ Math.round(p.k / p.p) || 0 }}</td>
-        <td>{{ p.d || 0 }}</td>
-        <td class="hide-xs">{{ Math.round(p.d / p.p) || 0 }}</td>
-        <td>{{ p.a || 0 }}</td>
-        <td class="hide-xs">{{ Math.round(p.a / p.p) || 0 }}</td>
-        <td class="hide-xs">
-          <button v-if="false" class="danger" @click="del(p.id)">
-            Eliminar
-          </button>
-          <button @click="preMod(p.id)">Edit</button>
-          <button v-if="false" @click="setPlayerInfo(p)">Info</button>
-        </td>
-      </tr>
-    </table>
+              <i class="ml-3 fa fa-pencil"></i>
+            </button>
+          </td>
+          <td>{{ p.elo || 0 }}</td>
+          <td>{{ p.p || 0 }}</td>
+          <td class="hidden sm:block">{{ p.v || 0 }}</td>
+          <td>{{ p.p > 0 ? Math.round((p.v / p.p) * 1000) : 0 }}</td>
+          <td>{{ p.k || 0 }}</td>
+          <td class="hidden sm:block">{{ Math.round(p.k / p.p) || 0 }}</td>
+          <td>{{ p.d || 0 }}</td>
+          <td class="hidden sm:block">{{ Math.round(p.d / p.p) || 0 }}</td>
+          <td>{{ p.a || 0 }}</td>
+          <td class="hidden sm:block">{{ Math.round(p.a / p.p) || 0 }}</td>
+          <td class="hidden sm:block">
+            <button v-if="false" class="danger" @click="del(p.id)">
+              Eliminar
+            </button>
+
+            <button v-if="false" @click="setPlayerInfo(p)">Info</button>
+          </td>
+        </tr>
+      </table>
+    </div>
 
     <div v-else class="no-players">
       <h1>No hay players disponibles</h1>
@@ -254,63 +331,6 @@ export default {
 <style lang="scss" scoped>
 @import "@/theme/theme.scss";
 
-.options {
-  display: flex;
-  justify-content: center;
-  margin: map-get($map: $spacings, $key: 3) 0;
-
-  .add-player {
-    display: flex;
-
-    .name {
-      border-right: none;
-    }
-  }
-}
-
-.players {
-  width: 100%;
-  text-align: left;
-
-  .position {
-    &1 {
-      background-color: map-get($map: $color, $key: gold-player);
-      color: map-get($map: $bg, $key: 1);
-      font-weight: bold;
-    }
-    &2 {
-      background-color: map-get($map: $color, $key: silver-player);
-      color: map-get($map: $bg, $key: 1);
-      font-weight: bold;
-    }
-    &3 {
-      background-color: map-get($map: $color, $key: bronce-player);
-      color: map-get($map: $bg, $key: 1);
-      font-weight: bold;
-    }
-  }
-  .item {
-    cursor: pointer;
-    &:nth-child(even) {
-      background-color: map-get($map: $bg, $key: 2);
-    }
-
-    &:hover {
-      background-color: map-get($map: $bg, $key: 3);
-      color: whitesmoke;
-    }
-  }
-
-  .nick {
-    text-transform: capitalize;
-  }
-}
-
-.no-players {
-  display: flex;
-  justify-content: center;
-}
-
 $width: calc(calc(calc(100vw / 10) - 5px) * 10);
 $width-xs: calc(calc(100vw / 10) * 10);
 
@@ -450,6 +470,17 @@ $width-xs: calc(calc(100vw / 10) * 10);
           clip-path: polygon(0% 0%, 80% 100%, 100% 100%, 20% 0%);
         }
       }
+    }
+  }
+}
+
+.nick {
+  i {
+    opacity: 0;
+  }
+  &:hover {
+    i {
+      opacity: 1;
     }
   }
 }

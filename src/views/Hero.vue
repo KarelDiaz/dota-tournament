@@ -1,122 +1,139 @@
 <template>
-  <div>
-    <div class="heroes-container">
-      <div class="filter-container">
+  <div class="flex justify-end">
+    <!-- Hores list -->
+    <div class="pt-14 w-1/4 h-screen top-0 fixed left-0">
+      <div class="flex flex-col h-full mt-50 overflow-auto bg-white border-r">
         <input
-          class="buscar"
+          class="
+            px-2
+            py-1
+            border border-gray-200
+            bg-gradient-to-b
+            from-gray-50
+            to-gray-200
+            focus:border-blue-300
+            sticky
+            top-0
+          "
           type="text"
           placeholder="Buscar"
           v-model="filterText"
         />
-      </div>
 
-      <div class="heroes">
-        <transition-group name="slide-right">
-          <template v-for="(h, i) in heroes">
-            <div
-              :key="h.id"
-              :class="['hero', { selected: hSelected == h }]"
-              v-if="hsVisible[i]"
-              @click="hSelected = h"
-            >
-              <img :src="'npc/' + h.name + '.png'" class="img" />
-              <span class="name hide-xs">
-                <span>{{ h.displayName }}</span>
-                <b class="victorias">{{
-                  prs.filter((pr) => pr.hero.id == h.id).length
-                }}</b>
-              </span>
-            </div>
-          </template>
-        </transition-group>
+        <div class="flex flex-col">
+          <transition-group name="slide-right">
+            <template v-for="(h, i) in heroes">
+              <div
+                :key="h.id"
+                :class="[
+                  'flex justify-center sm:justify-center px-3 py-2 bg-gradient-to-t cursor-pointer hover:from-blue-200 hover:to-blue-50',
+                  { 'from-green-200 to-green-50': hSelected == h },
+                ]"
+                v-if="hsVisible[i]"
+                @click="hSelected = h"
+              >
+                <img
+                  :src="'npc/' + h.name + '.png'"
+                  class="w-10 rounded-full"
+                />
+                <span
+                  class="sm:flex justify-between w-full ml-3 my-auto hidden"
+                >
+                  <span>{{ h.displayName }}</span>
+                  <b>
+                    {{ prs.filter((pr) => pr.hero.id == h.id).length }}
+                  </b>
+                </span>
+              </div>
+            </template>
+          </transition-group>
+        </div>
       </div>
     </div>
 
-    <div class="players-contianer">
-      <transition name="fade-slide">
-        <div class="hero-selected" v-if="hSelected">
-          <img class="img" :src="'./npc/' + hSelected.name + '.png'" alt />
-          <div>
-            <span class="name">{{ hSelected.displayName }}</span>
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>P</th>
-                  <th>V</th>
-                  <th>Ave.</th>
-                  <th>K</th>
-                  <th>K/P</th>
-                  <th>D</th>
-                  <th>D/P</th>
-                  <th>A</th>
-                  <th>A/P</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr class="player">
-                  <td>{{ hP }}</td>
-                  <td>{{ hV }}</td>
-                  <td>{{ hAve }}</td>
-                  <td>{{ hK }}</td>
-                  <td>{{ hKP }}</td>
-                  <td>{{ hD }}</td>
-                  <td>{{ hDP }}</td>
-                  <td>{{ hA }}</td>
-                  <td>{{ hAP }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </transition>
-
+    <div class="w-3/4 px-3 pb-3">
       <div v-if="!hSelected">Seleccione un heroe para ver estadisticas</div>
-
-      <table class="players" v-if="hSelected">
-        <thead>
-          <tr>
-            <th>Nick</th>
-            <th>P</th>
-            <th>V</th>
-            <th>Ave.</th>
-            <th>K</th>
-            <th>K/P</th>
-            <th>D</th>
-            <th>D/P</th>
-            <th>A</th>
-            <th>A/P</th>
-          </tr>
-        </thead>
-        <tbody>
-          <template v-for="p in ps">
-            <tr class="player" v-if="p.nick != 'bot'" :key="p.id">
-              <td>{{ p.nick }}</td>
-              <td>{{ getP(p.id) }}</td>
-              <td>{{ getV(p.id) }}</td>
-              <td>{{ getAve(p.id) }}</td>
-              <td>{{ getK(p.id) }}</td>
-              <td>{{ getKP(p.id) }}</td>
-              <td>{{ getD(p.id) }}</td>
-              <td>{{ getDP(p.id) }}</td>
-              <td>{{ getA(p.id) }}</td>
-              <td>{{ getAP(p.id) }}</td>
+      <!--Hero info-->
+      <div class="flex flex-col sm:flex-row mb-3" v-if="hSelected">
+        <img
+          class="rounded-full"
+          :src="'./npc/' + hSelected.name + '.png'"
+          alt
+        />
+        <div class="w-full sm:pl-3 my-auto">
+          <span class="font-extrabold">{{ hSelected.displayName }}</span>
+          <table class="w-full text-left">
+            <thead>
+              <tr>
+                <th>P</th>
+                <th>V</th>
+                <th>Ave.</th>
+                <th>K</th>
+                <th>K/P</th>
+                <th>D</th>
+                <th>D/P</th>
+                <th>A</th>
+                <th>A/P</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="player">
+                <td>{{ hP }}</td>
+                <td>{{ hV }}</td>
+                <td>{{ hAve }}</td>
+                <td>{{ hK }}</td>
+                <td>{{ hKP }}</td>
+                <td>{{ hD }}</td>
+                <td>{{ hDP }}</td>
+                <td>{{ hA }}</td>
+                <td>{{ hAP }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!--All user info-->
+      <div class="flex">
+        <table class="w-full text-left" v-if="hSelected">
+          <thead>
+            <tr>
+              <th>Nick</th>
+              <th>P</th>
+              <th>V</th>
+              <th>Ave</th>
+              <th>K</th>
+              <th class="hidden sm:flex">K/P</th>
+              <th>D</th>
+              <th class="hidden sm:flex">D/P</th>
+              <th>A</th>
+              <th class="hidden sm:flex">A/P</th>
             </tr>
-          </template>
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            <template v-for="p in ps">
+              <tr class="player" v-if="p.nick != 'bot'" :key="p.id">
+                <td>{{ p.nick }}</td>
+                <td>{{ getP(p.id) }}</td>
+                <td>{{ getV(p.id) }}</td>
+                <td>{{ getAve(p.id) }}</td>
+                <td>{{ getK(p.id) }}</td>
+                <td class="hidden sm:flex">{{ getKP(p.id) }}</td>
+                <td>{{ getD(p.id) }}</td>
+                <td class="hidden sm:flex">{{ getDP(p.id) }}</td>
+                <td>{{ getA(p.id) }}</td>
+                <td class="hidden sm:flex">{{ getAP(p.id) }}</td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import { mapState, mapMutations } from "vuex";
-
-import {
-  START_LOADING,
-  END_LOADING,
-  INIT_HEROES,
-} from "@/store/mutations-type";
+import { mapState } from "vuex";
 
 export default {
   data() {
@@ -144,7 +161,6 @@ export default {
     }),
   },
   methods: {
-    ...mapMutations([START_LOADING, END_LOADING, INIT_HEROES]),
     initPs() {
       axios
         .get(this.strapi + "/players?_limit=-1")
@@ -260,113 +276,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-@import "@/theme/theme.scss";
-
-.heroes-container {
-  position: fixed;
-  left: 0;
-  top: 0;
-  display: flex;
-  flex-direction: column;
-  width: 20vw;
-  height: 100vh;
-
-  .filter-container {
-    display: flex;
-
-    .buscar {
-      width: 100%;
-    }
-  }
-
-  .heroes {
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-    overflow-x: hidden;
-    height: 100%;
-
-    .hero {
-      display: flex;
-      align-items: center;
-      padding: 3px 0;
-      cursor: pointer;
-
-      &:hover {
-        background-color: map-get($map: $bg, $key: 2);
-      }
-
-      &.selected {
-        background: map-get($map: $bg, $key: 3);
-      }
-
-      .img {
-        height: 25px;
-        width: 25x;
-        padding: 0 6px;
-        border-radius: 50%;
-      }
-      .name {
-        display: flex;
-        width: 100%;
-        justify-content: space-between;
-        padding-right: 5px;
-
-        .victorias {
-          padding: 1px;
-          display: flex;
-          justify-content: center;
-          background-color: rgba(255, 255, 255, 0.555);
-          color: map-get($map: $bg, $key: 2);
-          width: 1rem;
-          height: 1rem;
-          border-radius: 50%;
-        }
-      }
-    }
-  }
-}
-
-.players-contianer {
-  width: 80vw;
-  transform: translateX(20vw);
-  padding: 10px;
-  overflow: auto;
-
-  .hero-selected {
-    display: flex;
-    align-items: center;
-
-    .img {
-      height: 15vw;
-      border-radius: 50%;
-      margin: 10px;
-      box-shadow: 0px 0px 15px black;
-    }
-
-    .table {
-      margin-top: 10px;
-    }
-  }
-
-  .players {
-    width: 100%;
-
-    th {
-      text-align: left;
-    }
-
-    .player {
-      &:nth-of-type(odd) {
-        background-color: map-get($map: $bg, $key: 2);
-      }
-
-      &:hover {
-        background-color: map-get($map: $bg, $key: 3);
-      }
-    }
-  }
-}
-</style>

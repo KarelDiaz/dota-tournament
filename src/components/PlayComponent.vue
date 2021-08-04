@@ -1,79 +1,121 @@
 <template>
-  <div class="play">
-    <div class="result-content">
+  <div class="flex flex-col border border-t-0 border-b-0">
+    <div
+      class="flex flex-wrap"
+      @mouseover="date = true"
+      @mouseleave="date = false"
+    >
       <div
-        v-for="result in play.player_results"
-        :class="[
-          'result',
-          'result-list',
-          result.side,
-          { win: play.side_win == result.side },
-          { bot: result.bot == true },
-        ]"
+        v-for="result in playCopy.player_results"
+        class="w-1/5 sm:w-1/10 flex flex-col"
         :key="result.id"
       >
-        <b class="item" v-if="!result.bot">{{
-          getPlayer(result.player).nick
-        }}</b>
-        <span class="item elo" v-if="!result.bot">
-          {{ result.elo }}
-          <b class="elo-plus" :class="result.win ? 'success' : 'danger'">
-            <span v-if="result.win">+</span>
-            <span v-if="!result.win">-</span>
-            {{ Math.abs(result.eloPlus) }}
-          </b>
-        </span>
-        <table class="item" v-if="!result.bot">
-          <tr>
-            <td>K</td>
-            <td>D</td>
-            <td>A</td>
-          </tr>
-          <tr>
-            <td>
-              <b>{{ result.kills }}</b>
-            </td>
-            <td>
-              <b>{{ result.deths }}</b>
-            </td>
-            <td>
-              <b>{{ result.asist }}</b>
-            </td>
-          </tr>
-        </table>
-
-        <span class="item" v-if="!result.bot">{{
-          getHero(result.hero).displayName
-        }}</span>
-        <div
-          class="black-shadow"
-          :class="result.side + (result.bot ? ' bot' : '')"
-        ></div>
-        <div class="player-img">
-          <img
-            :class="['player-img-item', result.side]"
-            :src="$store.state.strapi + getPlayer(result.player).picture.url"
-            v-if="!result.bot && getPlayer(result.player).picture"
-          />
+        <!-- Side -->
+        <div class="flex">
+          <div
+            v-if="result.side === 'good'"
+            class="h-1 w-full bg-gradient-to-b from-green-200 to-green-400"
+          ></div>
+          <div
+            v-if="result.side === 'bad'"
+            class="h-1 w-full bg-gradient-to-b from-red-200 to-red-400"
+          ></div>
         </div>
-        <img
-          class="hero-img"
-          :src="
-            !result.bot ? `npc/${getHero(result.hero).name}.png` : 'npc/bot.png'
+        <!-- Result -->
+        <div
+          class="
+            h-40
+            flex flex-col
+            justify-between
+            bg-center bg-cover
+            text-white
+            p-1
           "
-          :alt="getHero(result.hero).name"
-        />
+          :style="[
+            {
+              'background-image':
+                'url(' +
+                $store.state.local +
+                (result.bot
+                  ? '/npc/bot.png'
+                  : `/npc/${getHero(result.hero).name}.png`) +
+                ')',
+            },
+          ]"
+        >
+          <!-- Player nick and Elo -->
+          <div class="flex flex-col">
+            <b class="item" v-if="!result.bot">
+              {{ getPlayer(result.player).nick }}
+            </b>
+            <span class="italic text-xs" v-if="!result.bot">
+              {{ result.elo }}
+              <b
+                :class="[
+                  { 'text-green-400': result.win },
+                  { 'text-red-400': !result.win },
+                ]"
+              >
+                <span v-if="result.win">+</span>
+                <span v-if="!result.win">-</span>
+                {{ Math.abs(result.eloPlus) }}
+              </b>
+            </span>
+          </div>
+          <!-- Rasult -->
+          <div class="flex flex-col justify-center h-full">
+            <transition name="fade">
+              <table
+                class="w-full my-auto text-center"
+                v-if="!result.bot"
+                v-show="date"
+              >
+                <tr>
+                  <td>K</td>
+                  <td>D</td>
+                  <td>A</td>
+                </tr>
+                <tr>
+                  <td>
+                    <b>{{ result.kills }}</b>
+                  </td>
+                  <td>
+                    <b>{{ result.deths }}</b>
+                  </td>
+                  <td>
+                    <b>{{ result.asist }}</b>
+                  </td>
+                </tr>
+              </table>
+            </transition>
+          </div>
+          <!-- Hero name -->
+          <span class="item" v-if="!result.bot">
+            {{ getHero(result.hero).displayName }}
+          </span>
+        </div>
+        <!-- Win -->
+        <div class="flex">
+          <div
+            v-if="result.win"
+            class="h-1 w-full bg-gradient-to-b from-yellow-200 to-yellow-400"
+          ></div>
+          <div
+            v-if="!result.win"
+            class="h-1 w-full bg-gradient-to-b from-gray-200 to-gray-400"
+          ></div>
+        </div>
       </div>
     </div>
 
-    <div class="play-date">
-      <span class="play-date-content">
+    <transition name="scale-y">
+      <div
+        v-show="date"
+        class="bg-gradient-to-t from-gray-100 text-center text-gray-400"
+      >
         {{ moment(play.createdAt).format("MMMM D, YYYY, HH:mm") }}
-        <button v-if="false" class="danger" @click="del(play.id)">
-          <i class="fa fa-trash"></i>
-        </button>
-      </span>
-    </div>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -89,6 +131,8 @@ export default {
   data() {
     return {
       moment,
+      date: false,
+      playCopy: null,
     };
   },
   props: {
@@ -104,19 +148,17 @@ export default {
       return temp ? temp : new Hero();
     },
   },
+  created() {
+    // the copy is because the watcher doesnt run on props
+    this.playCopy = this.play;
+  },
   watch: {
-    play(val) {
+    playCopy(val) {
       val.player_results.sort((a, b) => {
-        if (a.side == b.side) {
-          return a.bot;
-        }
+        if (a.side == b.side) return a.bot;
         return a.side < b.side;
       });
-    }
+    },
   },
 };
 </script>
-
-<style lang="scss" scoped>
-@import "./PlayComponent.scss";
-</style>

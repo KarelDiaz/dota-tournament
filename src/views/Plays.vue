@@ -1,160 +1,94 @@
 <template>
   <div>
-    <div class="options">
-      <form @submit.prevent="send">
-        <div class="plays">
-          <div class="play">
-            <div class="play-options">
-              <label
-                :class="[
-                  'btn',
-                  'side-win',
-                  { wining: playForm.side_win == 'good' },
-                ]"
-              >
-                <input
-                  v-model="playForm.side_win"
-                  type="radio"
-                  name="radio"
-                  value="good"
-                  hidden
-                />
-                Good ganó
-              </label>
-              <div>
-                <button type="submit" class="success">Guardar el play</button>
-              </div>
+    <add-play-component class="px-3" @added="this.filter"></add-play-component>
 
-              <label
-                :class="[
-                  'btn',
-                  'side-win',
-                  { wining: playForm.side_win == 'bad' },
-                ]"
-              >
-                <input
-                  v-model="playForm.side_win"
-                  type="radio"
-                  name="radio"
-                  value="bad"
-                  hidden
-                />
-                Bad ganó
-              </label>
-            </div>
-            <transition name="fade" appear>
-              <div class="result-content">
-                <div
-                  :class="[
-                    'result',
-                    pr.side,
-                    { win: playForm.side_win == pr.side },
-                  ]"
-                  v-for="(pr, index) in playForm.player_results"
-                  :key="index"
-                >
-                  <span class="item-form">
-                    <input v-model="pr.bot" type="checkbox" /> Bot
-                  </span>
-                  <select
-                    required
-                    class="item-form"
-                    v-model="pr.player"
-                    v-if="!pr.bot"
-                  >
-                    <option :value="p.id" v-for="p in players" :key="p.id">
-                      {{ p.nick }}
-                    </option>
-                  </select>
-
-                  <div class="item-form kda" v-if="!pr.bot">
-                    <span class="item-form">K</span>
-                    <span class="item-form">D</span>
-                    <span class="item-form">A</span>
-                    <input
-                      class="item-form"
-                      v-model="pr.kills"
-                      v-if="!pr.bot"
-                      type="text"
-                      placeholder="Kills"
-                    />
-                    <input
-                      class="item-form"
-                      v-model="pr.deths"
-                      v-if="!pr.bot"
-                      type="text"
-                      placeholder="Deths"
-                    />
-                    <input
-                      class="item-form"
-                      v-model="pr.asist"
-                      v-if="!pr.bot"
-                      type="text"
-                      placeholder="Asist"
-                    />
-                  </div>
-                  <select
-                    class="item-form"
-                    v-if="!pr.bot"
-                    v-model="pr.hero"
-                    required
-                  >
-                    <option :value="h.id" v-for="h in heroes" :key="h.id">
-                      {{ h.displayName }}
-                    </option>
-                  </select>
-                  <div
-                    class="black-shadow"
-                    :class="pr.side + (pr.bot ? ' bot' : '')"
-                  ></div>
-
-                  <img
-                    class="hero-img"
-                    :src="
-                      !pr.bot
-                        ? `npc/${getHero(pr.hero).name}.png`
-                        : 'npc/bot.png'
-                    "
-                    :alt="getHero(pr.hero).name"
-                  />
-                </div>
-              </div>
-            </transition>
-          </div>
-        </div>
-      </form>
-    </div>
-
-    <div class="filters">
-      <div>
-        <span class="hide-xs">Cantidad de plays a visualizar:</span>
-        <select v-model="fCant">
+    <!-- Filters -->
+    <div class="flex justify-between mx-3 mt-6">
+      <!-- Limit -->
+      <div class="flex">
+        <span
+          class="
+            hidden
+            sm:flex
+            pr-2
+            py-1
+            bg-gradient-to-l
+            from-gray-100
+            text-gray-700
+          "
+        >
+          Plays limit:
+        </span>
+        <select
+          class="
+            px-2
+            py-1
+            cursor-pointer
+            border border-gray-300
+            hover:border-gray-200
+            bg-gradient-to-b
+            from-gray-100
+            to-gray-300
+            hover:from-gray-50
+            hover:to-gray-200
+          "
+          v-model="filterLimit"
+        >
           <option value="-1">Todos</option>
           <option value="10">10</option>
           <option value="50">50</option>
           <option value="100">100</option>
         </select>
       </div>
+      <!-- Plays length  -->
       <div>
         <b>{{ plays.length }}</b> plays
       </div>
+      <!-- victoris -->
       <transition name="slide-right">
-        <div class="info-plays-win" v-if="fPlayer">
+        <div v-if="filterByPlayer">
           <b>
             {{
               plays.filter((p) => {
                 return p.player_results.find(
-                  (pr) => pr.player == fPlayer && pr.side == p.side_win
+                  (pr) => pr.player == filterByPlayer && pr.side == p.side_win
                 );
               }).length
             }}
           </b>
-          victorias
+          victoris
         </div>
       </transition>
-      <div>
-        <span class="hide-xs">Filtrar por usuario:</span>
-        <select v-model="fPlayer">
+      <!-- filterbyPlayer -->
+      <div class="flex">
+        <span
+          class="
+            hidden
+            sm:flex
+            pr-2
+            py-1
+            text-gray-700
+            bg-gradient-to-l
+            from-gray-100
+          "
+        >
+          Filter by player:
+        </span>
+        <select
+          class="
+            px-2
+            py-1
+            cursor-pointer
+            border border-gray-300
+            hover:border-gray-200
+            bg-gradient-to-b
+            from-gray-100
+            to-gray-300
+            hover:from-gray-50
+            hover:to-gray-200
+          "
+          v-model="filterByPlayer"
+        >
           <option value>Todos</option>
           <option
             :value="p.id"
@@ -168,12 +102,14 @@
       </div>
     </div>
 
-    <div class="plays">
+    <!-- Plays -->
+    <div class="flex flex-col mx-3 mt-3">
       <transition-group name="slide-top" tag="p">
         <PlayComponent
           v-for="play in plays"
           :key="play.id"
           :play="play"
+          class="mb-3"
         ></PlayComponent>
       </transition-group>
     </div>
@@ -182,23 +118,18 @@
 
 <script>
 import axios from "axios";
-import { mapState, mapMutations } from "vuex";
+import { mapState } from "vuex";
 
-import { INIT_PLAYERS } from "@/store/mutations-type";
-import Elo from "@/store/model/elo";
-import Player from "@/store/model/player";
-import Hero from "@/store/model/hero";
-import Play from "@/store/model/play";
 import PlayComponent from "@/components/PlayComponent";
+import AddPlayComponent from "@/components/AddPlayComponent";
 
 export default {
   name: "Plays",
   data() {
     return {
       plays: [],
-      playForm: Play,
-      fCant: 10,
-      fPlayer: "",
+      filterLimit: 10,
+      filterByPlayer: "",
     };
   },
   computed: {
@@ -210,130 +141,20 @@ export default {
   },
   components: {
     PlayComponent,
+    AddPlayComponent,
   },
   methods: {
-    ...mapMutations([INIT_PLAYERS]),
-
-    send() {
-      var out = [];
-
-      // players to win or lose
-      var playersWin = [];
-      var mediaWin = 0;
-      var playersLose = [];
-      var mediaLose = 0;
-      this.playForm.player_results.forEach((pr) => {
-        pr.win = this.playForm.side_win == pr.side;
-
-        if (!pr.bot) {
-          if (pr.win) {
-            playersWin.push(pr.player);
-            mediaWin += this.getPlayer(pr.player).elo;
-          }
-          if (!pr.win) {
-            playersLose.push(pr.player);
-            mediaLose += this.getPlayer(pr.player).elo;
-          }
-        }
-      });
-
-      if (playersWin.length > 0 && playersLose.length > 0) {
-        this.elo(playersWin, playersLose);
-        mediaWin /= playersWin.length;
-        mediaLose /= playersLose.length;
-      }
-
-      this.playForm.player_results.forEach((pr) => {
-        if (!pr.bot) {
-          pr.elo = this.getPlayer(pr.player).elo;
-          if (pr.win) {
-            let telo = new Elo(pr.elo, mediaLose);
-            pr.eloPlus = telo.getPlusA();
-          } else {
-            let telo = new Elo(mediaWin, pr.elo);
-            pr.eloPlus = telo.getPlusB();
-          }
-        }
-        axios.post(this.strapi + "/player-results", pr).then(({ data }) => {
-          out.push(data.id);
-
-          if (out.length === 10) {
-            axios
-              .post(
-                this.strapi + "/plays",
-                new Play(out, this.playForm.side_win)
-              )
-              .then(() => {
-                this.resetForm();
-                this.filter();
-                this.initPlayers();
-              });
-          }
-        });
-      });
-    },
-
-    elo(win, lose) {
-      var pWin = [];
-      var pLose = [];
-
-      // media del ELO q ganan
-      let eloWin = 0;
-      win.forEach((id) => {
-        let ptemp = this.getPlayer(id);
-        eloWin += ptemp.elo;
-        pWin.push(ptemp);
-      });
-      eloWin /= win.length;
-
-      // media del ELO q pierden
-      let eloLose = 0;
-      lose.forEach((id) => {
-        let ptemp = this.getPlayer(id);
-        eloLose += ptemp.elo;
-        pLose.push(ptemp);
-      });
-      eloLose /= lose.length;
-
-      // update elo de los q ganana
-      pWin.forEach((player) => {
-        let elo = new Elo(player.elo, eloLose);
-        let playerOut = new Player(
-          player.fullName,
-          player.nick,
-          elo.getEloA(),
-          player.active
-        );
-
-        axios
-          .put(`${this.strapi}/players/${player.id}`, playerOut)
-          .then(() => {});
-      });
-
-      // update elo de los q pierden
-      pLose.forEach((player) => {
-        let elo = new Elo(eloWin, player.elo);
-        let playerOut = new Player(
-          player.fullName,
-          player.nick,
-          elo.getEloB(),
-          player.active
-        );
-
-        axios
-          .put(`${this.strapi}/players/${player.id}`, playerOut)
-          .then(() => {});
-      });
-    },
-
     filter() {
       axios.get(this.strapi + "/plays?_limit=-1").then(({ data }) => {
         this.plays = data.reverse();
-        if (this.fPlayer != "")
+        if (this.filterByPlayer != "")
           this.plays = this.plays.filter((p) => {
-            return p.player_results.find((pr) => pr.player == this.fPlayer);
+            return p.player_results.find(
+              (pr) => pr.player == this.filterByPlayer
+            );
           });
-        if (this.fCant != -1) this.plays = this.plays.slice(0, this.fCant);
+        if (this.filterLimit != -1)
+          this.plays = this.plays.slice(0, this.filterLimit);
         this.plays.forEach((play) => {
           play.player_results = play.player_results.sort((a, b) => {
             if (a.side == b.side) {
@@ -344,72 +165,17 @@ export default {
         });
       });
     },
-
-    del(id) {
-      if (confirm("Seguro de eliminar el Play?")) {
-        axios.delete(`${this.strapi}/plays/${id}`).then(() => {
-          this.filter();
-        });
-      }
-    },
-
-    getPlayer(id) {
-      const temp = this.players.find((p) => p.id == id);
-      return temp ? temp : new Player();
-    },
-
-    getHero(id) {
-      const temp = this.heroes.find((p) => p.id == id);
-      return temp ? temp : new Hero();
-    },
-
-    resetForm() {
-      this.playForm = new Play();
-    },
   },
   watch: {
-    fCant() {
+    filterLimit() {
       this.filter();
     },
-    fPlayer() {
+    filterByPlayer() {
       this.filter();
-    },
-    playForm(val) {
-      val.player_results.forEach((pr) => {
-        pr.win = val.side_win === pr.side;
-      });
     },
   },
   mounted() {
-    this.resetForm();
     this.filter();
   },
 };
 </script>
-
-<style lang="scss" scoped>
-@import "@/theme/theme.scss";
-
-$width-hero: calc(calc(100vw / 10) - 5px);
-$height-hero: $width-hero;
-
-$width-hero-xs: calc(calc(100vw / 5) - 5px);
-$height-hero-xs: $width-hero-xs;
-
-.plays {
-  display: flex;
-  flex-direction: column;
-
-  @import "@/components/PlayComponent.scss";
-}
-
-.filters {
-  padding: 0 15px;
-  display: flex;
-  justify-content: space-between;
-
-  .info-plays-win {
-    color: map-get($map: $color, $key: win);
-  }
-}
-</style>

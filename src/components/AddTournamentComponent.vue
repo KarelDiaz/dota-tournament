@@ -59,7 +59,7 @@
           placeholder="Type"
         >
           <option v-for="t in tournamentTypes" :key="t.id" :value="t">
-            {{ normalizeTounamentTypeName(t.name) }}
+            {{ normalizeTournamentTypeName(t.name) }}
           </option>
         </select>
       </div>
@@ -95,7 +95,7 @@
                 px-4
                 bg-gradient-to-b
                 border border-red-400
-                hover:border-green-300
+                hover:border-red-300
                 text-red-900
                 from-red-200
                 to-red-400
@@ -286,7 +286,7 @@
               El torneo <b>{{ tournamentTemp.name.toUpperCase() }}</b>
               se efectuara en el formato de
               <b>
-                {{ normalizeTounamentTypeName(tournamentTemp.type.name) }}
+                {{ normalizeTournamentTypeName(tournamentTemp.type.name) }}
               </b>
               .
             </span>
@@ -565,7 +565,7 @@ export default {
         (t) => t != team
       );
     },
-    normalizeTounamentTypeName(name) {
+    normalizeTournamentTypeName(name) {
       let out = "";
       for (let i = 0; i < name.length; i++)
         out += name[i] !== "_" ? name[i] : " ";

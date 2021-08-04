@@ -2,7 +2,7 @@
 
     &-enter-active,
     &-leave-active {
-        transition: opacity 0.5s ease;
+        transition: opacity 0.3s ease;
     }
 
     &-enter-from,
@@ -93,17 +93,18 @@
     }
 }
 
-.scale-player-img {
+.scale-y {
 
     &-enter-active,
     &-leave-active {
-        transition: opacity 0.5s ease;
+        transition: height 0.3s ease;
+        height: 25px;
+        overflow-y: hidden;
     }
 
     &-enter-from,
     &-leave-to {
-        width: 50px;
-        height: 50px;
+        height: 0px;
     }
 }
 

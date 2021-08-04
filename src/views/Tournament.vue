@@ -58,7 +58,7 @@
       </div>
       <div v-if="tournaments.length == 0">No hay torneos</div>
     </div>
-    <div class="my-3 mr-3">
+    <div class="flex flex-col my-3 mr-3 w-full">
       <add-tournament-component
         class="mr-3 mb-3"
         @tournament-add="this.tAdd = false"

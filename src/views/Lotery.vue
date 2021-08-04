@@ -16,7 +16,7 @@
             >
               <span>
                 {{ p.nick }}
-                <i class="fa fa-arrow-right"></i>
+                <i class="hidden sm:inline-block fa fa-arrow-right"></i>
               </span>
             </div>
           </transition-group>
@@ -73,7 +73,7 @@
             >
               <span>
                 {{ p.nick }}
-                <i class="fa fa-arrow-left"></i>
+                <i class="hidden sm:inline-block fa fa-arrow-left"></i>
               </span>
             </div>
           </transition-group>

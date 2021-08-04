@@ -1,7 +1,7 @@
 <template>
   <div>
-    <NavComponent class="sticky"></NavComponent>
-    <router-view />
+    <NavComponent class="fixed top-0 w-full z-10"></NavComponent>
+    <router-view class="pt-16" />
   </div>
 </template>
 

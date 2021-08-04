@@ -1,7 +1,19 @@
 <template>
   <div>
-    <div class="hidden sm:flex p-3 justify-between h-14">
-      <img src="dota_logo.png" class="filter hue-rotate-180 h-10" />
+    <div
+      class="
+        hidden
+        sm:flex
+        p-3
+        justify-between
+        h-14
+        bg-gradient-to-r
+        from-blue-100
+        to-white
+        border-b border-blue-100
+      "
+    >
+      <img src="dota_logo.png" class="filter hue-rotate-180 h-8" />
       <div class="flex">
         <router-link
           class="
@@ -100,7 +112,22 @@
         </router-link>
       </div>
     </div>
-    <div class="flex sm:hidden justify-between h-14 p-3 top-0 w-full">
+    <div
+      class="
+        flex
+        sm:hidden
+        z-50
+        justify-between
+        h-14
+        p-3
+        top-0
+        w-full
+        bg-gradient-to-r
+        from-blue-100
+        to-white
+        border-b border-blue-100
+      "
+    >
       <img src="dota_logo.png" class="filter hue-rotate-180" />
       <button class="flex flex-col justify-between" @click="open = !open">
         <div

@@ -1,7 +1,7 @@
 <template>
   <div class="flex">
     <!--Tournaments list-->
-    <div class="p-3">
+    <div>
       <!--Tournaments header-->
       <div class="flex justify-between pb-3">
         <button
@@ -58,9 +58,10 @@
       </div>
       <div v-if="tournaments.length == 0">No hay torneos</div>
     </div>
-    <div class="flex flex-col my-3 mr-3 w-full">
+    <!-- Add and view tournament -->
+    <div class="flex flex-col ml-3 w-full">
       <add-tournament-component
-        class="mr-3 mb-3"
+        class="mb-3"
         @tournament-add="this.tAdd = false"
         v-if="tAdd"
       ></add-tournament-component>

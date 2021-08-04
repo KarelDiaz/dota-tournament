@@ -15,6 +15,7 @@
         shadow-md
       "
     >
+      <!-- Logo and link to info -->
       <router-link to="/" class="flex cursor-pointer">
         <img src="dota_logo.png" class="h-full my-auto" />
         <div class="text-2xl font-bold ml-3">
@@ -32,7 +33,9 @@
           </span>
         </div>
       </router-link>
+      <!-- Link views -->
       <div class="flex">
+        <!-- Players -->
         <router-link
           class="
             py-1
@@ -52,6 +55,7 @@
         >
           Players
         </router-link>
+        <!-- Plays -->
         <router-link
           class="
             py-1
@@ -71,6 +75,27 @@
         >
           Plays
         </router-link>
+        <!-- Tournaments -->
+        <router-link
+          class="
+            py-1
+            px-2
+            shadow-sm
+            bg-gradient-to-b
+            from-blue-100
+            to-blue-300
+            hover:from-blue-50
+            hover:to-blue-200
+            border border-blue-300
+            hover:border-blue-200
+            transform
+            -skew-x-12
+          "
+          to="/tournaments"
+        >
+          Tournaments
+        </router-link>
+        <!-- Heroes -->
         <router-link
           class="
             py-1
@@ -90,6 +115,7 @@
         >
           Heroes
         </router-link>
+        <!-- Lotery -->
         <router-link
           class="
             py-1
@@ -109,25 +135,14 @@
         >
           Lotery
         </router-link>
-        <router-link
-          class="
-            py-1
-            px-2
-            shadow-sm
-            bg-gradient-to-b
-            from-blue-100
-            to-blue-300
-            hover:from-blue-50
-            hover:to-blue-200
-            border border-blue-300
-            hover:border-blue-200
-            transform
-            -skew-x-12
-          "
-          to="/tournament"
+        <!-- GitHub -->
+        <a
+          class="ml-3 cursor-pointer"
+          href="https://github.com"
+          target="blanck"
         >
-          Tournament
-        </router-link>
+          <span class="fa fa-github text-3xl text-gray-400 -mt-1"></span>
+        </a>
       </div>
     </div>
     <!-- Movile -->
@@ -305,5 +320,8 @@ export default {
   &:hover {
     @apply from-green-50 to-green-200 border-green-200 cursor-default;
   }
+}
+.corner {
+  clip-path: polygon(100% 0, 100% 100%, 50% 50%, 0 0);
 }
 </style>

@@ -1,9 +1,9 @@
 <template>
   <div>
-    <add-play-component class="px-3" @added="this.filter"></add-play-component>
+    <add-play-component @added="this.filter"></add-play-component>
 
     <!-- Filters -->
-    <div class="flex justify-between mx-3 mt-6">
+    <div class="flex justify-between mt-6">
       <!-- Limit -->
       <div class="flex">
         <span
@@ -103,7 +103,7 @@
     </div>
 
     <!-- Plays -->
-    <div class="flex flex-col mx-3 mt-3">
+    <div class="flex flex-col mt-3">
       <transition-group name="slide-top" tag="p">
         <PlayComponent
           v-for="play in plays"

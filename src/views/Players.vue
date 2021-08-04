@@ -41,7 +41,7 @@
         </button>
       </form>
     </div>
-    <div v-if="players.length > 0" class="px-3 pb-3">
+    <div v-if="players.length > 0" class="pb-3">
       <table class="w-full mt-3 text-left">
         <tr>
           <th class="hidden sm:block"></th>

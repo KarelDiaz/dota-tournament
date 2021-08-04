@@ -3,7 +3,7 @@
     <transition name="fade">
       <div v-if="!nonePlayers" class="flex">
         <!--Left-->
-        <div class="flex-grow w-32 px-3 my-3 border-r">
+        <div class="flex-grow w-32 border-r">
           <span>
             <b>Seleccione los players <i class="fa fa-arrow-right"></i></b>
           </span>

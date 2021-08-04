@@ -51,7 +51,7 @@
       </div>
     </div>
 
-    <div class="w-3/4 px-3 pb-3">
+    <div class="w-3/4 px-3 pb-3 text-center sm:text-left">
       <div v-if="!hSelected">Seleccione un heroe para ver estadisticas</div>
       <!--Hero info-->
       <div class="flex flex-col sm:flex-row mb-3" v-if="hSelected">
@@ -61,8 +61,10 @@
           alt
         />
         <div class="w-full sm:pl-3 my-auto">
-          <span class="font-extrabold">{{ hSelected.displayName }}</span>
-          <table class="w-full text-left">
+          <span class="font-extrabold text-2xl">
+            {{ hSelected.displayName }}
+          </span>
+          <table class="w-full text-left mt-3">
             <thead>
               <tr>
                 <th>P</th>

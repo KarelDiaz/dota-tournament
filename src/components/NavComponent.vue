@@ -257,9 +257,9 @@
               border border-blue-300
               hover:border-blue-200
             "
-            to="/hero"
+            to="/tournaments"
           >
-            Heroes
+            Tournaments
           </router-link>
           <router-link
             @click.passive="open = false"
@@ -276,9 +276,9 @@
               border border-blue-300
               hover:border-blue-200
             "
-            to="/lotery"
+            to="/hero"
           >
-            Lotery
+            Heroes
           </router-link>
           <router-link
             @click.passive="open = false"
@@ -294,10 +294,18 @@
               border border-blue-300
               hover:border-blue-200
             "
-            to="/tournament"
+            to="/lotery"
           >
-            Tournament
+            Lotery
           </router-link>
+          <!-- GitHub -->
+          <a
+            class="cursor-pointer absolute bottom-3 w-full text-center"
+            href="https://github.com"
+            target="blanck"
+          >
+            <span class="fa fa-github text-3xl text-gray-400 -mt-1"></span>
+          </a>
         </div>
       </transition>
     </div>

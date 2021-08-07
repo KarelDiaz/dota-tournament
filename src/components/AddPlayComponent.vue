@@ -245,6 +245,10 @@ export default {
       playForm: Play,
     };
   },
+  props: {
+    teamGood: {},
+    teamBad: {},
+  },
   computed: {
     ...mapState({
       strapi: (state) => state.strapi,
@@ -379,6 +383,25 @@ export default {
 
     resetForm() {
       this.playForm = new Play();
+      // in case of trounament the play should have the players from scratch
+      // good side
+      if (this.teamGood !== {})
+        this.teamGood.players.forEach((player) => {
+          let prtemp = this.playForm.player_results.find(
+            (pr) => pr.side == "good" && pr.bot
+          );
+          prtemp.player = player;
+          prtemp.bot = false;
+        });
+      // bad side
+      if (this.teamBad !== {})
+        this.teamBad.players.forEach((player) => {
+          let prtemp = this.playForm.player_results.find(
+            (pr) => pr.side == "bad" && pr.bot
+          );
+          prtemp.player = player;
+          prtemp.bot = false;
+        });
     },
   },
   watch: {
@@ -388,7 +411,7 @@ export default {
       });
     },
   },
-  mounted() {
+  created() {
     this.resetForm();
   },
 };

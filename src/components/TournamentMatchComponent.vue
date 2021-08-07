@@ -82,11 +82,11 @@
         </div>
       </div>
     </div>
+    <!-- Add play modal -->
     <transition name="fade">
       <div
         v-if="modal"
         class="
-          backdrop-filter backdrop-blur-sm backdrop-hue-rotate-60
           fixed
           w-full
           h-full
@@ -120,7 +120,12 @@
         >
           Cancelar
         </button>
-        <add-play-component class="my-auto w-full"></add-play-component>
+        <add-play-component
+          :team-good="team1"
+          :team-bad="team2"
+          @added="newPlay($event)"
+          class="w-full"
+        ></add-play-component>
       </div>
     </transition>
   </div>
@@ -158,22 +163,6 @@ export default {
     team2: {},
     tournament: {},
   },
-  created() {
-    let win = Math.random();
-    let temp = Math.random();
-    if (win < 0.5) {
-      if (temp < 0.5) {
-        this.m1 = this.matchesToWin;
-        this.m2 = Math.round(Math.random() * (this.matchesToWin - 1));
-      } else {
-        this.m2 = this.matchesToWin;
-        this.m1 = Math.round(Math.random() * (this.matchesToWin - 1));
-      }
-    } else {
-      this.m1 = Math.round(Math.random() * (this.matchesToWin - 1));
-      this.m2 = Math.round(Math.random() * (this.matchesToWin - 1));
-    }
-  },
   computed: {
     matchesWonTeam1() {
       return this.m1;
@@ -205,6 +194,28 @@ export default {
       return (
         this.matchesWonTeam1Percent >= 1 || this.matchesWonTeam2Percent >= 1
       );
+    },
+  },
+  created() {
+    let win = Math.random();
+    let temp = Math.random();
+    if (win < 0.5) {
+      if (temp < 0.5) {
+        this.m1 = this.matchesToWin;
+        this.m2 = Math.round(Math.random() * (this.matchesToWin - 1));
+      } else {
+        this.m2 = this.matchesToWin;
+        this.m1 = Math.round(Math.random() * (this.matchesToWin - 1));
+      }
+    } else {
+      this.m1 = Math.round(Math.random() * (this.matchesToWin - 1));
+      this.m2 = Math.round(Math.random() * (this.matchesToWin - 1));
+    }
+  },
+  methods: {
+    newPlay(play) {
+      this.modal = false;
+      console.log(play);
     },
   },
 };

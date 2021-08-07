@@ -6,6 +6,7 @@
         hidden
         sm:flex
         p-3
+        z-50
         justify-between
         h-14
         bg-gradient-to-r

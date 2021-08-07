@@ -3,6 +3,7 @@
     <form @submit.prevent="send">
       <!-- Header controls -->
       <div class="flex justify-center space-x-3 pb-3">
+        <!-- Good -->
         <label
           :class="[
             'w-full text-center border bg-gradient-to-b',
@@ -25,26 +26,25 @@
           />
           Good
         </label>
-        <div>
-          <button
-            class="
-              px-3
-              sm:w-40
-              text-green-900
-              border border-green-400
-              hover:border-green-300
-              bg-gradient-to-b
-              from-green-200
-              to-green-400
-              hover:from-green-100
-              hover:to-green-300
-            "
-            type="submit"
-          >
-            Save
-          </button>
-        </div>
-
+        <!-- Save -->
+        <button
+          class="
+            px-3
+            sm:w-40
+            text-green-900
+            border border-green-400
+            hover:border-green-300
+            bg-gradient-to-b
+            from-green-200
+            to-green-400
+            hover:from-green-100
+            hover:to-green-300
+          "
+          type="submit"
+        >
+          Save
+        </button>
+        <!-- Bad -->
         <label
           :class="[
             'w-full text-center border bg-gradient-to-b',
@@ -72,7 +72,7 @@
       <div class="flex flex-wrap border border-t-0 border-b-0">
         <!-- Player list -->
         <div
-          class="w-1/5 sm:w-1/10 h-40 flex flex-col"
+          class="w-1/5 sm:w-1/10 h-40 flex flex-col bg-white"
           v-for="(pr, index) in playForm.player_results"
           :key="index"
         >

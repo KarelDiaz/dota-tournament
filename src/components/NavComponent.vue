@@ -164,11 +164,13 @@
         shadow-md
       "
     >
+      <!-- Logo -->
       <div>
         <router-link to="/" class="cursor-pointer">
           <img class="h-full" src="dota_logo.png" />
         </router-link>
       </div>
+      <!-- Burguer -->
       <button class="flex flex-col justify-between" @click="open = !open">
         <div
           v-for="i in 3"
@@ -182,6 +184,7 @@
           ]"
         ></div>
       </button>
+      <!-- Links -->
       <transition name="slide-left-full">
         <div
           v-if="open"
@@ -308,6 +311,22 @@
             <span class="fa fa-github text-3xl text-gray-400 -mt-1"></span>
           </a>
         </div>
+      </transition>
+      <!-- Dropback -->
+      <transition name="fade">
+        <div
+          v-if="open"
+          @click="open = false"
+          class="
+            bg-gray-500 bg-opacity-40
+            fixed
+            w-screen
+            h-screen
+            top-0
+            right-0
+            z-40
+          "
+        ></div>
       </transition>
     </div>
   </div>

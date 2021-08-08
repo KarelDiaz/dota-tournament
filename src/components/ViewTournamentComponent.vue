@@ -75,6 +75,7 @@
           right-0
           z-50
           p-3
+          sm:p-6
           flex flex-col
           bg-blue-900 bg-opacity-30
         "
@@ -91,7 +92,7 @@
             border-b-0
           "
         >
-          <span>Agregar play al match</span>
+          <span>Add match play</span>
           <!-- Close -->
           <button
             class="

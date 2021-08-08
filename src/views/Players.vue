@@ -1,5 +1,6 @@
 <template>
   <div class="mt-2">
+    <!-- Add and modify player -->
     <div class="flex justify-center">
       <form @submit.prevent="send">
         <input
@@ -41,6 +42,7 @@
         </button>
       </form>
     </div>
+    <!-- Player list -->
     <div v-if="players.length > 0" class="pb-3">
       <table class="w-full mt-3 text-left">
         <tr>
@@ -140,11 +142,11 @@
         </tr>
       </table>
     </div>
-
+    <!-- Empty players -->
     <div v-else class="no-players">
       <h1>No hay players disponibles</h1>
     </div>
-
+    <!-- History player -->
     <transition name="slide-top">
       <div class="info-container" v-if="playerInfo.id">
         <b class="info-name">{{ playerInfo.nick }}</b>
@@ -205,7 +207,7 @@
         </div>
       </div>
     </transition>
-
+    <!-- Play info -->
     <PlayComponent v-if="playInfo.id" :play="playInfo"></PlayComponent>
   </div>
 </template>
@@ -397,17 +399,11 @@ $width-xs: calc(calc(100vw / 10) * 10);
       height: 400px;
       cursor: pointer;
       &.waching {
-        background-color: transparentize(
-          $color: map-get($map: $bg, $key: 3),
-          $amount: 0.5
-        );
+        background-color: transparentize($color: rgb(14, 0, 65), $amount: 0.5);
       }
 
       &:hover {
-        background-color: transparentize(
-          $color: map-get($map: $bg, $key: 2),
-          $amount: 0.5
-        );
+        background-color: transparentize($color: black, $amount: 0.5);
       }
     }
 
@@ -427,11 +423,11 @@ $width-xs: calc(calc(100vw / 10) * 10);
         .val {
           padding-left: 5px;
           &.bad {
-            color: map-get($map: $color, $key: bad-plus);
+            color: brown;
           }
 
           &.good {
-            color: map-get($map: $color, $key: good-plus);
+            color: greenyellow;
           }
         }
 
@@ -447,11 +443,11 @@ $width-xs: calc(calc(100vw / 10) * 10);
 
         .info-item-val {
           &.bad {
-            background-color: map-get($map: $color, $key: bad);
+            background-color: red;
             clip-path: polygon(40% 30%, 0% 100%, 60% 60%, 100% 0%);
           }
           &.good {
-            background-color: map-get($map: $color, $key: good);
+            background-color: green;
             clip-path: polygon(0% 0%, 20% 60%, 100% 100%, 60% 20%);
           }
         }
@@ -460,13 +456,13 @@ $width-xs: calc(calc(100vw / 10) * 10);
       &-val {
         transition: clip-path 0.2s;
         &.bad {
-          background-color: map-get($map: $color, $key: bad-plus);
+          background-color: brown;
           clip-path: polygon(80% 0%, 0% 100%, 20% 100%, 100% 0%);
         }
 
         &.good {
           transition: clip-path 0.3s;
-          background-color: map-get($map: $color, $key: good-plus);
+          background-color: greenyellow;
           clip-path: polygon(0% 0%, 80% 100%, 100% 100%, 20% 0%);
         }
       }

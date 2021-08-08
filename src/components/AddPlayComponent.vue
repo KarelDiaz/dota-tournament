@@ -9,7 +9,7 @@
             'w-full text-center border bg-gradient-to-b',
             {
               'cursor-pointer text-gray-900 border-gray-300 hover:border-gray-200 from-gray-100 to-gray-300 hover:from-gray-50 hover:to-gray-200':
-                playForm.side_win !== 'good',
+                playForm.side_win === 'bad',
             },
             {
               'cursor-default text-yellow-900 border-yellow-400 from-yellow-200 to-yellow-400':
@@ -50,7 +50,7 @@
             'w-full text-center border bg-gradient-to-b',
             {
               'cursor-pointer text-gray-900 border-gray-300 hover:border-gray-200 from-gray-100 to-gray-300 hover:from-gray-50 hover:to-gray-200':
-                playForm.side_win !== 'bad',
+                playForm.side_win === 'good',
             },
             {
               'cursor-default text-yellow-900 border-yellow-400 from-yellow-200 to-yellow-400':
@@ -72,7 +72,7 @@
       <div class="flex flex-wrap border border-t-0 border-b-0">
         <!-- Player list -->
         <div
-          class="w-1/5 sm:w-1/10 h-40 flex flex-col bg-white"
+          class="w-1/5 sm:w-1/10 flex flex-col bg-white"
           v-for="(pr, index) in playForm.player_results"
           :key="index"
         >
@@ -98,16 +98,23 @@
           <div class="flex">
             <div
               v-if="pr.side === 'good'"
-              class="h-1 w-full bg-gradient-to-b from-green-200 to-green-400"
+              class="h-2 w-full bg-gradient-to-b from-green-200 to-green-400"
             ></div>
             <div
               v-if="pr.side === 'bad'"
-              class="h-1 w-full bg-gradient-to-b from-red-200 to-red-400"
+              class="h-2 w-full bg-gradient-to-b from-red-200 to-red-400"
             ></div>
           </div>
           <!-- Player form -->
           <div
-            class="flex flex-col p-1 justify-between h-full bg-center bg-cover"
+            class="
+              flex flex-col
+              h-40
+              p-1
+              justify-between
+              bg-center bg-cover
+              shadow-inner
+            "
             :style="[
               {
                 'background-image':
@@ -214,11 +221,11 @@
           <div class="flex">
             <div
               v-if="pr.win"
-              class="h-1 w-full bg-gradient-to-b from-yellow-200 to-yellow-400"
+              class="h-2 w-full bg-gradient-to-b from-yellow-200 to-yellow-400"
             ></div>
             <div
               v-if="!pr.win"
-              class="h-1 w-full bg-gradient-to-b from-gray-200 to-gray-400"
+              class="h-2 w-full bg-gradient-to-b from-gray-200 to-gray-400"
             ></div>
           </div>
         </div>
@@ -382,10 +389,11 @@ export default {
     },
 
     resetForm() {
-      this.playForm = new Play();
+      let side_win = this.playForm.side_win;
+      this.playForm = new Play([], side_win);
       // in case of trounament the play should have the players from scratch
       // good side
-      if (this.teamGood !== {})
+      if (this.teamGood)
         this.teamGood.players.forEach((player) => {
           let prtemp = this.playForm.player_results.find(
             (pr) => pr.side == "good" && pr.bot
@@ -394,7 +402,7 @@ export default {
           prtemp.bot = false;
         });
       // bad side
-      if (this.teamBad !== {})
+      if (this.teamBad)
         this.teamBad.players.forEach((player) => {
           let prtemp = this.playForm.player_results.find(
             (pr) => pr.side == "bad" && pr.bot
@@ -409,6 +417,12 @@ export default {
       this.playForm.player_results.forEach((pr) => {
         pr.win = this.playForm.side_win === pr.side;
       });
+    },
+    teamGood() {
+      this.resetForm();
+    },
+    teamBad() {
+      this.resetForm();
     },
   },
   created() {

@@ -190,6 +190,7 @@
           v-if="open"
           class="
             flex flex-col
+            justify-between
             z-50
             left-0
             top-0
@@ -197,114 +198,129 @@
             h-screen
             fixed
             bg-white
+            overflow-y-auto
             shadow-2xl
             p-3
           "
         >
-          <router-link
-            to="/"
-            class="cursor-pointer"
-            @click.passive="open = false"
-          >
-            <img src="dota_logo.png" class="mb-3 w-1/4 mx-auto" />
-          </router-link>
-          <router-link
-            @click.passive="open = false"
-            class="
-              py-1
-              px-2
-              mb-3
-              shadow-sm
-              bg-gradient-to-b
-              from-blue-100
-              to-blue-300
-              hover:from-blue-50
-              hover:to-blue-200
-              border border-blue-300
-              hover:border-blue-200
-            "
-            to="/players"
-          >
-            Players
-          </router-link>
-          <router-link
-            @click.passive="open = false"
-            class="
-              py-1
-              px-2
-              mb-3
-              shadow-sm
-              bg-gradient-to-b
-              from-blue-100
-              to-blue-300
-              hover:from-blue-50
-              hover:to-blue-200
-              border border-blue-300
-              hover:border-blue-200
-            "
-            to="/plays"
-          >
-            Plays
-          </router-link>
-          <router-link
-            @click.passive="open = false"
-            class="
-              py-1
-              px-2
-              mb-3
-              shadow-sm
-              bg-gradient-to-b
-              from-blue-100
-              to-blue-300
-              hover:from-blue-50
-              hover:to-blue-200
-              border border-blue-300
-              hover:border-blue-200
-            "
-            to="/tournaments"
-          >
-            Tournaments
-          </router-link>
-          <router-link
-            @click.passive="open = false"
-            class="
-              py-1
-              px-2
-              mb-3
-              shadow-sm
-              bg-gradient-to-b
-              from-blue-100
-              to-blue-300
-              hover:from-blue-50
-              hover:to-blue-200
-              border border-blue-300
-              hover:border-blue-200
-            "
-            to="/hero"
-          >
-            Heroes
-          </router-link>
-          <router-link
-            @click.passive="open = false"
-            class="
-              py-1
-              px-2
-              shadow-sm
-              bg-gradient-to-b
-              from-blue-100
-              to-blue-300
-              hover:from-blue-50
-              hover:to-blue-200
-              border border-blue-300
-              hover:border-blue-200
-            "
-            to="/lotery"
-          >
-            Lotery
-          </router-link>
+          <!-- Link -->
+          <div class="flex flex-col space-y-3">
+            <!-- Logo -->
+            <router-link
+              to="/"
+              class="cursor-pointer"
+              @click.passive="open = false"
+            >
+              <img src="dota_logo.png" class="mb-3 w-1/4 mx-auto" />
+            </router-link>
+            <!-- Players -->
+            <router-link
+              @click.passive="open = false"
+              class="
+                py-1
+                px-2
+                mb-3
+                shadow-sm
+                bg-gradient-to-b
+                from-blue-100
+                to-blue-300
+                hover:from-blue-50
+                hover:to-blue-200
+                border border-blue-300
+                hover:border-blue-200
+                break-all
+              "
+              to="/players"
+            >
+              Players
+            </router-link>
+            <!-- Plays -->
+            <router-link
+              @click.passive="open = false"
+              class="
+                py-1
+                px-2
+                mb-3
+                shadow-sm
+                bg-gradient-to-b
+                from-blue-100
+                to-blue-300
+                hover:from-blue-50
+                hover:to-blue-200
+                border border-blue-300
+                hover:border-blue-200
+                break-all
+              "
+              to="/plays"
+            >
+              Plays
+            </router-link>
+            <!-- Tournaments -->
+            <router-link
+              @click.passive="open = false"
+              class="
+                py-1
+                px-2
+                mb-3
+                shadow-sm
+                bg-gradient-to-b
+                from-blue-100
+                to-blue-300
+                hover:from-blue-50
+                hover:to-blue-200
+                border border-blue-300
+                hover:border-blue-200
+                break-all
+              "
+              to="/tournaments"
+            >
+              Tournaments
+            </router-link>
+            <!-- Heroes -->
+            <router-link
+              @click.passive="open = false"
+              class="
+                py-1
+                px-2
+                mb-3
+                shadow-sm
+                bg-gradient-to-b
+                from-blue-100
+                to-blue-300
+                hover:from-blue-50
+                hover:to-blue-200
+                border border-blue-300
+                hover:border-blue-200
+                break-all
+              "
+              to="/hero"
+            >
+              Heroes
+            </router-link>
+            <!-- Lotery -->
+            <router-link
+              @click.passive="open = false"
+              class="
+                py-1
+                px-2
+                shadow-sm
+                bg-gradient-to-b
+                from-blue-100
+                to-blue-300
+                hover:from-blue-50
+                hover:to-blue-200
+                border border-blue-300
+                hover:border-blue-200
+                break-all
+              "
+              to="/lotery"
+            >
+              Lotery
+            </router-link>
+          </div>
           <!-- GitHub -->
           <a
-            class="cursor-pointer absolute bottom-3 w-full text-center"
+            class="cursor-pointer w-full text-center"
             href="https://github.com"
             target="blanck"
           >
@@ -318,7 +334,7 @@
           v-if="open"
           @click="open = false"
           class="
-            bg-gray-500 bg-opacity-40
+            bg-blue-900 bg-opacity-30
             fixed
             w-screen
             h-screen

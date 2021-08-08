@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div class="flex flex-col justify-center" @click="modal = true">
+    <!-- Match button -->
+    <div class="flex flex-col justify-center">
       <!-- Percent bar of team 1 to win -->
       <div
         v-if="!isMatchWon"
@@ -82,52 +83,6 @@
         </div>
       </div>
     </div>
-    <!-- Add play modal -->
-    <transition name="fade">
-      <div
-        v-if="modal"
-        class="
-          fixed
-          w-full
-          h-full
-          top-0
-          right-0
-          z-50
-          p-3
-          pt-16
-          flex
-          justify-center
-          bg-gray-400 bg-opacity-50
-        "
-      >
-        <button
-          class="
-            absolute
-            top-0
-            m-4
-            px-3
-            sm:w-40
-            text-red-900
-            border border-red-400
-            hover:border-red-300
-            bg-gradient-to-b
-            from-red-200
-            to-red-400
-            hover:from-red-100
-            hover:to-red-300
-          "
-          @click="modal = false"
-        >
-          Cancelar
-        </button>
-        <add-play-component
-          :team-good="team1"
-          :team-bad="team2"
-          @added="newPlay($event)"
-          class="w-full"
-        ></add-play-component>
-      </div>
-    </transition>
   </div>
 </template>
 
@@ -140,10 +95,8 @@ import {
   DIRECT_3,
   DIRECT_5,
 } from "@/store/tournament-type";
-import AddPlayComponent from "@/components/AddPlayComponent.vue";
 
 export default {
-  components: { AddPlayComponent },
   data() {
     return {
       ALL_FOR_ALL_1,
@@ -153,7 +106,6 @@ export default {
       DIRECT_3,
       DIRECT_5,
       hover: false,
-      modal: false,
       m1: 0,
       m2: 0,
     };
@@ -212,11 +164,6 @@ export default {
       this.m2 = Math.round(Math.random() * (this.matchesToWin - 1));
     }
   },
-  methods: {
-    newPlay(play) {
-      this.modal = false;
-      console.log(play);
-    },
-  },
 };
 </script>
+

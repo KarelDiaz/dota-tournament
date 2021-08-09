@@ -1,7 +1,7 @@
 <template>
   <div class="flex">
     <!--Tournaments list-->
-    <div>
+    <div class="w-20 sm:w-40">
       <!--Tournaments header-->
       <div class="flex justify-between pb-3">
         <button
@@ -21,15 +21,12 @@
           <i class="fa fa-plus" v-if="!tAdd"></i>
           <i class="fa fa-trash" v-else></i>
         </button>
-        <b :class="['ml-3 hidden sm:inline-block', { flex: !tAdd }]">
-          Tournaments
-        </b>
       </div>
       <!--Tornements-->
       <div class="flex flex-col space-y-3 w-full" v-if="tournaments.length > 0">
         <button
           :class="[
-            'bg-gradient-to-bl border p-1 min-w-full sm:p-3 flex flex-col space-y-1 text-xs sm:text-base break-all',
+            'bg-gradient-to-bl border p-1 min-w-full sm:p-1 flex flex-col space-y-1 text-xs sm:text-base break-all',
             {
               'text-blue-900 border-blue-400 hover:border-blue-300 from-blue-100 to-blue-400 hover:from-blue-100 hover:to-blue-300':
                 tournamentSelected != t,

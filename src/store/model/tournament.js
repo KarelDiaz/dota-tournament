@@ -7,6 +7,7 @@ export default class Tournament {
     this.name = name;
     this.ended = false;
     this.teams = [];
-    this.type = ""
+    this.type = "";
+    this.plays = [];
   }
 }

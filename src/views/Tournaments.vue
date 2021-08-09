@@ -1,12 +1,12 @@
 <template>
   <div class="flex">
     <!--Tournaments list-->
-    <div class="p-3">
+    <div class="w-20 sm:w-40">
       <!--Tournaments header-->
       <div class="flex justify-between pb-3">
         <button
           :class="[
-            'px-4 bg-gradient-to-b border',
+            'px-4 bg-gradient-to-b border w-full',
             {
               'border-green-400 hover:border-green-300 text-green-900 from-green-200 to-green-400 hover:from-green-100 hover:to-green-300':
                 !tAdd,
@@ -21,22 +21,12 @@
           <i class="fa fa-plus" v-if="!tAdd"></i>
           <i class="fa fa-trash" v-else></i>
         </button>
-        <b :class="['ml-3', { 'hidden sm:flex': tAdd }, { flex: !tAdd }]">
-          Tournaments
-        </b>
       </div>
       <!--Tornements-->
-      <div
-        :class="[
-          'flex-col space-y-3',
-          { 'hidden sm:flex': tAdd },
-          { flex: !tAdd },
-        ]"
-        v-if="tournaments.length > 0"
-      >
+      <div class="flex flex-col space-y-3 w-full" v-if="tournaments.length > 0">
         <button
           :class="[
-            'bg-gradient-to-bl border p-3 flex flex-col space-y-1',
+            'bg-gradient-to-bl border p-1 min-w-full sm:p-1 flex flex-col space-y-1 text-xs sm:text-base break-all',
             {
               'text-blue-900 border-blue-400 hover:border-blue-300 from-blue-100 to-blue-400 hover:from-blue-100 hover:to-blue-300':
                 tournamentSelected != t,
@@ -51,16 +41,17 @@
           @click="tournamentSelected = t"
         >
           <b>{{ t.name }}</b>
-          <i class="text-sm">{{
+          <i class="hidden sm:inline-block text-sm">{{
             moment(t.createdAt).format("MMMM D, YYYY")
           }}</i>
         </button>
       </div>
       <div v-if="tournaments.length == 0">No hay torneos</div>
     </div>
-    <div class="flex flex-col my-3 mr-3 w-full">
+    <!-- Add and view tournament -->
+    <div class="flex flex-col ml-3 w-full">
       <add-tournament-component
-        class="mr-3 mb-3"
+        class="mb-3"
         @tournament-add="this.tAdd = false"
         v-if="tAdd"
       ></add-tournament-component>
@@ -84,7 +75,7 @@ export default {
     return {
       moment: moment,
       tAdd: false,
-      tournamentSelected: {},
+      tournamentSelected: null,
     };
   },
   computed: {

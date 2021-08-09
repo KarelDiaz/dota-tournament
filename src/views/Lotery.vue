@@ -1,9 +1,9 @@
 <template>
   <div>
     <transition name="fade">
-      <div v-if="!nonePlayers" class="flex">
+      <div v-if="!nonePlayers" class="flex divide-x">
         <!--Left-->
-        <div class="flex-grow w-32 px-3 my-3 border-r">
+        <div class="flex-grow w-32">
           <span>
             <b>Seleccione los players <i class="fa fa-arrow-right"></i></b>
           </span>
@@ -22,7 +22,7 @@
           </transition-group>
         </div>
         <!--Center-->
-        <div class="flex-grow w-32 px-3 my-3 border-r">
+        <div class="flex-grow w-32 px-3 my-3">
           <span>
             <b>Players</b>
             <transition-group name="fade">

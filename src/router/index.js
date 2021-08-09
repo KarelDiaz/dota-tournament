@@ -27,9 +27,9 @@ const routes = [
     component: () => import("../views/Lotery.vue")
   },
   {
-    path: "/tournament",
-    name: "Tournament",
-    component: () => import("../views/Tournament.vue")
+    path: "/tournaments",
+    name: "Tournaments",
+    component: () => import("../views/Tournaments.vue")
   }
 ];
 

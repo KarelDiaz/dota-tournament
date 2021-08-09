@@ -1,59 +1,76 @@
 <template>
-  <div class="flex flex-col space-y-3">
-    <!-- Header -->
-    <div>
-      <div class="text-4xl">{{ tournament.name }}</div>
-      <div class="text-xs">
-        {{ normalizeTournamentTypeName(tournament.type?.name) }}
+  <div>
+    <!-- Tournament -->
+    <div v-if="tournamentCopy" class="flex flex-col space-y-3">
+      <!-- Header -->
+      <div>
+        <div class="text-4xl">{{ tournamentCopy.name }}</div>
+        <div class="text-xs">
+          {{ normalizeTournamentTypeName(tournamentCopy.type?.name) }}
+        </div>
       </div>
-    </div>
-    <!-- Play list -->
-    <div v-if="tournament">
-      <!-- All for All -->
-      <div v-if="isAllForAll" class="flex flex-col sm:flex-row sm:flex-wrap">
-        <template v-for="(itemf, indexf) in tournament.teams" :key="indexf">
-          <template v-for="(iteml, indexl) in tournament.teams" :key="indexl">
-            <div
-              v-if="indexf < indexl"
-              class="
-                flex flex-col
-                justify-between
-                items-center
-                p-3
-                mb-3
-                mr-3
-                w-full
-                sm:w-40
-                text-center
-                cursor-pointer
-                text-gray-500
-                hover:text-blue-500
-                border border-gray-500 border-dashed
-                hover:border-blue-500
-              "
+      <!-- Teams and Matches -->
+      <div class="flex">
+        <!-- Teams -->
+        <div class="flex flex-col">
+          <tournament-team-component
+            class="mr-3 mb-3"
+            v-for="team in tournamentCopy.teams"
+            :key="team.id + tournamentCopy.id"
+            :team="team"
+            :tournament="tournamentCopy"
+            :tournamentPlays="tournamentPlays"
+          >
+          </tournament-team-component>
+        </div>
+        <!-- Matches -->
+        <div>
+          <!-- Tournament types -->
+          <!-- All for All -->
+          <div class="flex flex-wrap" v-if="isAllForAll">
+            <template v-for="(itemf, indexf) in tournamentCopy.teams">
+              <template v-for="(iteml, indexl) in tournamentCopy.teams">
+                <tournament-match-component
+                  @click-match="openModal(itemf, iteml, $event)"
+                  @added="initPlays()"
+                  v-if="indexf < indexl"
+                  :key="itemf.id + iteml.id + tournamentCopy.id"
+                  :team1="itemf"
+                  :team2="iteml"
+                  :tournament="tournamentCopy"
+                  :tournamentPlays="tournamentPlays"
+                  class="h-full mb-3 mr-3"
+                ></tournament-match-component>
+              </template>
+            </template>
+          </div>
+          <!-- Direct -->
+          <div class="flex" v-if="isDirect">
+            <template
+              v-for="(team, i) in tournamentCopy.teams"
+              class="h-full bg-green-500"
             >
-              <span
-                :class="{
-                  'font-bold': eloMediaTeam(itemf) > eloMediaTeam(iteml),
-                }"
-              >
-                {{ itemf.name }}
-              </span>
-              <i>vs</i>
-              <span
-                :class="{
-                  'font-bold': eloMediaTeam(itemf) < eloMediaTeam(iteml),
-                }"
-              >
-                {{ iteml.name }}
-              </span>
-            </div>
-          </template>
-        </template>
+              <tournament-match-component
+                @click-match="openModal(itemf, iteml, $event)"
+                @added="initPlays()"
+                :key="
+                  tournamentCopy.teams[i].id +
+                  tournamentCopy.teams[i + 1].id +
+                  tournamentCopy.id
+                "
+                v-if="i % 2 === 0"
+                :team1="tournamentCopy.teams[i]"
+                :team2="tournamentCopy.teams[i + 1]"
+                :tournament="tournamentCopy"
+                :tournamentPlays="tournamentPlays"
+                class="h-full mb-3 mr-3"
+              ></tournament-match-component>
+            </template>
+          </div>
+        </div>
       </div>
-      <!-- Direct -->
-      <div v-if="isDirect"></div>
     </div>
+    <!-- Empty tournaments -->
     <div v-else>
       <h1>No hay tourneo seleccionado</h1>
     </div>
@@ -61,6 +78,9 @@
 </template>
 
 <script>
+import Axios from "axios";
+import { mapState } from "vuex";
+
 import {
   ALL_FOR_ALL_1,
   ALL_FOR_ALL_3,
@@ -69,6 +89,8 @@ import {
   DIRECT_3,
   DIRECT_5,
 } from "@/store/tournament-type";
+import TournamentMatchComponent from "@/components/TournamentMatchComponent";
+import TournamentTeamComponent from "@/components/TournamentTeamComponent.vue";
 
 export default {
   data() {
@@ -79,14 +101,19 @@ export default {
       DIRECT_1,
       DIRECT_3,
       DIRECT_5,
+      tournamentCopy: null,
+      tournamentPlays: [],
     };
   },
   props: {
     tournament: null,
   },
   computed: {
+    ...mapState({
+      strapi: (state) => state.strapi,
+    }),
     isAllForAll() {
-      switch (this.tournament.type?.name) {
+      switch (this.tournamentCopy.type?.name) {
         case this.ALL_FOR_ALL_1:
         case this.ALL_FOR_ALL_3:
         case this.ALL_FOR_ALL_5:
@@ -95,7 +122,7 @@ export default {
       return false;
     },
     isDirect() {
-      switch (this.tournament.type?.name) {
+      switch (this.tournamentCopy.type?.name) {
         case this.DIRECT_1:
         case this.DIRECT_3:
         case this.DIRECT_5:
@@ -104,17 +131,19 @@ export default {
       return false;
     },
   },
+  components: {
+    TournamentMatchComponent,
+    TournamentTeamComponent,
+  },
   methods: {
-    eloMediaTeam(team) {
-      if (team.players.length == 0) return 0;
-      let s = 0;
-      team.players.forEach((p) => {
-        s += this.player(p).elo;
-      });
-      return parseInt(s / team.players.length);
-    },
-    player(id) {
-      return this.$store.state.players.find((p) => p.id === id);
+    initPlays() {
+      Axios.get(this.strapi + "/tournament-plays?_limit=-1").then(
+        ({ data }) => {
+          this.tournamentPlays = data.filter(
+            (p) => p.tournament.id === this.tournament?.id
+          );
+        }
+      );
     },
     normalizeTournamentTypeName(name) {
       if (!name) return "";
@@ -122,6 +151,17 @@ export default {
       for (let i = 0; i < name.length; i++)
         out += name[i] !== "_" ? name[i] : " ";
       return out.toUpperCase();
+    },
+  },
+  watch: {
+    async tournament(val) {
+      this.initPlays(0);
+      this.tournamentCopy = val;
+    },
+    tournamentCopy(val) {
+      val.teams?.sort((a, b) => {
+        return a.name > b.name;
+      });
     },
   },
 };

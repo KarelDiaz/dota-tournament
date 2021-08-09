@@ -1,7 +1,7 @@
 <template>
   <div>
     <NavComponent class="fixed top-0 w-full z-10"></NavComponent>
-    <router-view class="pt-16" />
+    <router-view class="p-1 sm:p-3 pt-20 sm:pt-20" />
   </div>
 </template>
 
@@ -28,7 +28,8 @@ export default {
 @import "@/theme/theme.scss";
 
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

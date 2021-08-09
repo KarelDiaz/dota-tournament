@@ -6,6 +6,7 @@
         hidden
         sm:flex
         p-3
+        z-50
         justify-between
         h-14
         bg-gradient-to-r
@@ -15,6 +16,7 @@
         shadow-md
       "
     >
+      <!-- Logo and link to info -->
       <router-link to="/" class="flex cursor-pointer">
         <img src="dota_logo.png" class="h-full my-auto" />
         <div class="text-2xl font-bold ml-3">
@@ -32,7 +34,9 @@
           </span>
         </div>
       </router-link>
+      <!-- Link views -->
       <div class="flex">
+        <!-- Players -->
         <router-link
           class="
             py-1
@@ -52,6 +56,7 @@
         >
           Players
         </router-link>
+        <!-- Plays -->
         <router-link
           class="
             py-1
@@ -71,6 +76,27 @@
         >
           Plays
         </router-link>
+        <!-- Tournaments -->
+        <router-link
+          class="
+            py-1
+            px-2
+            shadow-sm
+            bg-gradient-to-b
+            from-blue-100
+            to-blue-300
+            hover:from-blue-50
+            hover:to-blue-200
+            border border-blue-300
+            hover:border-blue-200
+            transform
+            -skew-x-12
+          "
+          to="/tournaments"
+        >
+          Tournaments
+        </router-link>
+        <!-- Heroes -->
         <router-link
           class="
             py-1
@@ -90,6 +116,7 @@
         >
           Heroes
         </router-link>
+        <!-- Lotery -->
         <router-link
           class="
             py-1
@@ -109,25 +136,14 @@
         >
           Lotery
         </router-link>
-        <router-link
-          class="
-            py-1
-            px-2
-            shadow-sm
-            bg-gradient-to-b
-            from-blue-100
-            to-blue-300
-            hover:from-blue-50
-            hover:to-blue-200
-            border border-blue-300
-            hover:border-blue-200
-            transform
-            -skew-x-12
-          "
-          to="/tournament"
+        <!-- GitHub -->
+        <a
+          class="ml-3 cursor-pointer"
+          href="https://github.com"
+          target="blanck"
         >
-          Tournament
-        </router-link>
+          <span class="fa fa-github text-3xl text-gray-400 -mt-1"></span>
+        </a>
       </div>
     </div>
     <!-- Movile -->
@@ -148,11 +164,13 @@
         shadow-md
       "
     >
+      <!-- Logo -->
       <div>
         <router-link to="/" class="cursor-pointer">
           <img class="h-full" src="dota_logo.png" />
         </router-link>
       </div>
+      <!-- Burguer -->
       <button class="flex flex-col justify-between" @click="open = !open">
         <div
           v-for="i in 3"
@@ -166,11 +184,13 @@
           ]"
         ></div>
       </button>
+      <!-- Links -->
       <transition name="slide-left-full">
         <div
           v-if="open"
           class="
             flex flex-col
+            justify-between
             z-50
             left-0
             top-0
@@ -178,112 +198,151 @@
             h-screen
             fixed
             bg-white
+            overflow-y-auto
             shadow-2xl
             p-3
           "
         >
-          <router-link
-            to="/"
-            class="cursor-pointer"
-            @click.passive="open = false"
+          <!-- Link -->
+          <div class="flex flex-col space-y-3">
+            <!-- Logo -->
+            <router-link
+              to="/"
+              class="cursor-pointer"
+              @click.passive="open = false"
+            >
+              <img src="dota_logo.png" class="mb-3 w-1/4 mx-auto" />
+            </router-link>
+            <!-- Players -->
+            <router-link
+              @click.passive="open = false"
+              class="
+                py-1
+                px-2
+                mb-3
+                shadow-sm
+                bg-gradient-to-b
+                from-blue-100
+                to-blue-300
+                hover:from-blue-50
+                hover:to-blue-200
+                border border-blue-300
+                hover:border-blue-200
+                break-all
+              "
+              to="/players"
+            >
+              Players
+            </router-link>
+            <!-- Plays -->
+            <router-link
+              @click.passive="open = false"
+              class="
+                py-1
+                px-2
+                mb-3
+                shadow-sm
+                bg-gradient-to-b
+                from-blue-100
+                to-blue-300
+                hover:from-blue-50
+                hover:to-blue-200
+                border border-blue-300
+                hover:border-blue-200
+                break-all
+              "
+              to="/plays"
+            >
+              Plays
+            </router-link>
+            <!-- Tournaments -->
+            <router-link
+              @click.passive="open = false"
+              class="
+                py-1
+                px-2
+                mb-3
+                shadow-sm
+                bg-gradient-to-b
+                from-blue-100
+                to-blue-300
+                hover:from-blue-50
+                hover:to-blue-200
+                border border-blue-300
+                hover:border-blue-200
+                break-all
+              "
+              to="/tournaments"
+            >
+              Tournaments
+            </router-link>
+            <!-- Heroes -->
+            <router-link
+              @click.passive="open = false"
+              class="
+                py-1
+                px-2
+                mb-3
+                shadow-sm
+                bg-gradient-to-b
+                from-blue-100
+                to-blue-300
+                hover:from-blue-50
+                hover:to-blue-200
+                border border-blue-300
+                hover:border-blue-200
+                break-all
+              "
+              to="/hero"
+            >
+              Heroes
+            </router-link>
+            <!-- Lotery -->
+            <router-link
+              @click.passive="open = false"
+              class="
+                py-1
+                px-2
+                shadow-sm
+                bg-gradient-to-b
+                from-blue-100
+                to-blue-300
+                hover:from-blue-50
+                hover:to-blue-200
+                border border-blue-300
+                hover:border-blue-200
+                break-all
+              "
+              to="/lotery"
+            >
+              Lotery
+            </router-link>
+          </div>
+          <!-- GitHub -->
+          <a
+            class="cursor-pointer w-full text-center"
+            href="https://github.com"
+            target="blanck"
           >
-            <img src="dota_logo.png" class="mb-3 w-1/4 mx-auto" />
-          </router-link>
-          <router-link
-            @click.passive="open = false"
-            class="
-              py-1
-              px-2
-              mb-3
-              shadow-sm
-              bg-gradient-to-b
-              from-blue-100
-              to-blue-300
-              hover:from-blue-50
-              hover:to-blue-200
-              border border-blue-300
-              hover:border-blue-200
-            "
-            to="/players"
-          >
-            Players
-          </router-link>
-          <router-link
-            @click.passive="open = false"
-            class="
-              py-1
-              px-2
-              mb-3
-              shadow-sm
-              bg-gradient-to-b
-              from-blue-100
-              to-blue-300
-              hover:from-blue-50
-              hover:to-blue-200
-              border border-blue-300
-              hover:border-blue-200
-            "
-            to="/plays"
-          >
-            Plays
-          </router-link>
-          <router-link
-            @click.passive="open = false"
-            class="
-              py-1
-              px-2
-              mb-3
-              shadow-sm
-              bg-gradient-to-b
-              from-blue-100
-              to-blue-300
-              hover:from-blue-50
-              hover:to-blue-200
-              border border-blue-300
-              hover:border-blue-200
-            "
-            to="/hero"
-          >
-            Heroes
-          </router-link>
-          <router-link
-            @click.passive="open = false"
-            class="
-              py-1
-              px-2
-              mb-3
-              shadow-sm
-              bg-gradient-to-b
-              from-blue-100
-              to-blue-300
-              hover:from-blue-50
-              hover:to-blue-200
-              border border-blue-300
-              hover:border-blue-200
-            "
-            to="/lotery"
-          >
-            Lotery
-          </router-link>
-          <router-link
-            @click.passive="open = false"
-            class="
-              py-1
-              px-2
-              shadow-sm
-              bg-gradient-to-b
-              from-blue-100
-              to-blue-300
-              hover:from-blue-50
-              hover:to-blue-200
-              border border-blue-300
-              hover:border-blue-200
-            "
-            to="/tournament"
-          >
-            Tournament
-          </router-link>
+            <span class="fa fa-github text-3xl text-gray-400 -mt-1"></span>
+          </a>
         </div>
+      </transition>
+      <!-- Dropback -->
+      <transition name="fade">
+        <div
+          v-if="open"
+          @click="open = false"
+          class="
+            bg-blue-900 bg-opacity-30
+            fixed
+            w-screen
+            h-screen
+            top-0
+            right-0
+            z-40
+          "
+        ></div>
       </transition>
     </div>
   </div>
@@ -305,5 +364,8 @@ export default {
   &:hover {
     @apply from-green-50 to-green-200 border-green-200 cursor-default;
   }
+}
+.corner {
+  clip-path: polygon(100% 0, 100% 100%, 50% 50%, 0 0);
 }
 </style>

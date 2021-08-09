@@ -15,7 +15,7 @@
             sticky
             top-0
           "
-          type="text"
+          type="search"
           placeholder="Buscar"
           v-model="filterText"
         />
@@ -50,8 +50,8 @@
         </div>
       </div>
     </div>
-
-    <div class="w-3/4 px-3 pb-3">
+    <!-- Hero and all users onfo -->
+    <div class="w-3/4 pl-3 text-center sm:text-left">
       <div v-if="!hSelected">Seleccione un heroe para ver estadisticas</div>
       <!--Hero info-->
       <div class="flex flex-col sm:flex-row mb-3" v-if="hSelected">
@@ -61,13 +61,15 @@
           alt
         />
         <div class="w-full sm:pl-3 my-auto">
-          <span class="font-extrabold">{{ hSelected.displayName }}</span>
-          <table class="w-full text-left">
+          <span class="font-extrabold text-2xl">
+            {{ hSelected.displayName }}
+          </span>
+          <table class="w-full text-left mt-3">
             <thead>
               <tr>
                 <th>P</th>
                 <th>V</th>
-                <th>Ave.</th>
+                <th>Ave</th>
                 <th>K</th>
                 <th>K/P</th>
                 <th>D</th>
@@ -92,7 +94,7 @@
           </table>
         </div>
       </div>
-      <!--All user info-->
+      <!--All users info-->
       <div class="flex">
         <table class="w-full text-left" v-if="hSelected">
           <thead>

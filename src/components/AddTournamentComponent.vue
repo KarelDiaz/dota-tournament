@@ -64,7 +64,7 @@
         </select>
       </div>
       <!--Teams-->
-      <div class="flex flex-col sm:flex-row space-y-3 sm:space-x-3 mb-3">
+      <div class="flex flex-col sm:flex-row flex-wrap">
         <!--Teams in-->
         <transition-group name="slide-right">
           <div
@@ -75,6 +75,8 @@
               space-y-3
               border
               p-3
+              mr-3
+              mb-3
               bg-gradient-to-t
               from-gray-200
               to-gray-50
@@ -114,6 +116,8 @@
             flex flex-col
             border border-dashed border-gray-400
             p-3
+            mb-3
+            mr-3
             space-y-3
           "
           v-if="newTeamVisibility"

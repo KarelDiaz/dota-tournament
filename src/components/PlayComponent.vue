@@ -14,11 +14,11 @@
         <div class="flex">
           <div
             v-if="result.side === 'good'"
-            class="h-1 w-full bg-gradient-to-b from-green-200 to-green-400"
+            class="h-2 w-full bg-gradient-to-b from-green-200 to-green-400"
           ></div>
           <div
             v-if="result.side === 'bad'"
-            class="h-1 w-full bg-gradient-to-b from-red-200 to-red-400"
+            class="h-2 w-full bg-gradient-to-b from-red-200 to-red-400"
           ></div>
         </div>
         <!-- Result -->
@@ -28,7 +28,9 @@
             flex flex-col
             justify-between
             bg-center bg-cover
-            text-white
+            text-white text-xs
+            sm:text-base
+            shadow-inner
             p-1
           "
           :style="[
@@ -45,11 +47,14 @@
         >
           <!-- Player nick and Elo -->
           <div class="flex flex-col">
-            <b class="item" v-if="!result.bot">
+            <b class="item truncate" v-if="!result.bot">
               {{ getPlayer(result.player).nick }}
             </b>
-            <span class="italic text-xs" v-if="!result.bot">
-              {{ result.elo }}
+            <span
+              class="flex flex-col space-x-1 sm:flex-row italic text-xs"
+              v-if="!result.bot"
+            >
+              <span>{{ result.elo }}</span>
               <b
                 :class="[
                   { 'text-green-400': result.win },
@@ -90,7 +95,7 @@
             </transition>
           </div>
           <!-- Hero name -->
-          <span class="item" v-if="!result.bot">
+          <span class="item truncate pb-2" v-if="!result.bot">
             {{ getHero(result.hero).displayName }}
           </span>
         </div>
@@ -98,11 +103,11 @@
         <div class="flex">
           <div
             v-if="result.win"
-            class="h-1 w-full bg-gradient-to-b from-yellow-200 to-yellow-400"
+            class="h-2 w-full bg-gradient-to-b from-yellow-200 to-yellow-400"
           ></div>
           <div
             v-if="!result.win"
-            class="h-1 w-full bg-gradient-to-b from-gray-200 to-gray-400"
+            class="h-2 w-full bg-gradient-to-b from-gray-200 to-gray-400"
           ></div>
         </div>
       </div>

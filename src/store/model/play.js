@@ -10,9 +10,13 @@ class Play {
     if (player_results.length == 0) {
       for (let i = 0; i < 10; i++) {
         if (i < 5) {
-          this.player_results.push(new PlayerResult("good"));
+          let good = new PlayerResult("good")
+          if (side_win === 'good') good.win = true;
+          this.player_results.push(good);
         } else {
-          this.player_results.push(new PlayerResult("bad"));
+          let bad = new PlayerResult("bad")
+          if (side_win === 'bad') bad.win = true;
+          this.player_results.push(bad);
         }
       }
     }

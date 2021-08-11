@@ -24,27 +24,29 @@
       </div>
       <!--Tornements-->
       <div class="flex flex-col space-y-3 w-full" v-if="tournaments.length > 0">
-        <button
-          :class="[
-            'bg-gradient-to-bl border p-1 min-w-full sm:p-1 flex flex-col space-y-1 text-xs sm:text-base break-all',
-            {
-              'text-blue-900 border-blue-400 hover:border-blue-300 from-blue-100 to-blue-400 hover:from-blue-100 hover:to-blue-300':
-                tournamentSelected != t,
-            },
-            {
-              'text-green-900 border-green-200  from-green-50 to-green-200 cursor-default':
-                tournamentSelected == t,
-            },
-          ]"
-          v-for="t in tournaments"
-          :key="t.id"
-          @click="tournamentSelected = t"
-        >
-          <b>{{ t.name }}</b>
-          <i class="hidden sm:inline-block text-sm">{{
-            moment(t.createdAt).format("MMMM D, YYYY")
-          }}</i>
-        </button>
+        <transition-group name="slide-top">
+          <button
+            :class="[
+              'bg-gradient-to-bl border p-1 min-w-full sm:p-1 flex flex-col space-y-1 text-xs sm:text-base break-all sm:break-normal',
+              {
+                'text-blue-900 border-blue-400 hover:border-blue-300 from-blue-100 to-blue-400 hover:from-blue-100 hover:to-blue-300':
+                  tournamentSelected != t,
+              },
+              {
+                'text-green-900 border-green-200  from-green-50 to-green-200 cursor-default':
+                  tournamentSelected == t,
+              },
+            ]"
+            v-for="t in tournaments"
+            :key="t.id"
+            @click="tournamentSelected = t"
+          >
+            <b>{{ t.name }}</b>
+            <i class="hidden sm:inline-block text-sm">{{
+              moment(t.createdAt).format("MMMM D, YYYY")
+            }}</i>
+          </button>
+        </transition-group>
       </div>
       <div v-if="tournaments.length == 0">No hay torneos</div>
     </div>

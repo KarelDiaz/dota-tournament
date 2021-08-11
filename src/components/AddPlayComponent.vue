@@ -31,14 +31,14 @@
           class="
             px-3
             sm:w-40
-            text-green-900
-            border border-green-400
-            hover:border-green-300
+            text-blue-900
+            border border-blue-400
+            hover:border-blue-300
             bg-gradient-to-b
-            from-green-200
-            to-green-400
-            hover:from-green-100
-            hover:to-green-300
+            from-blue-200
+            to-blue-400
+            hover:from-blue-100
+            hover:to-blue-300
           "
           type="submit"
         >

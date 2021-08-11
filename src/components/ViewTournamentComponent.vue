@@ -12,16 +12,18 @@
       <!-- Teams and Matches -->
       <div class="flex">
         <!-- Teams -->
-        <div class="flex flex-col">
-          <tournament-team-component
-            class="mr-3 mb-3"
-            v-for="team in tournamentCopy.teams"
-            :key="team.id + tournamentCopy.id"
-            :team="team"
-            :tournament="tournamentCopy"
-            :tournamentPlays="tournamentPlays"
-          >
-          </tournament-team-component>
+        <div class="flex flex-col min-w-min sm:w-52">
+          <transition-group name="slide-left">
+            <tournament-team-component
+              class="mr-3 mb-3"
+              v-for="team in tournamentTeamsOrder"
+              :key="team.id + tournamentCopy.id"
+              :team="team"
+              :tournament="tournamentCopy"
+              :tournamentPlays="tournamentPlays"
+            >
+            </tournament-team-component>
+          </transition-group>
         </div>
         <!-- Matches -->
         <div>
@@ -103,6 +105,7 @@ export default {
       DIRECT_5,
       tournamentCopy: null,
       tournamentPlays: [],
+      tournamentTeamsOrder: [],
     };
   },
   props: {
@@ -140,7 +143,7 @@ export default {
       Axios.get(this.strapi + "/tournament-plays?_limit=-1").then(
         ({ data }) => {
           this.tournamentPlays = data.filter(
-            (p) => p.tournament.id === this.tournament?.id
+            (p) => p.tournament.id === this.tournament.id
           );
         }
       );
@@ -155,11 +158,59 @@ export default {
   },
   watch: {
     async tournament(val) {
-      this.initPlays(0);
       this.tournamentCopy = val;
+      this.initPlays();
     },
     tournamentCopy(val) {
       val.teams?.sort((a, b) => {
+        return a.name > b.name;
+      });
+    },
+    tournamentPlays(plays) {
+      // clone teams
+      this.tournamentTeamsOrder = Array.from(this.tournamentCopy.teams);
+      // sort cloned teams
+      this.tournamentTeamsOrder.sort((a, b) => {
+        // total team a
+        let ta = plays.filter((p) => {
+          return p.teamGood.id === a.id || p.teamBad.id === a.id;
+        }).length;
+        // total team b
+        let tb = plays.filter((p) => {
+          return p.teamGood.id === b.id || p.teamBad.id === b.id;
+        }).length;
+        // victories team a
+        let va = plays.filter((p) => {
+          return (
+            (p.teamGood.id === a.id && p.play.side_win === "good") ||
+            (p.teamBad.id === a.id && p.play.side_win === "bad")
+          );
+        }).length;
+        // victories team b
+        let vb = plays.filter((p) => {
+          return (
+            (p.teamGood.id === b.id && p.play.side_win === "good") ||
+            (p.teamBad.id === b.id && p.play.side_win === "bad")
+          );
+        }).length;
+        // lost team a
+        let la = ta - va;
+        // lost teamb
+        let lb = tb - vb;
+
+        // order logic
+        // 1th level more victories
+        // 2th level less lost
+        // 3th level name
+        if (va === vb) {
+          if (la === lb) {
+            return a.name > b.name;
+          }
+          return la > lb;
+        }
+        return va < vb;
+      });
+      this.tournamentCopy.teams.sort((a, b) => {
         return a.name > b.name;
       });
     },

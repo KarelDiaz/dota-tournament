@@ -42,7 +42,7 @@
       <!-- Match -->
       <div
         :class="[
-          'flex flex-col justify-between items-center p-3 h-full w-40 text-center border',
+          'flex flex-col justify-between items-center p-2 sm:p-3 h-full w-40 text-center border',
           {
             'bg-gradient-to-t from-green-300 to-green-100 border-green-300':
               isMatchWon,
@@ -121,8 +121,8 @@
             flex
             justify-between
             p-3
+            shadow-sm
             bg-white
-            border
             text-center
             border-b-0
           "
@@ -149,33 +149,71 @@
           </button>
         </div>
         <!-- Content -->
-        <div class="flex flex-col p-3 bg-white border overflow-auto space-y-3">
-          <!-- Select bad and good -->
-          <div class="flex justify-evenly">
-            <!-- good -->
-            <b class="px-2 py-1 bg-gradient-to-l from-green-300 text-green-800">
-              {{ teamGood.name }}
-            </b>
-            <!-- Swap teams -->
-            <button @click="swapTeams()" class="swap text-2xl flex my-auto">
-              <i class="arrow-left fa fa-long-arrow-left text-red-500 p-1"></i>
-              <i
-                class="arrow-right fa fa-long-arrow-right text-green-500 p-1"
-              ></i>
-            </button>
-            <!-- bad -->
-            <b class="px-2 py-1 bg-gradient-to-r from-red-300 text-red-800">
-              {{ teamBad.name }}
-            </b>
+        <div class="relative flex flex-col p-3 bg-white overflow-auto">
+          <!-- Background -->
+          <div class="hidden sm:flex absolute top-0 bottom-0 left-0 right-0">
+            <div
+              class="
+                bg-gradient-to-r
+                from-green-200
+                border border-green-500 border-r-0
+                h-full
+                w-full
+              "
+            ></div>
+            <div
+              class="
+                bg-gradient-to-l
+                from-red-200
+                border border-red-500 border-l-0
+                h-full
+                w-full
+              "
+            ></div>
           </div>
-          <!-- Add play form -->
-          <add-play-component
-            v-if="teamGood && teamBad"
-            :team-good="teamGood"
-            :team-bad="teamBad"
-            @added="newPlay($event)"
-            class="w-full"
-          ></add-play-component>
+          <!-- Form content -->
+          <div class="flex flex-col space-y-3 z-10">
+            <!-- Select bad and good -->
+            <div class="flex space-x-3">
+              <!-- good -->
+              <b class="flex justify-center w-full px-2 py-1 text-green-800">
+                {{ teamGood.name }}
+              </b>
+              <!-- Swap teams -->
+              <button
+                class="
+                  swap
+                  flex
+                  justify-center
+                  sm:w-40
+                  sm:px-3
+                  text-2xl
+                  my-auto
+                "
+                @click="swapTeams()"
+                title="Swap teams"
+              >
+                <i
+                  class="arrow-left fa fa-long-arrow-left text-red-500 p-1"
+                ></i>
+                <i
+                  class="arrow-right fa fa-long-arrow-right text-green-500 p-1"
+                ></i>
+              </button>
+              <!-- bad -->
+              <b class="flex justify-center w-full px-2 py-1 text-red-800">
+                {{ teamBad.name }}
+              </b>
+            </div>
+            <!-- Add play form -->
+            <add-play-component
+              v-if="teamGood && teamBad"
+              :team-good="teamGood"
+              :team-bad="teamBad"
+              @added="newPlay($event)"
+              class="w-full"
+            ></add-play-component>
+          </div>
         </div>
       </div>
     </transition>

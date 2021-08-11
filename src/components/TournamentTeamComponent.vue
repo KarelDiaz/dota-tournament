@@ -2,25 +2,29 @@
   <div
     class="
       flex flex-col
+      text-center
       border border-gray-100
-      p-3
+      p-1
+      sm:p-3
       space-y-3
       bg-gradient-to-t
       from-gray-100
       text-gray-500
     "
   >
-    <div>{{ team.name }}</div>
-    <div class="flex space-x-2">
-      <span>P :</span>
-      <span>
+    <div class="break-all sm:break-normal">{{ team.name }}</div>
+    <div class="flex justify-center items-center space-x-2 select-none">
+      <span title="Plays" class="cursor-help">
         {{ teamPlays.length }}
       </span>
-    </div>
-    <div class="flex space-x-2">
-      <span>V :</span>
-      <span :class="[{ 'text-green-500': teamWonPlays.length > 0 }]">
+      <span
+        class="text-green-500 font-bold text-xl cursor-help"
+        title="Plays won"
+      >
         {{ teamWonPlays.length }}
+      </span>
+      <span class="text-red-500 cursor-help" title="Plays lost">
+        {{ teamPlays.length - teamWonPlays.length }}
       </span>
     </div>
   </div>

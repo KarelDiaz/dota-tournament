@@ -139,7 +139,7 @@
         <!-- GitHub -->
         <a
           class="ml-3 cursor-pointer"
-          href="https://github.com"
+          :href="$store.state.github.frontend"
           target="blanck"
         >
           <span class="fa fa-github text-3xl text-gray-400 -mt-1"></span>
@@ -321,7 +321,7 @@
           <!-- GitHub -->
           <a
             class="cursor-pointer w-full text-center"
-            href="https://github.com"
+            :href="$store.state.github.frontend"
             target="blanck"
           >
             <span class="fa fa-github text-3xl text-gray-400 -mt-1"></span>

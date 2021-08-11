@@ -22,6 +22,10 @@ export default createStore({
     loading: false,
     strapi: "http://192.168.1.103:1337",
     local: "http://192.168.1.103:8080",
+    github: {
+      frontend: 'https://github.com/KarelDiaz/dota-tournament-frontend',
+      backend: 'https://github.com/KarelDiaz/dota-tournament-backend'
+    },
     players: [],
     heroes: [],
     playerInfo: {},

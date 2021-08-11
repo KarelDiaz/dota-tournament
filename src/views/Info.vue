@@ -20,7 +20,7 @@
     </div>
     <!-- Links -->
     <div class="flex justify-center">
-      <a target="blanck" href="https://github.com">
+      <a target="blanck" :href="$store.state.github.frontend">
         GitHub
         <i class="fa fa-external-link"></i>
       </a>

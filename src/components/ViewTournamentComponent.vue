@@ -16,7 +16,8 @@
           <transition-group name="slide-left">
             <tournament-team-component
               class="mr-3 mb-3"
-              v-for="team in tournamentTeamsOrder"
+              v-for="(team, i) in tournamentTeamsOrder"
+              :position="i"
               :key="team.id + tournamentCopy.id"
               :team="team"
               :tournament="tournamentCopy"

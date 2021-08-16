@@ -1,29 +1,61 @@
 <template>
   <div
-    class="
-      flex flex-col
-      text-center
-      border border-gray-100
-      p-1
-      sm:p-3
-      space-y-3
-      bg-gradient-to-t
-      from-gray-100
-      text-gray-500
-    "
+    :class="[
+      'flex flex-col text-center p-1 sm:p-3 space-y-3 bg-gradient-to-t border border-gray-100 from-gray-100 text-gray-500',
+      {
+        'bg-gradient-to-t from-yellow-400 to-yellow-200 border-yellow-400':
+          position === 0 && teamWonPlays.length > 0,
+      },
+      {
+        'bg-gradient-to-t from-gray-300 to-gray-100 border-gray-300':
+          position === 1 && teamWonPlays.length > 0,
+      },
+      {
+        'bg-gradient-to-t from-yellow-800 to-yellow-600 border-yellow-800':
+          position === 2 && teamWonPlays.length > 0,
+      },
+    ]"
   >
-    <div class="break-all sm:break-normal flex flex-col">
+    <div
+      :class="[
+        'break-all sm:break-normal flex flex-col',
+        {
+          'text-yellow-900': position === 0 && teamWonPlays.length > 0,
+        },
+        {
+          'text-gray-500': position === 1 && teamWonPlays.length > 0,
+        },
+        {
+          'text-gray-900': position === 2 && teamWonPlays.length > 0,
+        },
+      ]"
+    >
       <span>{{ team.name }}</span>
-      <i
-        ><small>{{ elo }}</small></i
-      >
+      <i>
+        <small>{{ elo }}</small>
+      </i>
     </div>
-    <div class="flex justify-center items-center space-x-2 select-none">
+    <div
+      class="
+        flex
+        justify-center
+        items-center
+        space-x-2
+        select-none
+        bg-gradient-to-t
+        from-gray-200
+        to-gray-50
+        shadow-lg
+      "
+    >
       <span title="Plays" class="cursor-help">
         {{ teamPlays.length }}
       </span>
       <span
-        class="text-green-500 font-bold text-xl cursor-help"
+        :class="[
+          'font-bold text-xl cursor-help',
+          { 'text-yellow-400': teamWonPlays.length > 0 },
+        ]"
         title="Plays won"
       >
         {{ teamWonPlays.length }}
@@ -48,6 +80,7 @@ export default {
     team: Object,
     tournament: Object,
     tournamentPlays: Array,
+    position: Number,
   },
   methods: {
     initTeam() {

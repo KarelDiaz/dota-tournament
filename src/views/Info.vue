@@ -62,7 +62,7 @@
       </div>
     </div>
     <!-- Tecs -->
-    <div class="grid grid-cols-4 py-6">
+    <div class="grid grid-cols-2 gap-6 sm:grid-cols-4 py-6">
       <!-- Vue -->
       <a
         target="blanck"
@@ -77,7 +77,7 @@
       <!-- Tailwind -->
       <a
         target="blanck"
-        href="https://teailwindui.com"
+        href="https://tailwindcss.com"
         class="flex flex-col items-center space-y-3 hover:text-indigo-400"
       >
         <!-- Dota Tournament img -->

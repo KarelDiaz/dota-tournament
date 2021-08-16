@@ -12,7 +12,12 @@
       text-gray-500
     "
   >
-    <div class="break-all sm:break-normal">{{ team.name }}</div>
+    <div class="break-all sm:break-normal flex flex-col">
+      <span>{{ team.name }}</span>
+      <i
+        ><small>{{ elo }}</small></i
+      >
+    </div>
     <div class="flex justify-center items-center space-x-2 select-none">
       <span title="Plays" class="cursor-help">
         {{ teamPlays.length }}
@@ -34,8 +39,9 @@
 export default {
   data() {
     return {
-      teamPlays: [],
-      teamWonPlays: [],
+      elo: 0,
+      teamPlays: [], // partidos
+      teamWonPlays: [], // partidos ganados
     };
   },
   props: {
@@ -45,6 +51,11 @@ export default {
   },
   methods: {
     initTeam() {
+      this.elo = 0;
+      this.team.players.forEach((p_id) => {
+        this.elo += this.$store.state.players.find((pp) => pp.id == p_id).elo;
+      });
+      this.elo = Math.round(this.elo / this.team.players.length);
       this.teamPlays = this.tournamentPlays.filter((p) => {
         return p.teamGood.id === this.team.id || p.teamBad.id === this.team.id;
       });

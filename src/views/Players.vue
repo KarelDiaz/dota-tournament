@@ -51,7 +51,7 @@
           <th>ELO ↓</th>
           <th>P</th>
           <th class="hidden sm:block">V</th>
-          <th>Ave</th>
+          <th>AVE</th>
           <th>K</th>
           <th class="hidden sm:block">K/P</th>
           <th>D</th>
@@ -74,9 +74,10 @@
           :key="p.nick"
           @click="setPlayerInfo(p)"
         >
-          <td class="text-center hidden sm:block">
+          <td class="text-center hidden sm:flex justify-center">
             <span
               :class="[
+                'px-3 py-1 m-2',
                 {
                   'from-yellow-100 to-yellow-400 border border-yellow-400 text-yellow-600':
                     i == 0,
@@ -90,12 +91,12 @@
                     i == 2,
                 },
                 {
-                  'bg-gradient-to-bl rounded-full font-extrabold px-2 py-1 shadow-md':
+                  'bg-gradient-to-bl rounded-full font-extrabold shadow-md':
                     i <= 2,
                 },
               ]"
             >
-              {{ i }}
+              {{ i + 1 }}
             </span>
           </td>
           <td>
@@ -472,7 +473,7 @@ $width-xs: calc(calc(100vw / 10) * 10);
 
 .nick {
   i {
-    opacity: 0;
+    opacity: 0.1;
   }
   &:hover {
     i {

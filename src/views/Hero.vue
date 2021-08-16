@@ -69,7 +69,7 @@
               <tr>
                 <th>P</th>
                 <th>V</th>
-                <th>Ave</th>
+                <th>AVE</th>
                 <th>K</th>
                 <th>K/P</th>
                 <th>D</th>
@@ -102,7 +102,7 @@
               <th>Nick</th>
               <th>P</th>
               <th>V</th>
-              <th>Ave</th>
+              <th>AVE</th>
               <th>K</th>
               <th class="hidden sm:flex">K/P</th>
               <th>D</th>

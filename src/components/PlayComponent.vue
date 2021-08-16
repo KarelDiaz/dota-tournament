@@ -1,10 +1,18 @@
 <template>
-  <div class="flex flex-col border border-t-0 border-b-0">
-    <div
-      class="flex flex-wrap"
-      @mouseover="date = true"
-      @mouseleave="date = false"
-    >
+  <div
+    class="flex flex-col border border-t-0 border-b-0"
+    @mouseover="date = true"
+    @mouseleave="date = false"
+  >
+    <transition name="scale-y-top">
+      <div
+        v-show="date"
+        class="bg-gradient-to-b from-gray-100 text-center text-gray-400"
+      >
+        {{ moment(play.createdAt).format("MMMM D, YYYY, HH:mm") }}
+      </div>
+    </transition>
+    <div class="flex flex-wrap">
       <div
         v-for="result in playCopy.player_results"
         class="w-1/5 sm:w-1/10 flex flex-col"
@@ -112,15 +120,6 @@
         </div>
       </div>
     </div>
-
-    <transition name="scale-y">
-      <div
-        v-show="date"
-        class="bg-gradient-to-t from-gray-100 text-center text-gray-400"
-      >
-        {{ moment(play.createdAt).format("MMMM D, YYYY, HH:mm") }}
-      </div>
-    </transition>
   </div>
 </template>
 

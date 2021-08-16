@@ -101,19 +101,23 @@
     <!-- Add play modal -->
     <transition name="fade">
       <div
+        @click="modal = false"
         v-if="modal"
         class="
           fixed
-          w-full
-          h-full
+          w-screen
+          h-screen
+          z-30
           top-0
-          right-0
-          z-50
-          p-3
-          sm:p-6
-          flex flex-col
+          left-0
           bg-blue-900 bg-opacity-30
         "
+      ></div>
+    </transition>
+    <transition name="slide-top">
+      <div
+        v-if="modal"
+        class="fixed w-full h-full top-0 right-0 z-50 p-3 sm:p-6 flex flex-col"
       >
         <!-- Header -->
         <div

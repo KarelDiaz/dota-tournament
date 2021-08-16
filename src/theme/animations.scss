@@ -93,7 +93,22 @@
     }
 }
 
-.scale-y {
+.scale-y-bottom {
+
+    &-enter-active,
+    &-leave-active {
+        transition: height 0.3s ease;
+        height: 25px;
+        overflow-y: hidden;
+    }
+
+    &-enter-from,
+    &-leave-to {
+        height: 0px;
+    }
+}
+
+.scale-y-top {
 
     &-enter-active,
     &-leave-active {

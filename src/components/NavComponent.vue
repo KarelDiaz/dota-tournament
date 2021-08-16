@@ -18,7 +18,7 @@
     >
       <!-- Logo and link to info -->
       <router-link to="/" class="flex cursor-pointer">
-        <img src="dota_logo.png" class="h-full my-auto" />
+        <img src="favicon.png" class="h-full my-auto" />
         <div class="text-2xl font-bold ml-3">
           <span
             class="
@@ -30,7 +30,7 @@
               my-auto
             "
           >
-            Dota Ranking
+            Dota Tournament
           </span>
         </div>
       </router-link>
@@ -167,7 +167,7 @@
       <!-- Logo -->
       <div>
         <router-link to="/" class="cursor-pointer">
-          <img class="h-full" src="dota_logo.png" />
+          <img class="h-full" src="favicon.png" />
         </router-link>
       </div>
       <!-- Burguer -->
@@ -211,7 +211,7 @@
               class="cursor-pointer"
               @click.passive="open = false"
             >
-              <img src="dota_logo.png" class="mb-3 w-1/4 mx-auto" />
+              <img src="favicon.png" class="mb-3 w-1/4 mx-auto" />
             </router-link>
             <!-- Players -->
             <router-link

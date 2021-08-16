@@ -1,81 +1,278 @@
 <template>
-  <div class="flex flex-col justify-center">
-    <!-- Header img -->
-    <div class="flex justify-center space-x-3">
-      <img class="h-14" src="dota_logo.png" alt="" />
-      <div class="text-5xl font-extrabold ml-3">
-        <span
+  <div class="flex flex-col space-y-3 justify-center">
+    <!-- Dota Tournament -->
+    <div class="flex flex-col space-y-3">
+      <!-- Dota Tournament img -->
+      <div
+        class="
+          flex flex-col
+          sm:flex-row
+          justify-center
+          items-center
+          text-center
+          space-x-3
+        "
+      >
+        <img class="h-14 w-14" src="favicon.png" alt="" />
+        <div class="text-5xl font-extrabold ml-3">
+          <span
+            class="
+              bg-clip-text
+              text-transparent
+              bg-gradient-to-b
+              from-blue-500
+              to-blue-800
+              my-auto
+            "
+          >
+            Dota Tournament
+          </span>
+        </div>
+      </div>
+      <!-- Dota Tournament links -->
+      <div class="flex space-x-3 sm:space-x-20 justify-center">
+        <a
           class="
-            bg-clip-text
-            text-transparent
-            bg-gradient-to-b
-            from-blue-500
-            to-blue-800
-            my-auto
+            flex flex-col
+            sm:flex-row
+            space-x-2
+            items-center
+            hover:text-indigo-400
           "
+          target="blanck"
+          :href="$store.state.github.frontend"
         >
-          Dota Ranking
-        </span>
+          <i class="fa fa-github text-3xl"></i>
+          <span>Frontend <i class="fa fa-external-link"></i></span>
+        </a>
+        <a
+          class="
+            flex flex-col
+            sm:flex-row
+            space-x-2
+            items-center
+            hover:text-indigo-400
+          "
+          target="blanck"
+          :href="$store.state.github.backend"
+        >
+          <i class="fa fa-github text-3xl"></i>
+          <span>Backend <i class="fa fa-external-link"></i></span>
+        </a>
       </div>
     </div>
-    <!-- Links -->
-    <div class="flex justify-center">
-      <a target="blanck" :href="$store.state.github.frontend">
-        GitHub
-        <i class="fa fa-external-link"></i>
+    <!-- Tecs -->
+    <div class="grid grid-cols-4 py-6">
+      <!-- Vue -->
+      <a
+        target="blanck"
+        href="https://vuejs.org"
+        class="flex flex-col items-center space-y-3 hover:text-indigo-400"
+      >
+        <!-- Dota Tournament img -->
+        <img class="h-14 w-14" src="@/assets/vue.png" alt="" />
+        <!-- Dota Tournament links -->
+        <div>Vue <i class="fa fa-external-link"></i></div>
+      </a>
+      <!-- Tailwind -->
+      <a
+        target="blanck"
+        href="https://teailwindui.com"
+        class="flex flex-col items-center space-y-3 hover:text-indigo-400"
+      >
+        <!-- Dota Tournament img -->
+        <img class="h-14 w-14" src="@/assets/tailwind.png" alt="" />
+        <!-- Dota Tournament links -->
+        <div>Tailwind <i class="fa fa-external-link"></i></div>
+      </a>
+      <!-- Strapi -->
+      <a
+        target="blanck"
+        href="https://strapi.io"
+        class="flex flex-col items-center space-y-3 hover:text-indigo-400"
+      >
+        <!-- Dota Tournament img -->
+        <img class="h-14 w-14" src="@/assets/strapi.png" alt="" />
+        <!-- Dota Tournament links -->
+        <div>Strapi <i class="fa fa-external-link"></i></div>
+      </a>
+      <!-- Mongodb -->
+      <a
+        target="blanck"
+        href="https://mongodb.com"
+        class="flex flex-col items-center space-y-3 hover:text-indigo-400"
+      >
+        <!-- Dota Tournament img -->
+        <img class="h-14 w-14" src="@/assets/mongodb.png" alt="" />
+        <!-- Dota Tournament links -->
+        <div>Mongodb <i class="fa fa-external-link"></i></div>
       </a>
     </div>
     <!-- Views info -->
     <div class="flex flex-col space-y-3">
       <!-- Playes -->
-      <div class="flex flex-col">
-        <b class="w-2/12">Playes</b>
+      <div
+        class="
+          flex flex-col
+          space-y-1
+          border border-blue-50
+          bg-gradient-to-br
+          from-blue-50
+          p-3
+        "
+      >
+        <b>Players</b>
         <p>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Accusamus,
-          provident temporibus itaque tempora eveniet necessitatibus voluptatem
-          soluta enim reiciendis quos? Cupiditate quo officiis praesentium
-          minima optio explicabo amet repellendus non!
+          En la vista <i class="text-blue-500"><b>Players</b></i> se puede
+          modificar tocando el nombre. Ademas, se muestran estadisticas de forma
+          detallada de cada players.
+        </p>
+        <p>Significado de las columnas de la tabla:</p>
+        <div class="px-3">
+          <p><b>ELO</b>: valor adquido basado en el sistema ELO de ajedrez.</p>
+          <p><b>P</b>: cantidad de plays total efectuados por el player</p>
+          <p><b>V</b>: cantidad de victorias del player.</p>
+          <p>
+            <b>AVE</b>: basado en el average del baseboll, es el pormil de
+            victorias respecto al total de plays.
+          </p>
+          <p><b>K</b>: total de kills .</p>
+          <p><b>K/P</b>: promedio de kills por play.</p>
+          <p><b>D</b>: total de deths.</p>
+          <p><b>D/P</b>: promedio de deths.</p>
+          <p><b>A</b>: total de asistencias.</p>
+          <p><b>A/P</b>: promedio de asistencias.</p>
+        </div>
+        <p>
+          Tocando un player cualquiera se despliega debajo el historial de
+          juegos. Las lineas <b class="text-green-500">verdes</b> son los juegos
+          ganados y los <b class="text-red-500">rojos</b> los perdidos. Y puedes
+          tocar cada linea y ver la informacion detallada de ese play.
         </p>
       </div>
+
       <!-- Plays -->
-      <div class="flex flex-col">
-        <b class="w-2/12">Plays</b>
+      <div
+        class="
+          flex flex-col
+          space-y-1
+          border border-blue-50
+          bg-gradient-to-br
+          from-blue-50
+          p-3
+        "
+      >
+        <b>Plays</b>
         <p>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Accusamus,
-          provident temporibus itaque tempora eveniet necessitatibus voluptatem
-          soluta enim reiciendis quos? Cupiditate quo officiis praesentium
-          minima optio explicabo amet repellendus non!
+          En esta vista se encuantran todos los plays efectuados. Puede
+          agragarse un play utilizando el botton verde con el simbolo
+          <i class="fa fa-plus text-green-500"></i>.
+        </p>
+        <p>
+          El boton <i class="fa fa-plus text-green-500"></i> abre una formulario
+          en el cual se agrega toda la informacion del play. El formulario es
+          sencilo, tiene las 10 capacidades predefinidas para los 10 players.
+          Los cuales inician como bot pero con solo tocar el boton que dice
+          <b>Bot</b> se cambia a <b>Player</b>. Apareciendo toda la informacion
+          necesaria para un player: Player, Kills, Deths, Asists, Hero.
+        </p>
+        <p>
+          En la lista de plays es posible utilizar filtros que actualiza los
+          plays mostrados. A la izquierda se ecuentra el filtro limite, el cual
+          limita la cantidad de plays a mostrar. Y a la derecha se encuetra el
+          filtro por player, que solo motrara los plays en los cuales participa
+          el player.
         </p>
       </div>
+
       <!-- Tournaments -->
-      <div class="flex flex-col">
-        <b class="w-2/12">Tournaments</b>
+      <div
+        class="
+          flex flex-col
+          space-y-1
+          border border-blue-50
+          bg-gradient-to-br
+          from-blue-50
+          p-3
+        "
+      >
+        <b>Tournaments</b>
         <p>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Accusamus,
-          provident temporibus itaque tempora eveniet necessitatibus voluptatem
-          soluta enim reiciendis quos? Cupiditate quo officiis praesentium
-          minima optio explicabo amet repellendus non!
+          Lo primero que encontraras en dicha vista es una lista de todos
+          torneos activos. El la parte superior se encuentra el boton
+          <i class="fa fa-plus text-green-500"></i> para agregar un nuevo
+          troneo.
         </p>
+        <p>
+          Para gestionar un torneo simplemente se toca. Ya dentro del torneo se
+          veran 2 columnas.
+        </p>
+        <p>
+          La primera columna son los equipos que participan en el torneo.
+          Ordenados por diferentes criterios, pero el de mas importancia es la
+          cantidad de partidos ganados dentro del torneo. Cada equipo tiene tres
+          valores. El primero de color <b class="text-gray-700">negro</b> es la
+          cantidad de partidos totales. El segundo es de color
+          <b class="text-green-500">verde</b> el cual son los partidos ganados.
+          El tres es de color <b class="text-red-500">rojo</b> son los partidos
+          perdidos.
+        </p>
+        <p>
+          Y dentro la segundo columna, del torneo, son todos los encuentros del
+          troneo. Los encuentros con el borde discontinuo signifa que todavia no
+          hay plays por realizarce entre esos dos equipos. Al tocar el encutro
+          se abre el formulario de agragar play. El cual se autocompleta con los
+          players de cada team.
+        </p>
+        <p>Los ecuentros completados se representan en verde completo.</p>
       </div>
+
       <!-- Heroes -->
-      <div class="flex flex-col">
-        <b class="w-2/12">Heroes</b>
+      <div
+        class="
+          flex flex-col
+          space-y-1
+          border border-blue-50
+          bg-gradient-to-br
+          from-blue-50
+          p-3
+        "
+      >
+        <b>Heroes</b>
         <p>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Accusamus,
-          provident temporibus itaque tempora eveniet necessitatibus voluptatem
-          soluta enim reiciendis quos? Cupiditate quo officiis praesentium
-          minima optio explicabo amet repellendus non!
+          En esta vista sencilla se puede ver la estadista por heroe. Y cuales
+          son las estadisticas por cada player. Solamente debe tocar el hereo q
+          desee o puede filtrar los heroes para econtrarlo rapido.
         </p>
       </div>
+
       <!-- Lotery -->
-      <div class="flex flex-col">
-        <b class="w-2/12">Lotery</b>
-        <p>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Accusamus,
-          provident temporibus itaque tempora eveniet necessitatibus voluptatem
-          soluta enim reiciendis quos? Cupiditate quo officiis praesentium
-          minima optio explicabo amet repellendus non!
-        </p>
+      <div
+        class="
+          flex flex-col
+          space-y-1
+          border border-blue-50
+          bg-gradient-to-br
+          from-blue-50
+          p-3
+        "
+      >
+        <b>Lotery</b>
+        <p>Esta vista esta dividade en 3 columnas:</p>
+
+        <div class="flex flex-col space-y-1">
+          <p>
+            Columna 1: Contiene todos los players de los cuales puede tocar para
+            que pase para la columna 2.
+          </p>
+          <p>
+            Columna 2: Estan los playes seleccionados. Pueden sen retornados con
+            tocarlos de forma independiente o todos con el botton
+            <i class="fa fa-trash"></i>. Y tocando el boton
+            <i class="fa fa-arrow-right text-green-400"></i> pasara un player de
+            forma aleatoria a la comlumna 3.
+          </p>
+        </div>
       </div>
     </div>
   </div>

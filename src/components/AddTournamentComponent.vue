@@ -540,7 +540,7 @@ export default {
     addPlayerToTeamTemp() {
       if (!this.playerSelected.nick) return;
       this.teamTemp.players.push(this.playerSelected);
-      this.teamTemp.players.sort((a, b) => a.nick > b.nick);
+      this.teamTemp.players.sort((a, b) => a.nick.localeCompare(b.nick));
       this.players = this.players.filter((p) => p != this.playerSelected);
       this.playerSelected = null;
     },
@@ -549,13 +549,13 @@ export default {
       let n = this.players.length;
       let pTemp = this.players[parseInt(n * Math.random())];
       this.teamTemp.players.push(pTemp);
-      this.teamTemp.players.sort((a, b) => a.nick > b.nick);
+      this.teamTemp.players.sort((a, b) => a.nick.localeCompare(b.nick));
       this.players = this.players.filter((p) => p != pTemp);
       this.playerSelected = null;
     },
     cancelPlayerToTeamTemp(player) {
       this.players.push(player);
-      this.players.sort((a, b) => a.nick > b.nick);
+      this.players.sort((a, b) => a.nick.localeCompare(b.nick));
       this.teamTemp.players = this.teamTemp.players.filter((p) => p != player);
     },
     addTeamTempToTournamentTemp() {
@@ -564,7 +564,7 @@ export default {
     },
     delTeam(team) {
       this.players = this.players.concat(team.players);
-      this.players.sort((a, b) => a.nick > b.nick);
+      this.players.sort((a, b) => a.nick.localeCompare(b.nick));
       this.tournamentTemp.teams = this.tournamentTemp.teams.filter(
         (t) => t != team
       );

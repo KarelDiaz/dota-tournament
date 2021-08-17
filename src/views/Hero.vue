@@ -166,7 +166,7 @@ export default {
     initPs() {
       axios
         .get(this.strapi + "/players?_limit=-1")
-        .then(({ data }) => (this.ps = data.sort((a, b) => a.nick > b.nick)));
+        .then(({ data }) => (this.ps = data.sort((a, b) => a.nick.localeCompare(b.nick))));
     },
     initPrs() {
       axios

@@ -1,17 +1,21 @@
 <template>
   <div class="mt-2">
     <!-- Add and modify player -->
-    <div class="flex justify-center">
-      <form @submit.prevent="send">
+    <form @submit.prevent="send" class="flex justify-center">
+      <div class="shadow-lg rounded-lg">
         <input
           class="
             px-2
             py-1
-            border border-gray-200
+            border border-gray-100
             bg-gradient-to-b
-            from-gray-50
-            to-gray-200
-            focus:border-blue-300
+            from-white
+            to-gray-100
+            focus:ring-green-200
+            focus:outline-none
+            focus:ring-1
+            focus:border-transparent
+            rounded-l-lg
           "
           v-model="playerForm.nick"
           required
@@ -30,6 +34,7 @@
             to-green-400
             hover:from-green-100
             hover:to-green-300
+            rounded-r-lg
           "
           type="submit"
         >
@@ -40,109 +45,95 @@
             <i class="fa fa-pencil"></i>
           </span>
         </button>
-      </form>
-    </div>
+      </div>
+    </form>
     <!-- Player list -->
-    <div v-if="players.length > 0" class="pb-3">
-      <table class="w-full mt-3 text-left">
-        <tr>
-          <th class="hidden sm:block"></th>
-          <th>Nick</th>
-          <th>ELO ↓</th>
-          <th>P</th>
-          <th class="hidden sm:block">V</th>
-          <th>AVE</th>
-          <th>K</th>
-          <th class="hidden sm:block">K/P</th>
-          <th>D</th>
-          <th class="hidden sm:block">D/P</th>
-          <th>A</th>
-          <th class="hidden sm:block">A/P</th>
-          <th class="hidden sm:block"></th>
-        </tr>
-        <tr
-          class="
-            border
-            cursor-pointer
-            bg-gradient-to-t
-            hover:from-blue-100
-            hover:to-blue-50
-          "
-          v-for="(p, i) in players
-            .filter((p) => p.nick != 'bot')
-            .sort((a, b) => a.elo < b.elo)"
-          :key="p.nick"
-          @click="setPlayerInfo(p)"
-        >
-          <td class="text-center hidden sm:flex justify-center">
-            <span
-              :class="[
-                'px-3 py-1 m-2',
-                {
-                  'from-yellow-100 to-yellow-400 border border-yellow-400 text-yellow-600':
-                    i == 0,
-                },
-                {
-                  'from-gray-100 to-gray-400 border border-gray-400 text-gray-600':
-                    i == 1,
-                },
-                {
-                  'from-yellow-400 to-yellow-700 border border-yellow-700 text-yellow-900':
-                    i == 2,
-                },
-                {
-                  'bg-gradient-to-bl rounded-full font-extrabold shadow-md':
-                    i <= 2,
-                },
-              ]"
-            >
-              {{ i + 1 }}
+    <table v-if="players.length > 0" class="pb-3 w-full mt-6">
+      <tr>
+        <td class="font-bold hidden sm:table-cell"></td>
+        <td class="font-bold">Nick</td>
+        <td class="font-bold">ELO ↓</td>
+        <td class="font-bold">P</td>
+        <td class="font-bold hidden sm:table-cell">V</td>
+        <td class="font-bold">AVE</td>
+        <td class="font-bold">K</td>
+        <td class="font-bold hidden sm:table-cell">K/P</td>
+        <td class="font-bold">D</td>
+        <td class="font-bold hidden sm:table-cell">D/P</td>
+        <td class="font-bold">A</td>
+        <td class="font-bold hidden sm:table-cell">A/P</td>
+      </tr>
+      <tr
+        class="h-30"
+        v-for="(p, i) in players
+          .filter((p) => p.nick != 'bot')
+          .sort((a, b) => b.elo - a.elo)"
+        :key="p.nick"
+        @click="setPlayerInfo(p)"
+      >
+        <td class="hidden sm:table-cell max-w-md">
+          <span
+            :class="[
+              'px-3 py-1 h-full',
+              {
+                'from-yellow-100 to-yellow-400 border border-yellow-400 text-yellow-600':
+                  i == 0,
+              },
+              {
+                'from-gray-100 to-gray-400 border border-gray-400 text-gray-600':
+                  i == 1,
+              },
+              {
+                'from-yellow-400 to-yellow-700 border border-yellow-700 text-yellow-900':
+                  i == 2,
+              },
+              {
+                'bg-gradient-to-bl rounded-full font-extrabold shadow-md':
+                  i <= 2,
+              },
+            ]"
+          >
+            {{ i + 1 }}
+          </span>
+        </td>
+        <td class="pr-6">
+          <button
+            @click="preMod(p.id)"
+            class="
+              flex
+              p-4
+              items-center
+              w-full
+              h-full
+              rounded-lg
+              justify-start
+              border border-transparent
+              nick
+              bg-gradient-to-b
+              hover:shadow-lg
+              hover:border-green-200
+              hover:from-green-50
+              hover:to-green-200
+            "
+          >
+            <i class="fa fa-pencil mr-3"></i>
+            <span>
+              {{ p.nick }}
             </span>
-          </td>
-          <td>
-            <button
-              @click="preMod(p.id)"
-              class="
-                px-2
-                py-1
-                text-left
-                border border-opacity-0
-                nick
-                hover:border-opacity-100 hover:border-gray-300
-                bg-gradient-to-b
-                hover:from-gray-100
-                hover:to-gray-300
-                active:from-gray-200
-                active:to-gray-400
-              "
-            >
-              <span>
-                {{ p.nick }}
-              </span>
-
-              <i class="ml-3 fa fa-pencil"></i>
-            </button>
-          </td>
-          <td>{{ p.elo || 0 }}</td>
-          <td>{{ p.p || 0 }}</td>
-          <td class="hidden sm:block">{{ p.v || 0 }}</td>
-          <td>{{ p.p > 0 ? Math.round((p.v / p.p) * 1000) : 0 }}</td>
-          <td>{{ p.k || 0 }}</td>
-          <td class="hidden sm:block">{{ Math.round(p.k / p.p) || 0 }}</td>
-          <td>{{ p.d || 0 }}</td>
-          <td class="hidden sm:block">{{ Math.round(p.d / p.p) || 0 }}</td>
-          <td>{{ p.a || 0 }}</td>
-          <td class="hidden sm:block">{{ Math.round(p.a / p.p) || 0 }}</td>
-          <td class="hidden sm:block">
-            <button v-if="false" class="danger" @click="del(p.id)">
-              Eliminar
-            </button>
-
-            <button v-if="false" @click="setPlayerInfo(p)">Info</button>
-          </td>
-        </tr>
-      </table>
-    </div>
+          </button>
+        </td>
+        <td>{{ p.elo || 0 }}</td>
+        <td>{{ p.p || 0 }}</td>
+        <td class="hidden sm:table-cell">{{ p.v || 0 }}</td>
+        <td>{{ p.p > 0 ? Math.round((p.v / p.p) * 1000) : 0 }}</td>
+        <td>{{ p.k || 0 }}</td>
+        <td class="hidden sm:table-cell">{{ Math.round(p.k / p.p) || 0 }}</td>
+        <td>{{ p.d || 0 }}</td>
+        <td class="hidden sm:table-cell">{{ Math.round(p.d / p.p) || 0 }}</td>
+        <td>{{ p.a || 0 }}</td>
+        <td class="hidden sm:table-cell">{{ Math.round(p.a / p.p) || 0 }}</td>
+      </tr>
+    </table>
     <!-- Empty players -->
     <div v-else class="no-players">
       <h1>No hay players disponibles</h1>
@@ -473,6 +464,7 @@ $width-xs: calc(calc(100vw / 10) * 10);
 
 .nick {
   i {
+    //display: ;
     opacity: 0.1;
   }
   &:hover {

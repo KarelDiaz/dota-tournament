@@ -140,12 +140,12 @@ export default {
     from1To2(p) {
       this.ps1 = this.ps1.filter((pp) => pp != p);
       this.ps2.push(p);
-      this.ps2.sort((a, b) => a.nick > b.nick);
+      this.ps2.sort((a, b) => a.nick.localeCompare(b.nick));
     },
     from2To1(p) {
       this.ps2 = this.ps2.filter((pp) => pp != p);
       this.ps1.push(p);
-      this.ps1.sort((a, b) => a.nick > b.nick);
+      this.ps1.sort((a, b) => a.nick.localeCompare(b.nick));
     },
     from2To3() {
       var pos = Math.floor(Math.random() * this.ps2.length);
@@ -157,14 +157,14 @@ export default {
       this.ps2.forEach((element) => {
         this.ps1.push(element);
       });
-      this.ps1.sort((a, b) => a.nick > b.nick);
+      this.ps1.sort((a, b) => a.nick.localeCompare(b.nick));
       this.ps2 = [];
     },
     clearPs3() {
       this.ps3.forEach((element) => {
         this.ps1.push(element);
       });
-      this.ps1.sort((a, b) => a.nick > b.nick);
+      this.ps1.sort((a, b) => a.nick.localeCompare(b.nick));
       this.ps3 = [];
     },
   },
@@ -174,7 +174,7 @@ export default {
       .then(({ data }) => {
         this.ps1 = data
           .filter((p) => p.nick != "bot")
-          .sort((a, b) => a.nick > b.nick);
+          .sort((a, b) => a.nick.localeCompare(b.nick));
         this.ps2 = [];
         this.ps3 = [];
       });

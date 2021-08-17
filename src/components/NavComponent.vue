@@ -4,7 +4,7 @@
     <div
       class="
         hidden
-        sm:flex
+        md:flex
         p-3
         z-50
         justify-between
@@ -13,7 +13,7 @@
         from-blue-100
         to-white
         border border-blue-100
-        shadow-md
+        shadow-lg
       "
     >
       <!-- Logo and link to info -->
@@ -35,105 +35,25 @@
         </div>
       </router-link>
       <!-- Link views -->
-      <div class="flex">
+      <div class="flex space-x-3 items-center">
         <!-- Players -->
-        <router-link
-          class="
-            py-1
-            px-2
-            shadow-sm
-            bg-gradient-to-b
-            from-blue-100
-            to-blue-300
-            hover:from-blue-50
-            hover:to-blue-200
-            border border-blue-300
-            hover:border-blue-200
-            transform
-            -skew-x-12
-          "
-          to="/players"
-        >
+        <router-link class="link hover:text-blue-500" to="/players">
           Players
         </router-link>
         <!-- Plays -->
-        <router-link
-          class="
-            py-1
-            px-2
-            shadow-sm
-            bg-gradient-to-b
-            from-blue-100
-            to-blue-300
-            hover:from-blue-50
-            hover:to-blue-200
-            border border-blue-300
-            hover:border-blue-200
-            transform
-            -skew-x-12
-          "
-          to="/plays"
-        >
+        <router-link class="link hover:text-blue-500" to="/plays">
           Plays
         </router-link>
         <!-- Tournaments -->
-        <router-link
-          class="
-            py-1
-            px-2
-            shadow-sm
-            bg-gradient-to-b
-            from-blue-100
-            to-blue-300
-            hover:from-blue-50
-            hover:to-blue-200
-            border border-blue-300
-            hover:border-blue-200
-            transform
-            -skew-x-12
-          "
-          to="/tournaments"
-        >
+        <router-link class="link hover:text-blue-500" to="/tournaments">
           Tournaments
         </router-link>
         <!-- Heroes -->
-        <router-link
-          class="
-            py-1
-            px-2
-            shadow-sm
-            bg-gradient-to-b
-            from-blue-100
-            to-blue-300
-            hover:from-blue-50
-            hover:to-blue-200
-            border border-blue-300
-            hover:border-blue-200
-            transform
-            -skew-x-12
-          "
-          to="/hero"
-        >
+        <router-link class="link hover:text-blue-500" to="/hero">
           Heroes
         </router-link>
         <!-- Lotery -->
-        <router-link
-          class="
-            py-1
-            px-2
-            shadow-sm
-            bg-gradient-to-b
-            from-blue-100
-            to-blue-300
-            hover:from-blue-50
-            hover:to-blue-200
-            border border-blue-300
-            hover:border-blue-200
-            transform
-            -skew-x-12
-          "
-          to="/lotery"
-        >
+        <router-link class="link hover:text-blue-500" to="/lotery">
           Lotery
         </router-link>
         <!-- GitHub -->
@@ -150,7 +70,7 @@
     <div
       class="
         flex
-        sm:hidden
+        md:hidden
         z-50
         justify-between
         h-14
@@ -359,10 +279,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.link {
+  @apply py-1 px-2 cursor-pointer bg-transparent rounded-lg text-lg font-extrabold text-gray-400;
+}
 .router-link-exact-active {
-  @apply from-green-50 to-green-200 border-green-200;
+  @apply bg-clip-text text-transparent bg-gradient-to-b from-blue-500 to-blue-800;
   &:hover {
-    @apply from-green-50 to-green-200 border-green-200 cursor-default;
+    @apply bg-clip-text text-transparent bg-gradient-to-b from-blue-500 to-blue-800 cursor-default;
   }
 }
 .corner {

@@ -326,10 +326,11 @@ export default {
           this.plays = this.plays.slice(0, this.filterLimit);
         this.plays.forEach((play) => {
           play.player_results = play.player_results.sort((a, b) => {
-            if (a.side == b.side) {
-              return a.bot;
-            }
-            return a.side < b.side;
+            if (a.side == b.side)
+              if (a.side === "good") return a.bot ? -1 : 1;
+              else return a.bot ? 1 : -1;
+
+            return b.side.localeCompare(a.side);
           });
         });
       });

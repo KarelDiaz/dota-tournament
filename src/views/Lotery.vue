@@ -42,7 +42,7 @@
                   hover:to-green-300
                 "
               >
-                <i class="fa fa-arrow-right"></i>
+                <i class="fa fa-random"></i>
               </button>
               <button
                 v-if="ps2.length > 0"

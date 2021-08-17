@@ -1,23 +1,23 @@
 <template>
-  <div class="border border-gray-400 border-dashed p-3">
+  <div class="border border-gray-400 border-dashed p-3 rounded-lg">
     <div v-if="$store.state.players.length > 0">
       <div class="text-xl">
         <span class="font-extrabold">Tournament</span>
       </div>
       <!--Torunament name and type-->
       <div class="py-3 flex flex-col sm:flex-row">
-        <div class="flex">
+        <div class="flex rounded-lg shadow-md">
           <button
             class="
               px-5
               text-gray-900
-              border border-gray-400
-              hover:border-gray-300
+              border border-gray-300
               bg-gradient-to-b
-              from-gray-200
-              to-gray-400
-              hover:from-gray-100
-              hover:to-gray-300
+              from-gray-100
+              to-gray-300
+              hover:from-gray-50
+              hover:to-gray-200
+              rounded-l-lg
             "
             title="Generar el nombre del torneo de forma aleatoria"
             @click="
@@ -25,16 +25,17 @@
                 'Tournament ' + ($store.state.tournaments.length + 1)
             "
           >
-            <i class="fa fa-plus"></i>
+            <i class="fa fa-random"></i>
           </button>
           <input
             class="
               px-2
               w-full
-              border border-gray-200
+              border border-gray-100
               bg-gradient-to-b
-              from-gray-50
-              to-gray-200
+              from-white
+              to-gray-100
+              rounded-r-lg
             "
             required
             type="text"
@@ -142,7 +143,7 @@
                   teamTemp.name = 'Team ' + (tournamentTemp.teams.length + 1)
                 "
               >
-                <i class="fa fa-plus"></i>
+                <i class="fa fa-random"></i>
               </button>
               <input
                 class="
@@ -192,7 +193,7 @@
                 "
                 @click="addRandomPlayerToTeamTemp"
               >
-                <i class="fa fa-plus"></i>
+                <i class="fa fa-random"></i>
               </button>
               <select
                 class="

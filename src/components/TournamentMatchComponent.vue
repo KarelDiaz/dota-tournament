@@ -1,7 +1,10 @@
 <template>
   <div>
     <!-- Match button -->
-    <div @click="modal = !isMatchWon" class="flex flex-col justify-center">
+    <div
+      @click="modal = !isMatchWon"
+      class="flex flex-col justify-center h-full"
+    >
       <!-- Percent bar of team 1 to win -->
       <div
         v-if="!isMatchWon"
@@ -13,12 +16,17 @@
         class="
           z-0
           absolute
-          h-5
-          bg-green-200
-          animate-pulse
+          h-6
+          bg-gradient-to-r
+          from-green-100
+          to-green-300
+          border border-green-500 border-l-0 border-dashed
+          opacity-40
+          rounded-r-full
+          transition-all
+          duration-1000
           transform
           -translate-y-6
-          transition-all
         "
       ></div>
       <!-- Percent bar of team 2 to win -->
@@ -30,25 +38,31 @@
           },
         ]"
         class="
+          z-0
           absolute
-          h-5
-          bg-green-200
-          animate-pulse
+          h-6
+          bg-gradient-to-r
+          from-green-100
+          to-green-300
+          border border-green-500 border-l-0 border-dashed
+          opacity-40
+          rounded-r-full
+          transition-all
+          duration-1000
           transform
           translate-y-6
-          transition-all
         "
       ></div>
       <!-- Match -->
       <div
         :class="[
-          'flex flex-col justify-between items-center p-2 sm:p-3 h-full w-40 text-center border',
+          'grid grid-cols-1 grid-rows-3 justify-between items-center p-2 sm:p-3 h-full w-40 text-center border rounded-lg',
           {
-            'bg-gradient-to-t from-green-300 to-green-100 border-green-300':
+            'bg-gradient-to-t from-green-300 to-green-100 border-green-300 shadow-xl':
               isMatchWon,
           },
           {
-            'cursor-pointer text-gray-500 border border-gray-500 border-dashed hover:text-blue-500 hover:border-blue-500':
+            'cursor-pointer text-gray-500 border-gray-500 border-dashed hover:text-blue-500 hover:border-blue-500':
               !isMatchWon,
           },
         ]"
@@ -57,14 +71,12 @@
       >
         <!-- Team 1 -->
         <div
-          :class="[
-            'flex flex-col',
-            { 'font-extrabold text-lg': matchesWonTeam1Percent >= 1 },
-          ]"
+          :class="[{ 'font-extrabold text-lg': matchesWonTeam1Percent >= 1 }]"
         >
-          <span>
-            {{ team1.name }}
-          </span>
+          {{ team1.name }}
+        </div>
+        <!-- Vs -->
+        <i class="flex flex-col">
           <span v-if="matchesToWin > 1">
             {{ matchesWonTeam1 }}
             <span class="hidden sm:inline-block" v-show="hover">
@@ -72,19 +84,8 @@
             </span>
             <span class="inline-block sm:hidden">of {{ matchesToWin }}</span>
           </span>
-        </div>
-        <!-- Vs -->
-        <i>
           <b v-if="isMatchWon && hover">Finished</b>
           <i v-else>vs</i>
-        </i>
-        <!-- Team 2 -->
-        <div
-          :class="[
-            'flex flex-col',
-            { 'font-extrabold text-lg': matchesWonTeam2Percent >= 1 },
-          ]"
-        >
           <span v-if="matchesToWin > 1">
             {{ matchesWonTeam2 }}
             <span class="hidden sm:inline-block" v-show="hover">
@@ -92,9 +93,12 @@
             </span>
             <span class="inline-block sm:hidden">of {{ matchesToWin }}</span>
           </span>
-          <span>
-            {{ team2.name }}
-          </span>
+        </i>
+        <!-- Team 2 -->
+        <div
+          :class="[{ 'font-extrabold text-lg': matchesWonTeam2Percent >= 1 }]"
+        >
+          {{ team2.name }}
         </div>
       </div>
     </div>

@@ -12,25 +12,34 @@
       <!-- Teams and Matches -->
       <div class="flex">
         <!-- Teams -->
-        <div class="flex flex-col min-w-min sm:w-52">
-          <transition-group name="slide-left">
-            <tournament-team-component
-              class="mr-3 mb-3"
-              v-for="(team, i) in tournamentTeamsOrder"
-              :position="i"
-              :key="team.id + tournamentCopy.id"
-              :team="team"
-              :tournament="tournamentCopy"
-              :tournamentPlays="tournamentPlays"
-            >
-            </tournament-team-component>
-          </transition-group>
+        <div class="flex flex-col">
+          <tournament-team-component
+            class="mr-3 mb-3"
+            v-for="(team, i) in tournamentTeamsOrder"
+            :position="i"
+            :key="team.id + tournamentCopy.id"
+            :team="team"
+            :tournament="tournamentCopy"
+            :tournamentPlays="tournamentPlays"
+          >
+          </tournament-team-component>
         </div>
         <!-- Matches -->
-        <div>
+        <div class="w-full">
           <!-- Tournament types -->
           <!-- All for All -->
-          <div class="flex flex-wrap" v-if="isAllForAll">
+          <div
+            class="
+              grid grid-cols-1
+              sm:grid-cols-2
+              md:grid-cols-3
+              lg:grid-cols-4
+              xl:grid-cols-5
+              2xl:grid-cols-7
+              gap-3
+            "
+            v-if="isAllForAll"
+          >
             <template v-for="(itemf, indexf) in tournamentCopy.teams">
               <template v-for="(iteml, indexl) in tournamentCopy.teams">
                 <tournament-match-component
@@ -42,7 +51,7 @@
                   :team2="iteml"
                   :tournament="tournamentCopy"
                   :tournamentPlays="tournamentPlays"
-                  class="h-full mb-3 mr-3"
+                  class="h-full w-full mb-3 mr-3"
                 ></tournament-match-component>
               </template>
             </template>
@@ -164,7 +173,7 @@ export default {
     },
     tournamentCopy(val) {
       val.teams?.sort((a, b) => {
-        return a.name > b.name;
+        return a.name.localeCompare(b.name);
       });
     },
     tournamentPlays(plays) {
@@ -205,14 +214,14 @@ export default {
         // 3th level name
         if (va === vb) {
           if (la === lb) {
-            return a.name > b.name;
+            return a.name.localeCompare(b.name);
           }
-          return la > lb;
+          return la - lb;
         }
-        return va < vb;
+        return vb - va;
       });
       this.tournamentCopy.teams.sort((a, b) => {
-        return a.name > b.name;
+        return a.name.localeCompare(b.name);
       });
     },
   },

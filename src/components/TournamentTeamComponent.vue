@@ -1,7 +1,7 @@
 <template>
   <div
     :class="[
-      'flex flex-col text-center p-1 sm:p-3 space-y-3 bg-gradient-to-t border border-gray-100 from-gray-100 text-gray-500',
+      'flex flex-col text-center p-1 sm:p-3 space-y-3 bg-gradient-to-t border from-gray-100 text-gray-500 rounded-lg shadow-xl',
       {
         'bg-gradient-to-t from-yellow-400 to-yellow-200 border-yellow-400':
           position === 0 && teamWonPlays.length > 0,
@@ -16,6 +16,7 @@
       },
     ]"
   >
+    <!-- Team name and elo -->
     <div
       :class="[
         'break-all sm:break-normal flex flex-col',
@@ -35,18 +36,12 @@
         <small>{{ elo }}</small>
       </i>
     </div>
+    <!-- plays,vistories,defeates -->
     <div
-      class="
-        flex
-        justify-center
-        items-center
-        space-x-2
-        select-none
-        bg-gradient-to-t
-        from-gray-200
-        to-gray-50
-        shadow-lg
-      "
+      :class="[
+        'flex justify-evenly items-center  select-none bg-gradient-to-t from-gray-200 to-white shadow-lg rounded-full',
+        { border: position > 2 || teamWonPlays.length === 0 },
+      ]"
     >
       <span title="Plays" class="cursor-help">
         {{ teamPlays.length }}

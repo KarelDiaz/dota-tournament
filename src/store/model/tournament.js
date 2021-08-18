@@ -3,11 +3,11 @@ export default class Tournament {
   ended;
   teams;
   type;
-  constructor(name = "") {
+  constructor(name = null) {
     this.name = name;
     this.ended = false;
     this.teams = [];
-    this.type = "";
+    this.type = null;
     this.plays = [];
   }
 }

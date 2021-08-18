@@ -58,7 +58,7 @@
         :class="[
           'grid grid-cols-1 grid-rows-3 justify-between items-center p-2 sm:p-3 h-full w-40 text-center border rounded-lg',
           {
-            'bg-gradient-to-t from-green-300 to-green-100 border-green-300 shadow-xl':
+            'bg-gradient-to-t from-green-300 to-green-100 border-green-300 text-green-800 shadow-xl':
               isMatchWon,
           },
           {

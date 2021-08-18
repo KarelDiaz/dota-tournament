@@ -23,7 +23,7 @@
         </button>
       </div>
       <!--Tornements-->
-      <div class="flex flex-col space-y-3 w-full" v-if="tournaments.length > 0">
+      <div class="flex flex-col w-full space-y-3" v-if="tournaments.length > 0">
         <transition-group name="slide-top">
           <button
             :class="[
@@ -33,7 +33,7 @@
               'hover:from-gray-50 hover:to-gray-200 hover:border-gray-200',
               {
                 'text-blue-900 from-blue-100 to-blue-300 border-blue-300 shadow-sm hover:from-blue-100 hover:to-blue-300 hover:border-blue-300 cursor-default':
-                  tournamentSelected == t,
+                  tournamentSelected?.id === t.id,
               },
             ]"
             v-for="t in tournaments"
@@ -41,7 +41,7 @@
             @click="tournamentSelected = t"
           >
             <b>{{ t.name }}</b>
-            <i class="hidden sm:inline-block text-sm">
+            <i class="hidden text-sm sm:inline-block">
               {{ moment(t.createdAt).format("MMMM D, YYYY") }}
             </i>
           </button>
@@ -50,12 +50,18 @@
       <div v-if="tournaments.length == 0">No hay torneos</div>
     </div>
     <!-- Add and view tournament -->
-    <div class="flex flex-col ml-3 w-full">
-      <add-tournament-component
-        class="mb-3"
-        @tournament-add="this.tAdd = false"
-        v-if="tAdd"
-      ></add-tournament-component>
+    <div class="flex flex-col w-full ml-3">
+      <transition name="slide-scale-top-left">
+        <add-tournament-component
+          class="mb-3"
+          @tournament-add="
+            tAdd = false;
+            tournamentSelected = $event;
+          "
+          v-if="tAdd"
+        ></add-tournament-component>
+      </transition>
+
       <view-tournament-component
         :class="[{ 'hidden sm:flex': tAdd }, { flex: !tAdd }]"
         :tournament="tournamentSelected"

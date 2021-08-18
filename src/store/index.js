@@ -226,7 +226,7 @@ export default createStore({
     },
     [INIT_TOURNAMENTS](state) {
       axios.get(state.strapi + "/tournaments?_limit=-1").then(({ data }) => {
-        state.tournaments = data.sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+        state.tournaments = data.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
       });
     },
     [INIT_TOURNAMENT_TYPE](state) {

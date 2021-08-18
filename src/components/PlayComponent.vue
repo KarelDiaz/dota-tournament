@@ -1,43 +1,41 @@
 <template>
   <div
-    class="flex flex-col border border-t-0 border-b-0"
+    class="flex flex-col overflow-hidden border border-t-0 border-b-0 rounded-lg shadow-md"
     @mouseover="date = true"
     @mouseleave="date = false"
   >
+    <!-- Date -->
     <transition name="scale-y-top">
       <div
         v-show="date"
-        class="bg-gradient-to-b from-gray-100 text-center text-gray-400"
+        class="text-center text-gray-400 border-t bg-gradient-to-b from-gray-100"
       >
         {{ moment(play.createdAt).format("MMMM D, YYYY, HH:mm") }}
       </div>
     </transition>
+    <!-- Players -->
     <div class="flex flex-wrap">
       <template v-for="result in playCopy.player_results" :key="result.id">
-        <div class="w-1/5 sm:w-1/10 flex flex-col">
+        <div class="flex flex-col w-1/5 sm:w-1/10">
           <!-- Side -->
-          <div class="flex">
+          <div>
             <div
               v-if="result.side === 'good'"
-              class="h-2 w-full bg-gradient-to-b from-green-200 to-green-400"
+              class="w-full h-2 bg-gradient-to-b from-green-200 to-green-400"
             ></div>
             <div
               v-if="result.side === 'bad'"
-              class="h-2 w-full bg-gradient-to-b from-red-200 to-red-400"
+              class="w-full h-2 bg-gradient-to-b from-red-200 to-red-400"
             ></div>
           </div>
           <!-- Result -->
           <div
-            class="
-              h-40
-              flex flex-col
-              justify-between
-              bg-center bg-cover
-              text-white text-xs
-              sm:text-base
-              shadow-inner
-              p-1
-            "
+            :class="[
+              'flex flex-col justify-between h-40 p-1 text-xs text-white bg-center bg-cover sm:text-base',
+              { 'bg-opacity-10': result.bot },
+              { 'bg-green-400': result.side==='good' },
+              { 'bg-red-400': result.side==='bad' },
+            ]"
             :style="[
               {
                 'background-image':
@@ -52,11 +50,11 @@
           >
             <!-- Player nick and Elo -->
             <div class="flex flex-col">
-              <b class="item truncate" v-if="!result.bot">
+              <b class="truncate item" v-if="!result.bot">
                 {{ getPlayer(result.player).nick }}
               </b>
               <span
-                class="flex flex-col space-x-1 sm:flex-row italic text-xs"
+                class="flex flex-col space-x-1 text-xs italic sm:flex-row"
                 v-if="!result.bot"
               >
                 <span>{{ result.elo }}</span>
@@ -100,19 +98,19 @@
               </transition>
             </div>
             <!-- Hero name -->
-            <span class="item truncate pb-2" v-if="!result.bot">
+            <span class="pb-2 truncate item" v-if="!result.bot">
               {{ getHero(result.hero).displayName }}
             </span>
           </div>
           <!-- Win -->
-          <div class="flex">
+          <div>
             <div
               v-if="result.win"
-              class="h-2 w-full bg-gradient-to-b from-yellow-200 to-yellow-400"
+              class="w-full h-2 bg-gradient-to-b from-yellow-200 to-yellow-400"
             ></div>
             <div
               v-if="!result.win"
-              class="h-2 w-full bg-gradient-to-b from-gray-200 to-gray-400"
+              class="w-full h-2 bg-gradient-to-b from-gray-200 to-gray-400"
             ></div>
           </div>
         </div>

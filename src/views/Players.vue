@@ -2,40 +2,16 @@
   <div class="mt-2">
     <!-- Add and modify player -->
     <form @submit.prevent="send" class="flex justify-center">
-      <div class="shadow-lg rounded-lg">
+      <div class="rounded-lg shadow-lg">
         <input
-          class="
-            px-2
-            py-1
-            border border-gray-100
-            bg-gradient-to-b
-            from-white
-            to-gray-100
-            focus:ring-green-200
-            focus:outline-none
-            focus:ring-1
-            focus:border-transparent
-            rounded-l-lg
-          "
+          class="px-2 py-1 border border-gray-100 rounded-l-lg bg-gradient-to-b from-white to-gray-100 focus:ring-green-200 focus:outline-none focus:ring-1 focus:border-transparent"
           v-model="playerForm.nick"
           required
           type="text"
           placeholder="Escriba el nick"
         />
         <button
-          class="
-            px-5
-            py-1
-            text-green-900
-            border border-green-400
-            hover:border-green-300
-            bg-gradient-to-b
-            from-green-200
-            to-green-400
-            hover:from-green-100
-            hover:to-green-300
-            rounded-r-lg
-          "
+          class="px-5 py-1 text-green-900 border border-green-400 rounded-r-lg hover:border-green-300 bg-gradient-to-b from-green-200 to-green-400 hover:from-green-100 hover:to-green-300"
           type="submit"
         >
           <span v-if="!idMod">
@@ -48,30 +24,30 @@
       </div>
     </form>
     <!-- Player list -->
-    <table v-if="players.length > 0" class="pb-3 w-full mt-6">
+    <table v-if="players.length > 0" class="w-full pb-3 mt-6">
       <tr>
-        <td class="font-bold hidden sm:table-cell"></td>
+        <td class="hidden font-bold sm:table-cell"></td>
         <td class="font-bold">Nick</td>
         <td class="font-bold">ELO ↓</td>
         <td class="font-bold">P</td>
-        <td class="font-bold hidden sm:table-cell">V</td>
+        <td class="hidden font-bold sm:table-cell">V</td>
         <td class="font-bold">AVE</td>
         <td class="font-bold">K</td>
-        <td class="font-bold hidden sm:table-cell">K/P</td>
+        <td class="hidden font-bold sm:table-cell">K/P</td>
         <td class="font-bold">D</td>
-        <td class="font-bold hidden sm:table-cell">D/P</td>
+        <td class="hidden font-bold sm:table-cell">D/P</td>
         <td class="font-bold">A</td>
-        <td class="font-bold hidden sm:table-cell">A/P</td>
+        <td class="hidden font-bold sm:table-cell">A/P</td>
       </tr>
       <tr
-        class="h-30"
+        class="cursor-pointer h-30 hover:bg-gray-50"
         v-for="(p, i) in players
           .filter((p) => p.nick != 'bot')
           .sort((a, b) => b.elo - a.elo)"
         :key="p.nick"
         @click="setPlayerInfo(p)"
       >
-        <td class="hidden sm:table-cell max-w-md">
+        <td class="hidden max-w-md text-center sm:table-cell">
           <span
             :class="[
               'px-3 py-1 h-full',
@@ -97,30 +73,15 @@
           </span>
         </td>
         <td class="pr-6">
-          <button
+          <span
             @click="preMod(p.id)"
-            class="
-              flex
-              p-4
-              items-center
-              w-full
-              h-full
-              rounded-lg
-              justify-start
-              border border-transparent
-              nick
-              bg-gradient-to-b
-              hover:shadow-lg
-              hover:border-green-200
-              hover:from-green-50
-              hover:to-green-200
-            "
+            class="flex items-center justify-start w-full h-full p-3 border border-transparent rounded-lg nick bg-gradient-to-b hover:shadow-lg hover:text-green-800 hover:border-green-200 hover:from-green-50 hover:to-green-200"
           >
-            <i class="fa fa-pencil mr-3"></i>
+            <i class="mr-3 fa fa-pencil"></i>
             <span>
               {{ p.nick }}
             </span>
-          </button>
+          </span>
         </td>
         <td>{{ p.elo || 0 }}</td>
         <td>{{ p.p || 0 }}</td>

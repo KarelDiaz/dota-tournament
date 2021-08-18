@@ -2,11 +2,11 @@
   <div>
     <form @submit.prevent="send">
       <!-- Header controls -->
-      <div class="flex justify-center space-x-3 pb-3">
+      <div class="flex justify-center pb-3 space-x-3">
         <!-- Good -->
         <label
           :class="[
-            'w-full text-center border bg-gradient-to-b',
+            'w-full text-center border bg-gradient-to-b rounded-lg shadow-lg',
             {
               'cursor-pointer text-gray-900 border-gray-300 hover:border-gray-200 from-gray-100 to-gray-300 hover:from-gray-50 hover:to-gray-200':
                 playForm.side_win === 'bad',
@@ -28,18 +28,7 @@
         </label>
         <!-- Save -->
         <button
-          class="
-            px-3
-            sm:w-40
-            text-blue-900
-            border border-blue-400
-            hover:border-blue-300
-            bg-gradient-to-b
-            from-blue-200
-            to-blue-400
-            hover:from-blue-100
-            hover:to-blue-300
-          "
+          class="px-3 text-blue-900 border border-blue-400 rounded-lg shadow-lg sm:w-40 hover:border-blue-300 bg-gradient-to-b from-blue-200 to-blue-400 hover:from-blue-100 hover:to-blue-300"
           type="submit"
         >
           Save
@@ -47,7 +36,7 @@
         <!-- Bad -->
         <label
           :class="[
-            'w-full text-center border bg-gradient-to-b',
+            'rounded-lg shadow-lg w-full text-center border bg-gradient-to-b',
             {
               'cursor-pointer text-gray-900 border-gray-300 hover:border-gray-200 from-gray-100 to-gray-300 hover:from-gray-50 hover:to-gray-200':
                 playForm.side_win === 'good',
@@ -69,17 +58,19 @@
         </label>
       </div>
       <!-- Players -->
-      <div class="flex flex-wrap border border-t-0 border-b-0">
+      <div
+        class="flex flex-wrap overflow-hidden border border-t-0 border-b-0 rounded-lg shadow-lg "
+      >
         <!-- Player list -->
         <div
-          class="w-1/5 sm:w-1/10 flex flex-col bg-white"
+          class="flex flex-col w-1/5 bg-white sm:w-1/10"
           v-for="(pr, index) in playForm.player_results"
           :key="index"
         >
           <!-- Player or Bot button -->
           <label
             :class="[
-              'cursor-pointer bg-gradient-to-bl border text-center',
+              'cursor-pointer bg-gradient-to-bl border text-center border-l-0 border-r-0',
               {
                 'border-gray-300 hover:border-gray-200 from-gray-100 to-gray-300 hover:from-gray-50 hover:to-gray-200':
                   pr.bot,
@@ -98,23 +89,20 @@
           <div class="flex">
             <div
               v-if="pr.side === 'good'"
-              class="h-2 w-full bg-gradient-to-b from-green-200 to-green-400"
+              class="w-full h-2 bg-gradient-to-b from-green-200 to-green-400"
             ></div>
             <div
               v-if="pr.side === 'bad'"
-              class="h-2 w-full bg-gradient-to-b from-red-200 to-red-400"
+              class="w-full h-2 bg-gradient-to-b from-red-200 to-red-400"
             ></div>
           </div>
           <!-- Player form -->
           <div
-            class="
-              flex flex-col
-              h-40
-              p-1
-              justify-between
-              bg-center bg-cover
-              shadow-inner
-            "
+            :class="[
+              'bg-opacity-10 flex flex-col justify-between h-40 p-1 bg-center bg-cover shadow-inner',
+              { 'bg-green-400': pr.side === 'good' },
+              { 'bg-red-400': pr.side === 'bad' },
+            ]"
             :style="[
               {
                 'background-image':
@@ -129,12 +117,7 @@
           >
             <!-- Player -->
             <select
-              class="
-                w-full
-                py-1
-                border border-gray-200 border-opacity-50
-                bg-gray-50 bg-opacity-50
-              "
+              class="w-full py-1 bg-opacity-50 border border-gray-200 border-opacity-50 bg-gray-50"
               required
               v-model="pr.player"
               v-if="!pr.bot"
@@ -147,12 +130,7 @@
             <div class="flex" v-if="!pr.bot">
               <!-- K -->
               <div
-                class="
-                  flex flex-col
-                  text-center
-                  border border-r-0 border-gray-200 border-opacity-50
-                  bg-gray-50 bg-opacity-50
-                "
+                class="flex flex-col text-center bg-opacity-50 border border-r-0 border-gray-200 border-opacity-50 bg-gray-50"
               >
                 <span class="text-xs">K</span>
                 <input
@@ -165,12 +143,7 @@
               </div>
               <!-- D -->
               <div
-                class="
-                  flex flex-col
-                  text-center
-                  border border-r-0 border-gray-200 border-opacity-50
-                  bg-gray-50 bg-opacity-50
-                "
+                class="flex flex-col text-center bg-opacity-50 border border-r-0 border-gray-200 border-opacity-50 bg-gray-50"
               >
                 <span class="text-xs">D</span>
                 <input
@@ -183,12 +156,7 @@
               </div>
               <!-- A -->
               <div
-                class="
-                  flex flex-col
-                  text-center
-                  border border-gray-200 border-opacity-50
-                  bg-gray-50 bg-opacity-50
-                "
+                class="flex flex-col text-center bg-opacity-50 border border-gray-200 border-opacity-50 bg-gray-50"
               >
                 <span class="text-xs">A</span>
                 <input
@@ -202,12 +170,7 @@
             </div>
             <!-- Hero -->
             <select
-              class="
-                w-full
-                py-1
-                border border-gray-200 border-opacity-50
-                bg-gray-50 bg-opacity-50
-              "
+              class="w-full py-1 bg-opacity-50 border border-gray-200 border-opacity-50 bg-gray-50"
               v-if="!pr.bot"
               v-model="pr.hero"
               required
@@ -221,11 +184,11 @@
           <div class="flex">
             <div
               v-if="pr.win"
-              class="h-2 w-full bg-gradient-to-b from-yellow-200 to-yellow-400"
+              class="w-full h-2 bg-gradient-to-b from-yellow-200 to-yellow-400"
             ></div>
             <div
               v-if="!pr.win"
-              class="h-2 w-full bg-gradient-to-b from-gray-200 to-gray-400"
+              class="w-full h-2 bg-gradient-to-b from-gray-200 to-gray-400"
             ></div>
           </div>
         </div>

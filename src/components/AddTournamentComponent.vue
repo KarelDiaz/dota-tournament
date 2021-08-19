@@ -355,7 +355,7 @@
     <!--No players error -->
     <div v-else>
       <h3>Es necesario agregar players para poder iniciar un torneo</h3>
-      <p>Pude agragar players <a href="/">aqui</a>.</p>
+      <p>Pude agragar players <a class="text-blue-500 cursor-pointer hover:text-blue-400" href="/players">aqui</a>.</p>
     </div>
   </div>
 </template>

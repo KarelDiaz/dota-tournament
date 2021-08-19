@@ -13,21 +13,7 @@
             width: `${matchesWonTeam1Percent * 10}rem`,
           },
         ]"
-        class="
-          z-0
-          absolute
-          h-6
-          bg-gradient-to-r
-          from-green-100
-          to-green-300
-          border border-green-500 border-l-0 border-dashed
-          opacity-40
-          rounded-r-full
-          transition-all
-          duration-1000
-          transform
-          -translate-y-6
-        "
+        class="absolute z-0 h-6 transition-all duration-1000 transform -translate-y-6 border border-l-0 border-green-500 border-dashed rounded-r-full bg-gradient-to-r from-green-100 to-green-300 opacity-40"
       ></div>
       <!-- Percent bar of team 2 to win -->
       <div
@@ -37,21 +23,7 @@
             width: `${matchesWonTeam2Percent * 10}rem`,
           },
         ]"
-        class="
-          z-0
-          absolute
-          h-6
-          bg-gradient-to-r
-          from-green-100
-          to-green-300
-          border border-green-500 border-l-0 border-dashed
-          opacity-40
-          rounded-r-full
-          transition-all
-          duration-1000
-          transform
-          translate-y-6
-        "
+        class="absolute z-0 h-6 transition-all duration-1000 transform translate-y-6 border border-l-0 border-green-500 border-dashed rounded-r-full bg-gradient-to-r from-green-100 to-green-300 opacity-40"
       ></div>
       <!-- Match -->
       <div
@@ -103,113 +75,52 @@
       </div>
     </div>
     <!-- Add play modal -->
+    <!-- Back -->
     <transition name="fade">
       <div
         @click="modal = false"
         v-if="modal"
-        class="
-          fixed
-          w-screen
-          h-screen
-          z-30
-          top-0
-          left-0
-          bg-blue-900 bg-opacity-30
-        "
+        class="fixed top-0 left-0 z-30 w-screen h-screen bg-gray-900 bg-opacity-30"
       ></div>
     </transition>
+    <!-- Modal -->
     <transition name="slide-top">
       <div
         v-if="modal"
-        class="fixed w-full h-full top-0 right-0 z-50 p-3 sm:p-6 flex flex-col"
+        class="fixed z-50 top-3 right-3 left-3 bottom-3 sm:bottom-auto sm:top-6 sm:right-6 sm:left-6"
       >
-        <!-- Header -->
-        <div
-          class="
-            flex
-            justify-between
-            p-3
-            shadow-sm
-            bg-white
-            text-center
-            border-b-0
-          "
+        <!-- Close -->
+        <button
+          class="absolute z-50 text-gray-700 transition-all border border-gray-300 rounded-full shadow-md w-9 h-9 -top-5 -right-5 hover:border-gray-200 bg-gradient-to-b from-gray-50 to-gray-200 hover:from-white hover:to-gray-100"
+          @click="modal = false"
         >
-          <span class="text-green-600 sm:text-xl font-bold"
-            >Add match play</span
-          >
-          <!-- Close -->
-          <button
-            class="
-              px-3
-              text-blue-900
-              border border-blue-300
-              hover:border-blue-200
-              bg-gradient-to-b
-              from-blue-100
-              to-blue-300
-              hover:from-blue-50
-              hover:to-blue-200
-            "
-            @click="modal = false"
-          >
-            <i class="fa fa-close"></i>
-          </button>
-        </div>
-        <!-- Content -->
-        <div class="relative flex flex-col p-3 bg-white overflow-auto">
-          <!-- Background -->
-          <div class="hidden sm:flex absolute top-0 bottom-0 left-0 right-0">
-            <div
-              class="
-                bg-gradient-to-r
-                from-green-200
-                border border-green-500 border-r-0
-                h-full
-                w-full
-              "
-            ></div>
-            <div
-              class="
-                bg-gradient-to-l
-                from-red-200
-                border border-red-500 border-l-0
-                h-full
-                w-full
-              "
-            ></div>
-          </div>
+          <i class="fa fa-close"></i>
+        </button>
+        <!-- Modal content -->
+        <div class="z-40 flex flex-col w-full h-full p-3 overflow-auto bg-white rounded-lg shadow-xl sm:p-6">
           <!-- Form content -->
-          <div class="flex flex-col space-y-3 z-10">
+          <div class="z-10 flex flex-col space-y-3">
             <!-- Select bad and good -->
             <div class="flex space-x-3">
               <!-- good -->
-              <b class="flex justify-center w-full px-2 py-1 text-green-800">
+              <b class="flex justify-center w-full px-2 text-green-600">
                 {{ teamGood.name }}
               </b>
               <!-- Swap teams -->
               <button
-                class="
-                  swap
-                  flex
-                  justify-center
-                  sm:w-40
-                  sm:px-3
-                  text-2xl
-                  my-auto
-                "
+                class="flex justify-center my-auto text-2xl swap sm:w-40 sm:px-3"
                 @click="swapTeams()"
                 title="Swap teams"
               >
                 <i
-                  class="arrow-left fa fa-long-arrow-left text-red-500 p-1"
+                  class="p-1 text-red-500 arrow-left fa fa-long-arrow-left"
                 ></i>
                 <i
-                  class="arrow-right fa fa-long-arrow-right text-green-500 p-1"
+                  class="p-1 text-green-500 arrow-right fa fa-long-arrow-right"
                 ></i>
               </button>
               <!-- bad -->
-              <b class="flex justify-center w-full px-2 py-1 text-red-800">
+              <b class="flex justify-center w-full px-2 text-red-600">
                 {{ teamBad.name }}
               </b>
             </div>

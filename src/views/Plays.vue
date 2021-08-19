@@ -1,71 +1,67 @@
 <template>
   <div class="flex flex-col">
-    <!-- Add play -->
-    <button
-      class="fixed w-20 h-20 text-3xl text-green-700 border border-green-400 rounded-full shadow-lg sm:static bottom-6 right-6 sm:rounded-lg sm:w-auto sm:h-auto sm:px-7 sm:m-auto sm:mb-3 opacity-80 sm:opacity-100 sm:text-base hover:border-green-300 focus:border-green-300 bg-gradient-to-b from-green-200 to-green-400 hover:from-green-100 hover:to-green-300 focus:from-green-100 focus:to-green-300 active:from-green-100 active:to-green-300"
-      @click="modal = true"
-    >
-      <i class="fa fa-plus"></i>
-    </button>
-
-    <!-- Add play modal -->
-    <!-- Background -->
-    <transition name="fade">
-      <div
-        @click="modal = false"
-        v-if="modal"
-        class="fixed top-0 left-0 z-30 w-screen h-screen bg-blue-900 bg-opacity-30"
-      ></div>
-    </transition>
-    <!-- Modal -->
-    <transition name="slide-top">
-      <div
-        v-if="modal"
-        class="fixed top-0 right-0 z-50 w-full h-full p-3 sm:p-6"
+    <!-- Add -->
+    <div class="flex justify-center">
+      <!-- Add play -->
+      <button
+        class="fixed w-20 h-20 text-3xl text-green-700 border border-green-400 rounded-full shadow-lg  sm:static bottom-6 right-6 sm:rounded-lg sm:w-auto sm:h-auto sm:px-7 sm:m-auto sm:mb-3 opacity-80 sm:opacity-100 sm:text-base hover:border-green-300 focus:border-green-300 bg-gradient-to-b from-green-200 to-green-400 hover:from-green-100 hover:to-green-300 focus:from-green-100 focus:to-green-300 active:from-green-100 active:to-green-300"
+        @click="modal = true"
       >
-        <!-- Model content -->
-        <div class="flex flex-col p-3 space-y-3 bg-white rounded-lg">
-          <!-- Header -->
+        <i class="fa fa-plus"></i>
+      </button>
+      <!-- Add play modal -->
+      <div>
+        <!-- Background -->
+        <transition name="fade">
           <div
-            class="flex justify-between"
+            @click="modal = false"
+            v-if="modal"
+            class="fixed top-0 bottom-0 left-0 right-0 z-20 bg-gray-900  bg-opacity-30"
+          ></div>
+        </transition>
+        <!-- Modal -->
+        <transition name="slide-top">
+          <div
+            v-if="modal"
+            class="fixed z-50  top-3 right-3 left-3 bottom-3 sm:bottom-auto sm:top-6 sm:right-6 sm:left-6"
           >
-            <span class="font-bold text-green-600 sm:text-xl"
-              >
-              Add play
-              </span
-            >
             <!-- Close -->
             <button
-              class="w-8 h-8 text-xs text-gray-700 border border-gray-300 rounded-full shadow-md hover:border-gray-200 bg-gradient-to-b from-gray-50 to-gray-200 hover:from-white hover:to-gray-100"
+              class="absolute z-50 text-gray-700 transition-all border border-gray-300 rounded-full shadow-md  w-9 h-9 -top-5 -right-5 hover:border-gray-200 bg-gradient-to-b from-gray-50 to-gray-200 hover:from-white hover:to-gray-100"
               @click="modal = false"
             >
               <i class="fa fa-close"></i>
             </button>
+            <!-- Model content -->
+            <div
+              class="z-40 flex flex-col w-full h-full p-3 overflow-auto bg-white rounded-lg shadow-xl  sm:p-6"
+            >
+              <!-- Form content -->
+              <div class="z-10 flex flex-col space-y-3">
+                <!-- Add play form -->
+                <add-play-component
+                  @added="
+                    this.filter();
+                    modal = false;
+                  "
+                  class="w-full"
+                ></add-play-component>
+              </div>
+            </div>
           </div>
-          <!-- Form content -->
-          <div class="z-10 flex flex-col space-y-3 ">
-            <!-- Add play form -->
-            <add-play-component
-              @added="
-                this.filter();
-                modal = false;
-              "
-              class="w-full"
-            ></add-play-component>
-          </div>
-        </div>
+        </transition>
       </div>
-    </transition>
+    </div>
 
     <!-- Filters -->
     <div
-      class="flex flex-row-reverse flex-wrap justify-between grid-cols-3 sm:grid"
+      class="flex flex-row-reverse flex-wrap justify-between grid-cols-3  sm:grid"
     >
       <!-- Limit -->
       <div class="flex">
         <label-component title-top="Plays limit">
           <select
-            class="p-2 border rounded-lg shadow-lg sm:w-auto bg-gradient-to-b from-white to-gray-100"
+            class="p-2 border rounded-lg shadow-lg  sm:w-auto bg-gradient-to-b from-white to-gray-100"
             v-model="filterLimit"
           >
             <option value="-1">Todos</option>
@@ -136,7 +132,7 @@
       <div class="flex justify-end">
         <label-component title-top="Filter by player" class="flex justify-end">
           <select
-            class="p-2 border rounded-lg shadow-lg sm:w-auto bg-gradient-to-b from-white to-gray-100"
+            class="p-2 border rounded-lg shadow-lg  sm:w-auto bg-gradient-to-b from-white to-gray-100"
             v-model="filterByPlayer"
           >
             <option value>Todos</option>
@@ -227,6 +223,9 @@ export default {
     },
     filterByPlayer() {
       this.filter();
+    },
+    modal(val) {
+      console.log(val);
     },
   },
   mounted() {

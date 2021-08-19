@@ -1,5 +1,5 @@
 <template>
-  <div class="p-3 border border-gray-400 border-dashed rounded-lg">
+  <div>
     <div class="flex flex-col space-y-3" v-if="$store.state.players.length > 0">
       <!--Torunament name and type-->
       <div

@@ -1,25 +1,14 @@
 <template>
-  <div class="flex">
+  <div class="flex space-x-3">
     <!--Tournaments list-->
     <div class="w-20 sm:w-40">
       <!--Tournaments header-->
       <div class="flex justify-between pb-3">
         <button
-          :class="[
-            'px-4 bg-gradient-to-b border w-full rounded-lg shadow-lg',
-            {
-              'border-green-400 hover:border-green-300 text-green-900 from-green-200 to-green-400 hover:from-green-100 hover:to-green-300':
-                !tAdd,
-            },
-            {
-              'border-gray-400 hover:border-gray-300 text-gray-900 border from-gray-100 to-gray-400 hover:from-gray-100 hover:to-gray-300':
-                tAdd,
-            },
-          ]"
-          @click="tAdd = !tAdd"
+          class="w-full px-4 text-green-900 border border-green-400 rounded-lg shadow-lg bg-gradient-to-b hover:border-green-300 from-green-200 to-green-400 hover:from-green-100 hover:to-green-300"
+          @click="modal = true"
         >
-          <i class="fa fa-plus" v-if="!tAdd"></i>
-          <i class="fa fa-trash" v-else></i>
+          <i class="fa fa-plus"></i>
         </button>
       </div>
       <!--Tornements-->
@@ -49,25 +38,24 @@
       </div>
       <div v-if="tournaments.length == 0">No hay torneos</div>
     </div>
-    <!-- Add and view tournament -->
-    <div class="flex flex-col w-full ml-3">
-      <transition name="slide-scale-top-left">
-        <add-tournament-component
-          class="mb-3"
-          @tournament-add="
-            tAdd = false;
-            tournamentSelected = $event;
-          "
-          v-if="tAdd"
-        ></add-tournament-component>
-      </transition>
+    <!-- Modal add tournament -->
+    <modal-component v-model="modal">
+      <add-tournament-component
+        class="mb-3"
+        @tournament-add="
+          modal = false;
+          tournamentSelected = $event;
+        "
+        v-if="modal"
+      ></add-tournament-component>
+    </modal-component>
 
-      <view-tournament-component
-        :class="[{ 'hidden sm:flex': tAdd }, { flex: !tAdd }]"
-        :tournament="tournamentSelected"
-      >
-      </view-tournament-component>
-    </div>
+    <!-- View tournament -->
+    <view-tournament-component
+      :class="[{ 'hidden sm:flex': modal }, { flex: !modal }]"
+      :tournament="tournamentSelected"
+    >
+    </view-tournament-component>
   </div>
 </template>
 
@@ -76,12 +64,13 @@ import { mapState } from "vuex";
 import moment from "moment";
 import AddTournamentComponent from "@/components/tournament/AddTournamentComponent";
 import ViewTournamentComponent from "@/components/tournament/ViewTournamentComponent";
+import ModalComponent from "@/components/ModalComponent.vue";
 
 export default {
   data() {
     return {
       moment: moment,
-      tAdd: false,
+      modal: false,
       tournamentSelected: null,
     };
   },
@@ -93,6 +82,7 @@ export default {
   components: {
     AddTournamentComponent,
     ViewTournamentComponent,
+    ModalComponent,
   },
 };
 </script>

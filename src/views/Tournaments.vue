@@ -1,11 +1,11 @@
 <template>
-  <div class="flex space-x-3">
+  <div class="flex">
     <!--Tournaments list-->
     <div class="w-20 sm:w-40">
       <!--Tournaments header-->
       <div class="flex justify-between pb-3">
         <button
-          class="w-full px-4 text-green-900 border border-green-400 rounded-lg shadow-lg bg-gradient-to-b hover:border-green-300 from-green-200 to-green-400 hover:from-green-100 hover:to-green-300"
+          class="w-full px-4 text-green-900 border border-green-400 rounded-lg shadow-lg  bg-gradient-to-b hover:border-green-300 from-green-200 to-green-400 hover:from-green-100 hover:to-green-300"
           @click="modal = true"
         >
           <i class="fa fa-plus"></i>
@@ -41,7 +41,6 @@
     <!-- Modal add tournament -->
     <modal-component v-model="modal">
       <add-tournament-component
-        class="mb-3"
         @tournament-add="
           modal = false;
           tournamentSelected = $event;
@@ -51,10 +50,7 @@
     </modal-component>
 
     <!-- View tournament -->
-    <view-tournament-component
-      :class="[{ 'hidden sm:flex': modal }, { flex: !modal }]"
-      :tournament="tournamentSelected"
-    >
+    <view-tournament-component class="ml-3" :tournament="tournamentSelected">
     </view-tournament-component>
   </div>
 </template>

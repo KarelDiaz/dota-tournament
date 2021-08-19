@@ -1,13 +1,13 @@
 <template>
   <div
-    class="z-50 flex justify-between p-3 border border-blue-100 shadow-lg  h-14 bg-gradient-to-r from-blue-100 to-white"
+    class="z-20 flex justify-between p-3 border border-blue-100 shadow-lg h-14 bg-gradient-to-r from-blue-100 to-white"
   >
     <!-- Logo and link to info -->
     <router-link to="/" class="flex cursor-pointer">
       <img src="favicon.png" class="h-full my-auto" />
       <div class="ml-3 text-2xl font-bold">
         <span
-          class="my-auto text-transparent  bg-clip-text bg-gradient-to-b from-blue-500 to-blue-800"
+          class="my-auto text-transparent bg-clip-text bg-gradient-to-b from-blue-500 to-blue-800"
         >
           Dota Tournament
         </span>
@@ -20,7 +20,7 @@
         v-if="open || window.innerWidth > 640"
       >
         <div
-          class="flex flex-col items-center h-full p-3 m-0 space-y-3 overflow-auto bg-white shadow-xl  md:shadow-none md:bg-opacity-0 md:p-0 md:flex-row md:justify-end md:space-x-3 md:space-y-0"
+          class="flex flex-col items-center h-full p-3 m-0 space-y-3 overflow-auto bg-white shadow-xl md:shadow-none md:bg-opacity-0 md:p-0 md:flex-row md:justify-end md:space-x-3 md:space-y-0"
         >
           <!-- Players -->
           <router-link
@@ -64,7 +64,7 @@
           </router-link>
           <!-- GitHub -->
           <div
-            class="flex flex-col justify-end flex-grow w-full  md:w-auto md:flex-grow-0"
+            class="flex flex-col justify-end flex-grow w-full md:w-auto md:flex-grow-0"
           >
             <a
               class="text-center cursor-pointer md:ml-3"
@@ -99,7 +99,7 @@
       <div
         v-if="open"
         @click="open = false"
-        class="fixed top-0 right-0 z-40 w-screen h-screen bg-gray-900  md:hidden bg-opacity-30"
+        class="fixed top-0 right-0 z-20 w-screen h-screen bg-gray-900 md:hidden bg-opacity-30"
       ></div>
     </transition>
   </div>

@@ -20,8 +20,8 @@ import TournamentType from './model/tournament_type'
 export default createStore({
   state: {
     loading: false,
-    strapi: "http://localhost:1337",
-    local: "http://localhost:8080",
+    strapi: `http://${window.location.hostname}:1337`,
+    local: `http://${window.location.hostname}:8080`,
     github: {
       frontend: 'https://github.com/KarelDiaz/dota-tournament-frontend',
       backend: 'https://github.com/KarelDiaz/dota-tournament-backend'

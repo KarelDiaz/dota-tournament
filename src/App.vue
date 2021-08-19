@@ -1,7 +1,7 @@
 <template>
   <div>
-    <NavComponent class="fixed top-0 w-full z-10"></NavComponent>
-    <router-view class="p-1 sm:p-3 pt-20 sm:pt-20" />
+    <NavComponent class="fixed top-0 z-10 w-full"></NavComponent>
+    <router-view class="p-1 pt-20 sm:p-3 sm:pt-20" />
   </div>
 </template>
 

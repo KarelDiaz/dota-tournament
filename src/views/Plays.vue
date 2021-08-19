@@ -4,7 +4,7 @@
     <div class="flex justify-center">
       <!-- Add play -->
       <button
-        class="fixed w-20 h-20 text-3xl text-green-700 border border-green-400 rounded-full shadow-lg  sm:static bottom-6 right-6 sm:rounded-lg sm:w-auto sm:h-auto sm:px-7 sm:m-auto sm:mb-3 opacity-80 sm:opacity-100 sm:text-base hover:border-green-300 focus:border-green-300 bg-gradient-to-b from-green-200 to-green-400 hover:from-green-100 hover:to-green-300 focus:from-green-100 focus:to-green-300 active:from-green-100 active:to-green-300"
+        class="fixed w-20 h-20 text-3xl text-green-700 border border-green-400 rounded-full shadow-lg sm:static bottom-6 right-6 sm:rounded-lg sm:w-auto sm:h-auto sm:px-7 sm:m-auto sm:mb-3 opacity-80 sm:opacity-100 sm:text-base hover:border-green-300 focus:border-green-300 bg-gradient-to-b from-green-200 to-green-400 hover:from-green-100 hover:to-green-300 focus:from-green-100 focus:to-green-300 active:from-green-100 active:to-green-300"
         @click="modal = true"
       >
         <i class="fa fa-plus"></i>
@@ -27,13 +27,13 @@
 
     <!-- Filters -->
     <div
-      class="flex flex-row-reverse flex-wrap justify-between grid-cols-3  sm:grid"
+      class="flex flex-row-reverse flex-wrap justify-between grid-cols-3 sm:grid"
     >
       <!-- Limit -->
       <div class="flex">
         <label-component title-top="Plays limit">
           <select
-            class="p-2 border rounded-lg shadow-lg  sm:w-auto bg-gradient-to-b from-white to-gray-100"
+            class="p-2 border rounded-lg shadow-lg sm:w-auto bg-gradient-to-b from-white to-gray-100"
             v-model="filterLimit"
           >
             <option value="-1">Todos</option>
@@ -104,7 +104,7 @@
       <div class="flex justify-end">
         <label-component title-top="Filter by player" class="flex justify-end">
           <select
-            class="p-2 border rounded-lg shadow-lg  sm:w-auto bg-gradient-to-b from-white to-gray-100"
+            class="p-2 border rounded-lg shadow-lg sm:w-auto bg-gradient-to-b from-white to-gray-100"
             v-model="filterByPlayer"
           >
             <option value>Todos</option>
@@ -197,9 +197,6 @@ export default {
     },
     filterByPlayer() {
       this.filter();
-    },
-    modal(val) {
-      console.log(val);
     },
   },
   mounted() {

@@ -14,7 +14,7 @@
         <!-- Teams -->
         <div class="flex flex-col">
           <tournament-team-component
-            class="mr-3 mb-3"
+            class="mb-3 mr-3"
             v-for="(team, i) in tournamentTeamsOrder"
             :position="i"
             :key="team.id + tournamentCopy.id"
@@ -29,15 +29,7 @@
           <!-- Tournament types -->
           <!-- All for All -->
           <div
-            class="
-              grid grid-cols-1
-              sm:grid-cols-2
-              md:grid-cols-3
-              lg:grid-cols-4
-              xl:grid-cols-5
-              2xl:grid-cols-7
-              gap-3
-            "
+            class="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7"
             v-if="isAllForAll"
           >
             <template v-for="(itemf, indexf) in tournamentCopy.teams">
@@ -51,7 +43,7 @@
                   :team2="iteml"
                   :tournament="tournamentCopy"
                   :tournamentPlays="tournamentPlays"
-                  class="h-full w-full mb-3 mr-3"
+                  class="w-full h-full mb-3 mr-3"
                 ></tournament-match-component>
               </template>
             </template>
@@ -101,8 +93,8 @@ import {
   DIRECT_3,
   DIRECT_5,
 } from "@/store/tournament-type";
-import TournamentMatchComponent from "@/components/TournamentMatchComponent";
-import TournamentTeamComponent from "@/components/TournamentTeamComponent.vue";
+import TournamentMatchComponent from "./TournamentMatchComponent";
+import TournamentTeamComponent from "./TournamentTeamComponent.vue";
 
 export default {
   data() {

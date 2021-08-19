@@ -127,7 +127,6 @@ import Player from "@/store/model/player";
 import Hero from "@/store/model/hero";
 
 export default {
-  name: "PlayComponent",
   data() {
     return {
       moment,

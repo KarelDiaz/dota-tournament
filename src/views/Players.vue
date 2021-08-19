@@ -161,7 +161,7 @@
       </div>
     </transition>
     <!-- Play info -->
-    <PlayComponent v-if="playInfo.id" :play="playInfo"></PlayComponent>
+    <play-component v-if="playInfo.id" :play="playInfo"></play-component>
   </div>
 </template>
 
@@ -171,7 +171,7 @@ import { mapState, mapMutations } from "vuex";
 
 import moment from "moment";
 
-import PlayComponent from "@/components/PlayComponent";
+import PlayComponent from "@/components/play/PlayComponent";
 import Player from "@/store/model/player";
 import {
   START_LOADING,

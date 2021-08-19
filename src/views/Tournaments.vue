@@ -74,8 +74,8 @@
 <script>
 import { mapState } from "vuex";
 import moment from "moment";
-import AddTournamentComponent from "@/components/AddTournamentComponent";
-import ViewTournamentComponent from "@/components/ViewTournamentComponent";
+import AddTournamentComponent from "@/components/tournament/AddTournamentComponent";
+import ViewTournamentComponent from "@/components/tournament/ViewTournamentComponent";
 
 export default {
   data() {

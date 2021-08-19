@@ -13,7 +13,7 @@
             width: `${matchesWonTeam1Percent * 10}rem`,
           },
         ]"
-        class="absolute z-0 h-6 transition-all duration-1000 transform -translate-y-6 border border-l-0 border-green-500 border-dashed rounded-r-full  bg-gradient-to-r from-green-100 to-green-300 opacity-40"
+        class="absolute z-0 h-6 transition-all duration-1000 transform -translate-y-6 border border-l-0 border-green-500 border-dashed rounded-r-full bg-gradient-to-r from-green-100 to-green-300 opacity-40"
       ></div>
       <!-- Percent bar of team 2 to win -->
       <div
@@ -23,7 +23,7 @@
             width: `${matchesWonTeam2Percent * 10}rem`,
           },
         ]"
-        class="absolute z-0 h-6 transition-all duration-1000 transform translate-y-6 border border-l-0 border-green-500 border-dashed rounded-r-full  bg-gradient-to-r from-green-100 to-green-300 opacity-40"
+        class="absolute z-0 h-6 transition-all duration-1000 transform translate-y-6 border border-l-0 border-green-500 border-dashed rounded-r-full bg-gradient-to-r from-green-100 to-green-300 opacity-40"
       ></div>
       <!-- Match -->
       <div
@@ -126,7 +126,7 @@ import {
   DIRECT_5,
 } from "@/store/tournament-type";
 import TournamentPlay from "@/store/model/tournament_play";
-import AddPlayComponent from "@/components/AddPlayComponent";
+import AddPlayComponent from "@/components/play/AddPlayComponent";
 import ModalComponent from "@/components/ModalComponent.vue";
 
 export default {

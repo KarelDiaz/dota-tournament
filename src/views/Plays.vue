@@ -139,8 +139,8 @@
 import axios from "axios";
 import { mapState } from "vuex";
 
-import PlayComponent from "@/components/PlayComponent";
-import AddPlayComponent from "@/components/AddPlayComponent";
+import PlayComponent from "@/components/play/PlayComponent";
+import AddPlayComponent from "@/components/play/AddPlayComponent";
 import LabelComponent from "@/components/LabelComponent";
 import ModalComponent from "@/components/ModalComponent.vue";
 

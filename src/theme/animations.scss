@@ -1,8 +1,10 @@
+$time:0.45s;
+
 .fade {
 
     &-enter-active,
     &-leave-active {
-        transition: opacity 0.3s ease;
+        transition: opacity $time ease;
     }
 
     &-enter-from,
@@ -15,11 +17,11 @@
 
 .slide-right {
     &-enter-active {
-        transition: all 0.3s ease-out;
+        transition: all $time ease-out;
     }
 
     &-leave-active {
-        transition: all 0.3s ease-in;
+        transition: all $time ease-in;
     }
 
     &-enter-from,
@@ -32,11 +34,11 @@
 
 .slide-left {
     &-enter-active {
-        transition: all 0.3s ease-out;
+        transition: all $time ease-out;
     }
 
     &-leave-active {
-        transition: all 0.3s ease-in;
+        transition: all $time ease-in;
     }
 
     &-enter-from,
@@ -48,11 +50,11 @@
 
 .slide-left-full {
     &-enter-active {
-        transition: all 0.3s ease-out;
+        transition: all $time ease-out;
     }
 
     &-leave-active {
-        transition: all 0.3s ease-in;
+        transition: all $time ease-in;
     }
 
     &-enter-from,
@@ -63,32 +65,51 @@
 
 .slide-top {
     &-enter-active {
-        transition: all 0.3s ease-out;
+        transition: all $time ease-out;
     }
 
     &-leave-active {
-        transition: all 0.3s ease-in;
+        transition: all $time ease-in;
     }
 
     &-enter-from,
     &-leave-to {
-        transform: translateY(-50px);
+        transform: translateY(-20px);
         opacity: 0;
     }
 }
 
+
+
 .slide-bottom {
     &-enter-active {
-        transition: all 0.3s ease-out;
+        transition: all $time ease-out;
     }
 
     &-leave-active {
-        transition: all 0.3s ease-in;
+        transition: all $time ease-in;
     }
 
     &-enter-from,
     &-leave-to {
-        transform: translateY(50px);
+        transform: translateY(20px);
+        opacity: 0;
+    }
+}
+
+.slide-scale-top-left {
+    &-enter-active {
+        transition: all $time ease-out;
+    }
+
+    &-leave-active {
+        transition: all $time ease-in;
+    }
+
+    &-enter-from,
+    &-leave-to {
+        transform-origin: 0 0;
+        transform: translate(-150px, -30px) scale(0.4);
         opacity: 0;
     }
 }
@@ -97,7 +118,7 @@
 
     &-enter-active,
     &-leave-active {
-        transition: height 0.3s ease;
+        transition: height $time ease;
         height: 25px;
         overflow-y: hidden;
     }
@@ -112,7 +133,7 @@
 
     &-enter-active,
     &-leave-active {
-        transition: height 0.3s ease;
+        transition: height $time ease;
         height: 25px;
         overflow-y: hidden;
     }
@@ -125,11 +146,11 @@
 
 .slide-left-in-fade-out {
     &-enter-active {
-        transition: all 0.3s ease-out;
+        transition: all $time ease-out;
     }
 
     &-leave-active {
-        transition: all 0.3s ease-in;
+        transition: all $time ease-in;
     }
 
     &-enter-from {

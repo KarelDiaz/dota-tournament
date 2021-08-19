@@ -2,138 +2,39 @@
   <div>
     <!-- Desktop -->
     <div
-      class="
-        hidden
-        sm:flex
-        p-3
-        z-50
-        justify-between
-        h-14
-        bg-gradient-to-r
-        from-blue-100
-        to-white
-        border border-blue-100
-        shadow-md
-      "
+      class="z-50 justify-between hidden p-3 border border-blue-100 shadow-lg  md:flex h-14 bg-gradient-to-r from-blue-100 to-white"
     >
       <!-- Logo and link to info -->
       <router-link to="/" class="flex cursor-pointer">
         <img src="favicon.png" class="h-full my-auto" />
-        <div class="text-2xl font-bold ml-3">
+        <div class="ml-3 text-2xl font-bold">
           <span
-            class="
-              bg-clip-text
-              text-transparent
-              bg-gradient-to-b
-              from-blue-500
-              to-blue-800
-              my-auto
-            "
+            class="my-auto text-transparent  bg-clip-text bg-gradient-to-b from-blue-500 to-blue-800"
           >
             Dota Tournament
           </span>
         </div>
       </router-link>
       <!-- Link views -->
-      <div class="flex">
+      <div class="flex items-center space-x-3">
         <!-- Players -->
-        <router-link
-          class="
-            py-1
-            px-2
-            shadow-sm
-            bg-gradient-to-b
-            from-blue-100
-            to-blue-300
-            hover:from-blue-50
-            hover:to-blue-200
-            border border-blue-300
-            hover:border-blue-200
-            transform
-            -skew-x-12
-          "
-          to="/players"
-        >
+        <router-link class="link hover:text-blue-500" to="/players">
           Players
         </router-link>
         <!-- Plays -->
-        <router-link
-          class="
-            py-1
-            px-2
-            shadow-sm
-            bg-gradient-to-b
-            from-blue-100
-            to-blue-300
-            hover:from-blue-50
-            hover:to-blue-200
-            border border-blue-300
-            hover:border-blue-200
-            transform
-            -skew-x-12
-          "
-          to="/plays"
-        >
+        <router-link class="link hover:text-blue-500" to="/plays">
           Plays
         </router-link>
         <!-- Tournaments -->
-        <router-link
-          class="
-            py-1
-            px-2
-            shadow-sm
-            bg-gradient-to-b
-            from-blue-100
-            to-blue-300
-            hover:from-blue-50
-            hover:to-blue-200
-            border border-blue-300
-            hover:border-blue-200
-            transform
-            -skew-x-12
-          "
-          to="/tournaments"
-        >
+        <router-link class="link hover:text-blue-500" to="/tournaments">
           Tournaments
         </router-link>
         <!-- Heroes -->
-        <router-link
-          class="
-            py-1
-            px-2
-            shadow-sm
-            bg-gradient-to-b
-            from-blue-100
-            to-blue-300
-            hover:from-blue-50
-            hover:to-blue-200
-            border border-blue-300
-            hover:border-blue-200
-            transform
-            -skew-x-12
-          "
-          to="/hero"
-        >
+        <router-link class="link hover:text-blue-500" to="/hero">
           Heroes
         </router-link>
         <!-- Lotery -->
-        <router-link
-          class="
-            py-1
-            px-2
-            shadow-sm
-            bg-gradient-to-b
-            from-blue-100
-            to-blue-300
-            hover:from-blue-50
-            hover:to-blue-200
-            border border-blue-300
-            hover:border-blue-200
-            transform
-            -skew-x-12
-          "
-          to="/lotery"
-        >
+        <router-link class="link hover:text-blue-500" to="/lotery">
           Lotery
         </router-link>
         <!-- GitHub -->
@@ -142,27 +43,13 @@
           :href="$store.state.github.frontend"
           target="blanck"
         >
-          <span class="fa fa-github text-3xl text-gray-400 -mt-1"></span>
+          <span class="-mt-1 text-3xl text-gray-400 fa fa-github"></span>
         </a>
       </div>
     </div>
     <!-- Movile -->
     <div
-      class="
-        flex
-        sm:hidden
-        z-50
-        justify-between
-        h-14
-        p-3
-        top-0
-        w-full
-        bg-gradient-to-r
-        from-blue-100
-        to-white
-        border-b border-blue-100
-        shadow-md
-      "
+      class="top-0 z-50 flex justify-between w-full p-3 border-b border-blue-100 shadow-lg  md:hidden h-14 bg-gradient-to-r from-blue-100 to-white"
     >
       <!-- Logo -->
       <div>
@@ -188,20 +75,7 @@
       <transition name="slide-left-full">
         <div
           v-if="open"
-          class="
-            flex flex-col
-            justify-between
-            z-50
-            left-0
-            top-0
-            w-2/3
-            h-screen
-            fixed
-            bg-white
-            overflow-y-auto
-            shadow-2xl
-            p-3
-          "
+          class="fixed top-0 left-0 z-50 flex flex-col justify-between w-2/3 h-screen p-3 overflow-y-auto bg-white shadow-2xl "
         >
           <!-- Link -->
           <div class="flex flex-col space-y-3">
@@ -211,25 +85,12 @@
               class="cursor-pointer"
               @click.passive="open = false"
             >
-              <img src="favicon.png" class="mb-3 w-1/4 mx-auto" />
+              <img src="favicon.png" class="w-1/4 mx-auto mb-3" />
             </router-link>
             <!-- Players -->
             <router-link
               @click.passive="open = false"
-              class="
-                py-1
-                px-2
-                mb-3
-                shadow-sm
-                bg-gradient-to-b
-                from-blue-100
-                to-blue-300
-                hover:from-blue-50
-                hover:to-blue-200
-                border border-blue-300
-                hover:border-blue-200
-                break-all
-              "
+              class="px-2 py-1 mb-3 break-all border border-blue-300 shadow-sm  bg-gradient-to-b from-blue-100 to-blue-300 hover:from-blue-50 hover:to-blue-200 hover:border-blue-200"
               to="/players"
             >
               Players
@@ -237,20 +98,7 @@
             <!-- Plays -->
             <router-link
               @click.passive="open = false"
-              class="
-                py-1
-                px-2
-                mb-3
-                shadow-sm
-                bg-gradient-to-b
-                from-blue-100
-                to-blue-300
-                hover:from-blue-50
-                hover:to-blue-200
-                border border-blue-300
-                hover:border-blue-200
-                break-all
-              "
+              class="px-2 py-1 mb-3 break-all border border-blue-300 shadow-sm  bg-gradient-to-b from-blue-100 to-blue-300 hover:from-blue-50 hover:to-blue-200 hover:border-blue-200"
               to="/plays"
             >
               Plays
@@ -258,20 +106,7 @@
             <!-- Tournaments -->
             <router-link
               @click.passive="open = false"
-              class="
-                py-1
-                px-2
-                mb-3
-                shadow-sm
-                bg-gradient-to-b
-                from-blue-100
-                to-blue-300
-                hover:from-blue-50
-                hover:to-blue-200
-                border border-blue-300
-                hover:border-blue-200
-                break-all
-              "
+              class="px-2 py-1 mb-3 break-all border border-blue-300 shadow-sm  bg-gradient-to-b from-blue-100 to-blue-300 hover:from-blue-50 hover:to-blue-200 hover:border-blue-200"
               to="/tournaments"
             >
               Tournaments
@@ -279,20 +114,7 @@
             <!-- Heroes -->
             <router-link
               @click.passive="open = false"
-              class="
-                py-1
-                px-2
-                mb-3
-                shadow-sm
-                bg-gradient-to-b
-                from-blue-100
-                to-blue-300
-                hover:from-blue-50
-                hover:to-blue-200
-                border border-blue-300
-                hover:border-blue-200
-                break-all
-              "
+              class="px-2 py-1 mb-3 break-all border border-blue-300 shadow-sm  bg-gradient-to-b from-blue-100 to-blue-300 hover:from-blue-50 hover:to-blue-200 hover:border-blue-200"
               to="/hero"
             >
               Heroes
@@ -300,19 +122,7 @@
             <!-- Lotery -->
             <router-link
               @click.passive="open = false"
-              class="
-                py-1
-                px-2
-                shadow-sm
-                bg-gradient-to-b
-                from-blue-100
-                to-blue-300
-                hover:from-blue-50
-                hover:to-blue-200
-                border border-blue-300
-                hover:border-blue-200
-                break-all
-              "
+              class="px-2 py-1 break-all border border-blue-300 shadow-sm  bg-gradient-to-b from-blue-100 to-blue-300 hover:from-blue-50 hover:to-blue-200 hover:border-blue-200"
               to="/lotery"
             >
               Lotery
@@ -320,11 +130,11 @@
           </div>
           <!-- GitHub -->
           <a
-            class="cursor-pointer w-full text-center"
+            class="w-full text-center cursor-pointer"
             :href="$store.state.github.frontend"
             target="blanck"
           >
-            <span class="fa fa-github text-3xl text-gray-400 -mt-1"></span>
+            <span class="-mt-1 text-3xl text-gray-400 fa fa-github"></span>
           </a>
         </div>
       </transition>
@@ -333,15 +143,7 @@
         <div
           v-if="open"
           @click="open = false"
-          class="
-            bg-blue-900 bg-opacity-30
-            fixed
-            w-screen
-            h-screen
-            top-0
-            right-0
-            z-40
-          "
+          class="fixed top-0 right-0 z-40 w-screen h-screen bg-blue-900  bg-opacity-30"
         ></div>
       </transition>
     </div>
@@ -359,10 +161,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.link {
+  @apply py-1 px-2 cursor-pointer bg-transparent rounded-lg text-lg font-extrabold text-gray-400;
+}
 .router-link-exact-active {
-  @apply from-green-50 to-green-200 border-green-200;
+  @apply bg-clip-text text-transparent bg-gradient-to-b from-blue-500 to-blue-800;
   &:hover {
-    @apply from-green-50 to-green-200 border-green-200 cursor-default;
+    @apply bg-clip-text text-transparent bg-gradient-to-b from-blue-500 to-blue-800 cursor-default;
   }
 }
 .corner {

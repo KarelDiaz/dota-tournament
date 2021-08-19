@@ -20,8 +20,8 @@ import TournamentType from './model/tournament_type'
 export default createStore({
   state: {
     loading: false,
-    strapi: "http://192.168.1.103:1337",
-    local: "http://192.168.1.103:8080",
+    strapi: "http://localhost:1337",
+    local: "http://localhost:8080",
     github: {
       frontend: 'https://github.com/KarelDiaz/dota-tournament-frontend',
       backend: 'https://github.com/KarelDiaz/dota-tournament-backend'
@@ -48,7 +48,8 @@ export default createStore({
         prs = prs.data;
         axios.get(state.strapi + "/players?_limit=-1").then(ps => {
           ps = ps.data;
-          state.players = ps.sort((a, b) => a.nick > b.nick);
+          state.players = ps.sort((a, b) => b.nick.localeCompare(a.nick)
+          );
 
           state.players.forEach(p => {
             const arr_prs = prs.filter(pr => {
@@ -72,7 +73,7 @@ export default createStore({
     },
     [INIT_HEROES](state) {
       axios.get(state.strapi + "/heroes?_limit=-1").then(({ data }) => {
-        state.heroes = data.sort((a, b) => a.displayName > b.displayName);
+        state.heroes = data.sort((a, b) => a.displayName.localeCompare(b.displayName));
 
         // load all heros from scratch if no exist on db
         if (this.state.heroes.length === 0) {
@@ -215,7 +216,7 @@ export default createStore({
               n++;
               if (n == heroes.length) {
                 axios.get(state.strapi + "/heroes?_limit=-1").then(({ data }) => {
-                  state.heroes = data.sort((a, b) => a.displayName > b.displayName);
+                  state.heroes = data.sort((a, b) => a.displayName.localeCompare(b.displayName));
                 });
               }
             });
@@ -225,13 +226,13 @@ export default createStore({
     },
     [INIT_TOURNAMENTS](state) {
       axios.get(state.strapi + "/tournaments?_limit=-1").then(({ data }) => {
-        state.tournaments = data.sort((a, b) => a.createdAt < b.createdAt);
+        state.tournaments = data.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
       });
     },
     [INIT_TOURNAMENT_TYPE](state) {
       axios.get(state.strapi + "/tournament-types").then(({ data }) => {
         state.tournamentTypes = data
-        state.tournamentTypes.sort((a, b) => a.name > b.name)
+        state.tournamentTypes.sort((a, b) => a.name.localeCompare(b.name))
 
         // in case of not have any type... add from scratch :)
         if (data.length === 0) {
@@ -239,7 +240,7 @@ export default createStore({
             axios.post(state.strapi + "/tournament-types", new TournamentType(tt))
               .then(({ data }) => {
                 state.tournamentTypes.push(data)
-                state.tournamentTypes.sort((a, b) => a.name > b.name)
+                state.tournamentTypes.sort((a, b) => a.name.localeCompare(b.name))
               });
           });
         }
@@ -268,7 +269,7 @@ export default createStore({
     },
     [ADD_TOURNAMENT](state, dataIn) {
       state.tournaments.push(dataIn)
-      state.tournaments.sort((a, b) => a.createdAt < b.createdAt)
+      state.tournaments.sort((a, b) => a.createdAt.localeCompare(b.createdAt))
     }
   },
   actions: {

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="z-20 flex justify-between p-3 border border-blue-100 shadow-lg h-14 bg-gradient-to-r from-blue-100 to-white"
+    class="flex justify-between p-3 border border-blue-100 shadow-lg h-14 bg-gradient-to-r from-blue-100 to-white"
   >
     <!-- Logo and link to info -->
     <router-link to="/" class="flex cursor-pointer">
@@ -16,7 +16,7 @@
     <!-- Link views -->
     <transition name="slide-left-full">
       <div
-        class="fixed top-0 bottom-0 left-0 z-50 w-2/3 md:relative"
+        class="fixed top-0 bottom-0 left-0 z-20 w-2/3 md:static md:object-none md:object-center"
         v-if="open || window.innerWidth > 640"
       >
         <div
@@ -103,7 +103,7 @@
       <div
         v-if="open"
         @click="open = false"
-        class="fixed top-0 right-0 z-20 w-screen h-screen bg-gray-900 md:hidden bg-opacity-30"
+        class="fixed top-0 right-0 z-10 w-screen h-screen bg-gray-900 md:hidden bg-opacity-30"
       ></div>
     </transition>
   </div>

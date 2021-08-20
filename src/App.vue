@@ -1,7 +1,7 @@
 <template>
   <div>
-    <NavComponent class="fixed top-0 z-10 w-full"></NavComponent>
-    <router-view class="p-1 pt-20 sm:p-3 sm:pt-20" />
+    <nav-component class="w-full"></nav-component>
+    <router-view class="fixed bottom-0 left-0 right-0 p-1 overflow-y-auto sm:p-3 top-14" />
   </div>
 </template>
 
@@ -13,7 +13,7 @@ import { INIT } from "@/store/actions-type";
 
 export default {
   components: {
-    NavComponent,
+    NavComponent
   },
   methods: {
     ...mapActions([INIT]),

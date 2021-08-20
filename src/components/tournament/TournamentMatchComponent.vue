@@ -75,9 +75,9 @@
       </div>
     </div>
     <!-- Add play modal -->
-    <modal-component v-model="modal" class="absolute z-50">
+    <modal-component v-model="modal">
       <!-- Form content -->
-      <div class="z-10 flex flex-col space-y-3">
+      <div class="flex flex-col space-y-3">
         <!-- Select bad and good -->
         <div class="flex space-x-3">
           <!-- good -->

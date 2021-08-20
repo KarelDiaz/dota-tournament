@@ -73,7 +73,7 @@
       </div>
     </div>
     <!-- Empty tournaments -->
-    <div v-else class="w-full italic text-center text-gray-400">
+    <div v-else class="w-full p-10 italic text-center text-gray-400">
       No hay tourneo seleccionado
     </div>
   </div>

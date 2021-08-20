@@ -27,6 +27,7 @@
 
     <!-- Filters -->
     <div
+    v-if="plays.length>0"
       class="flex flex-row-reverse flex-wrap justify-between grid-cols-3 sm:grid"
     >
       <!-- Limit -->
@@ -122,7 +123,7 @@
     </div>
 
     <!-- Plays -->
-    <div class="flex flex-col mt-3">
+    <div  v-if="plays.length>0" class="flex flex-col mt-3">
       <transition-group name="slide-top" tag="p">
         <play-component
           v-for="play in plays"
@@ -131,6 +132,11 @@
           class="mb-3"
         ></play-component>
       </transition-group>
+    </div>
+
+    <!-- Empty plays -->
+    <div class="p-10 italic text-center text-gray-400"  v-if="plays.length===0">
+      No hay plays
     </div>
   </div>
 </template>

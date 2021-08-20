@@ -5,7 +5,7 @@
       <!--Tournaments header-->
       <div class="flex justify-between pb-3">
         <button
-          class="w-full px-4 text-green-900 border border-green-400 rounded-lg shadow-lg  bg-gradient-to-b hover:border-green-300 from-green-200 to-green-400 hover:from-green-100 hover:to-green-300"
+          class="w-full px-4 text-green-900 border border-green-400 rounded-lg shadow-md bg-gradient-to-b hover:border-green-300 from-green-200 to-green-400 hover:from-green-100 hover:to-green-300"
           @click="modal = true"
         >
           <i class="fa fa-plus"></i>
@@ -16,7 +16,7 @@
         <transition-group name="slide-top">
           <button
             :class="[
-              'bg-gradient-to-b border p-1 sm:p-2 rounded-lg min-w-full flex flex-col space-y-1 text-xs break-all shadow-xl transform transition-all',
+              'bg-gradient-to-b border p-1 sm:p-2 rounded-lg min-w-full flex flex-col space-y-1 text-xs break-all shadow-md transform transition-all',
               'text-gray-800 from-white to-gray-100 border-gray-100 ',
               'sm:p-1 sm:break-normal sm:text-base ',
               'hover:from-gray-50 hover:to-gray-200 hover:border-gray-200',
@@ -36,7 +36,7 @@
           </button>
         </transition-group>
       </div>
-      <div v-if="tournaments.length == 0">No hay torneos</div>
+      <div class="italic text-center text-gray-400" v-if="tournaments.length == 0">No hay torneos</div>
     </div>
     <!-- Modal add tournament -->
     <modal-component v-model="modal">
@@ -48,7 +48,6 @@
         v-if="modal"
       ></add-tournament-component>
     </modal-component>
-
     <!-- View tournament -->
     <view-tournament-component class="ml-3" :tournament="tournamentSelected">
     </view-tournament-component>

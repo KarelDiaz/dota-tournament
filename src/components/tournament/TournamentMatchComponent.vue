@@ -5,32 +5,12 @@
       @click="modal = !isMatchWon"
       class="flex flex-col justify-center h-full"
     >
-      <!-- Percent bar of team 1 to win -->
-      <div
-        v-if="!isMatchWon"
-        :style="[
-          {
-            width: `${matchesWonTeam1Percent * 10}rem`,
-          },
-        ]"
-        class="absolute z-0 h-6 transition-all duration-1000 transform -translate-y-6 border border-l-0 border-green-500 border-dashed rounded-r-full bg-gradient-to-r from-green-100 to-green-300 opacity-40"
-      ></div>
-      <!-- Percent bar of team 2 to win -->
-      <div
-        v-if="!isMatchWon"
-        :style="[
-          {
-            width: `${matchesWonTeam2Percent * 10}rem`,
-          },
-        ]"
-        class="absolute z-0 h-6 transition-all duration-1000 transform translate-y-6 border border-l-0 border-green-500 border-dashed rounded-r-full bg-gradient-to-r from-green-100 to-green-300 opacity-40"
-      ></div>
       <!-- Match -->
       <div
         :class="[
-          'grid grid-cols-1 grid-rows-3 justify-between items-center p-2 sm:p-3 h-full w-40 text-center border rounded-lg',
+          'flex flex-col justify-between h-full w-40 text-center border rounded-lg',
           {
-            'bg-gradient-to-t from-green-300 to-green-100 border-green-300 text-green-800 shadow-xl':
+            'bg-gradient-to-t from-green-300 to-green-100 border-green-300 text-green-800 shadow-lg':
               isMatchWon,
           },
           {
@@ -43,32 +23,53 @@
       >
         <!-- Team 1 -->
         <div
-          :class="[{ 'font-extrabold text-lg': matchesWonTeam1Percent >= 1 }]"
+          :class="['px-3 pt-3',{ 'font-extrabold text-lg': matchesWonTeam1Percent >= 1 }]"
         >
           {{ team1.name }}
         </div>
         <!-- Vs -->
         <i class="flex flex-col">
-          <span v-if="matchesToWin > 1">
+          <div v-if="matchesToWin > 1">
             {{ matchesWonTeam1 }}
             <span class="hidden sm:inline-block" v-show="hover">
               of {{ matchesToWin }}
             </span>
-            <span class="inline-block sm:hidden">of {{ matchesToWin }}</span>
-          </span>
+            <span class="inline-block sm:hidden"> of {{ matchesToWin }} </span>
+            <!-- Percent bar of team 1 to win -->
+            <div
+              v-if="!isMatchWon"
+              :style="[
+                {
+                  width: `${matchesWonTeam1Percent * 10}rem`,
+                },
+              ]"
+              class="absolute z-0 h-6 transition-all duration-1000 transform -translate-y-6 border border-l-0 border-green-500 border-dashed rounded-r-full bg-gradient-to-r from-green-100 to-green-300 opacity-40"
+            ></div>
+          </div>
           <b v-if="isMatchWon && hover">Finished</b>
           <i v-else>vs</i>
-          <span v-if="matchesToWin > 1">
+          <span v-if="matchesToWin > 1" class="relative">
             {{ matchesWonTeam2 }}
+            <!-- Percent bar of team 2 to win -->
+            <div
+              v-if="!isMatchWon"
+              :style="[
+                {
+                  width: `${matchesWonTeam2Percent * 10}rem`,
+                },
+              ]"
+              class="absolute top-0 left-0 z-0 h-6 transition-all duration-1000 border border-l-0 border-green-500 border-dashed rounded-r-full bg-gradient-to-r from-green-100 to-green-300 opacity-40"
+            ></div>
             <span class="hidden sm:inline-block" v-show="hover">
               of {{ matchesToWin }}
             </span>
             <span class="inline-block sm:hidden">of {{ matchesToWin }}</span>
+            
           </span>
         </i>
         <!-- Team 2 -->
         <div
-          :class="[{ 'font-extrabold text-lg': matchesWonTeam2Percent >= 1 }]"
+          :class="['px-3 pb-3',{ 'font-extrabold text-lg': matchesWonTeam2Percent >= 1 }]"
         >
           {{ team2.name }}
         </div>

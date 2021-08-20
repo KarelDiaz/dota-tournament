@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="w-full">
     <!-- Tournament -->
     <div v-if="tournamentCopy" class="flex flex-col space-y-3">
       <!-- Header -->
@@ -29,7 +29,7 @@
           <!-- Tournament types -->
           <!-- All for All -->
           <div
-            class="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7"
+            class="flex flex-wrap w-full"
             v-if="isAllForAll"
           >
             <template v-for="(itemf, indexf) in tournamentCopy.teams">
@@ -43,7 +43,7 @@
                   :team2="iteml"
                   :tournament="tournamentCopy"
                   :tournamentPlays="tournamentPlays"
-                  class="w-full h-full mb-3 mr-3"
+                  class="mb-3 mr-3 "
                 ></tournament-match-component>
               </template>
             </template>
@@ -75,8 +75,8 @@
       </div>
     </div>
     <!-- Empty tournaments -->
-    <div v-else>
-      <h1>No hay tourneo seleccionado</h1>
+    <div v-else class="w-full italic text-center text-gray-400">
+      No hay tourneo seleccionado
     </div>
   </div>
 </template>

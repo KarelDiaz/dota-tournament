@@ -7,7 +7,7 @@
       <img src="favicon.png" class="h-full my-auto" />
       <div class="ml-3 text-2xl font-bold">
         <span
-          class="my-auto text-transparent bg-clip-text bg-gradient-to-b from-blue-500 to-blue-800"
+          class="hidden my-auto text-transparent md:inline-block bg-clip-text bg-gradient-to-b from-blue-500 to-blue-800"
         >
           Dota Tournament
         </span>
@@ -32,22 +32,25 @@
           </router-link>
           <!-- Plays -->
           <router-link
+            v-if="$store.state.players.length > 0"
+            @click.passive="open = false"
             class="link hover:text-blue-500"
             to="/plays"
-            @click.passive="open = false"
           >
             Plays
           </router-link>
           <!-- Tournaments -->
           <router-link
+            v-if="$store.state.players.length > 0"
+            @click.passive="open = false"
             class="link hover:text-blue-500"
             to="/tournaments"
-            @click.passive="open = false"
           >
             Tournaments
           </router-link>
           <!-- Heroes -->
           <router-link
+          v-if="$store.state.players.length > 0"
             class="link hover:text-blue-500"
             to="/hero"
             @click.passive="open = false"
@@ -56,6 +59,7 @@
           </router-link>
           <!-- Lotery -->
           <router-link
+          v-if="$store.state.players.length > 0"
             class="link hover:text-blue-500"
             to="/lotery"
             @click.passive="open = false"

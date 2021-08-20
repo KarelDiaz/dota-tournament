@@ -1,7 +1,7 @@
 <template>
   <div
     :class="[
-      'flex flex-col text-center p-1 sm:p-3 space-y-3 bg-gradient-to-t border from-gray-100 text-gray-500 rounded-lg shadow-xl',
+      'flex flex-col text-center p-1 sm:p-3 space-y-3 bg-gradient-to-t border from-gray-100 text-gray-500 rounded-lg shadow-md',
       {
         'bg-gradient-to-t from-yellow-400 to-yellow-200 border-yellow-400':
           position === 0 && teamWonPlays.length > 0,

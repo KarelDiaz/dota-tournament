@@ -96,8 +96,8 @@
       </tr>
     </table>
     <!-- Empty players -->
-    <div v-else class="no-players">
-      <h1>No hay players disponibles</h1>
+    <div v-else class="p-10 italic text-center text-gray-400">
+      No hay players disponibles
     </div>
     <!-- History player -->
     <transition name="slide-top">

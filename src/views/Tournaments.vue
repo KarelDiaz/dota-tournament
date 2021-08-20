@@ -51,7 +51,7 @@
           </div>
         </div>
         <!-- View tournament -->
-        <div class="w-full p-3 overflow-auto">
+        <div class="w-full overflow-auto">
           <view-tournament-component :tournament="tournamentSelected">
           </view-tournament-component>
         </div>

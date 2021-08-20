@@ -1,20 +1,21 @@
 <template>
   <div class="w-full">
     <!-- Tournament -->
-    <div v-if="tournamentCopy" class="flex flex-col space-y-3">
+    <div v-if="tournamentCopy" class="flex flex-col">
       <!-- Header -->
       <label-component
+      class="p-3"
         :title-top="normalizeTournamentTypeName(tournamentCopy.type?.name)"
         :title-bottom="moment(tournamentCopy.createdAt).format('MMMM D, YYYY')"
       >
         <div class="text-4xl">{{ tournamentCopy.name }}</div>
       </label-component>
       <!-- Teams and Matches -->
-      <div class="flex">
+      <div class="flex flex-col">
         <!-- Teams -->
-        <div class="flex flex-col">
+        <div class="top-0 flex p-2 space-x-3 overflow-x-auto border-t border-b sm:p-3 bg-gradient-to-t from-gray-100 to-gray-50">
           <tournament-team-component
-            class="mb-3 mr-3"
+            class="min-w-24"
             v-for="(team, i) in tournamentTeamsOrder"
             :position="i"
             :key="team.id + tournamentCopy.id"
@@ -25,7 +26,7 @@
           </tournament-team-component>
         </div>
         <!-- Matches -->
-        <div class="w-full">
+        <div class="w-full pt-3 pl-3">
           <!-- Tournament types -->
           <!-- All for All -->
           <div class="flex flex-wrap w-full" v-if="isAllForAll">

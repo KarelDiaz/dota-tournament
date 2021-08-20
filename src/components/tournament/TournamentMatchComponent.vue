@@ -28,8 +28,8 @@
           {{ team1.name }}
         </div>
         <!-- Vs -->
-        <i class="flex flex-col">
-          <div v-if="matchesToWin > 1">
+        <i class="flex flex-col ">
+          <div v-if="matchesToWin > 1" class="relative">
             {{ matchesWonTeam1 }}
             <span class="hidden sm:inline-block" v-show="hover">
               of {{ matchesToWin }}
@@ -43,13 +43,17 @@
                   width: `${matchesWonTeam1Percent * 10}rem`,
                 },
               ]"
-              class="absolute z-0 h-6 transition-all duration-1000 transform -translate-y-6 border border-l-0 border-green-500 border-dashed rounded-r-full bg-gradient-to-r from-green-100 to-green-300 opacity-40"
+              class="absolute left-0 h-6 transition-all duration-1000 transform -translate-y-6 border border-l-0 border-green-500 border-dashed rounded-r-full bg-gradient-to-r from-green-100 to-green-300 opacity-40"
             ></div>
           </div>
           <b v-if="isMatchWon && hover">Finished</b>
           <i v-else>vs</i>
-          <span v-if="matchesToWin > 1" class="relative">
+          <div v-if="matchesToWin > 1" class="relative">
             {{ matchesWonTeam2 }}
+            <span class="hidden sm:inline-block" v-show="hover">
+              of {{ matchesToWin }}
+            </span>
+            <span class="inline-block sm:hidden"> of {{ matchesToWin }}</span>
             <!-- Percent bar of team 2 to win -->
             <div
               v-if="!isMatchWon"
@@ -58,14 +62,9 @@
                   width: `${matchesWonTeam2Percent * 10}rem`,
                 },
               ]"
-              class="absolute top-0 left-0 z-0 h-6 transition-all duration-1000 border border-l-0 border-green-500 border-dashed rounded-r-full bg-gradient-to-r from-green-100 to-green-300 opacity-40"
+              class="absolute top-0 left-0 h-6 transition-all duration-1000 border border-l-0 border-green-500 border-dashed rounded-r-full bg-gradient-to-r from-green-100 to-green-300 opacity-40"
             ></div>
-            <span class="hidden sm:inline-block" v-show="hover">
-              of {{ matchesToWin }}
-            </span>
-            <span class="inline-block sm:hidden">of {{ matchesToWin }}</span>
-            
-          </span>
+          </div>
         </i>
         <!-- Team 2 -->
         <div

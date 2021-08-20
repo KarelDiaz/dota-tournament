@@ -3,12 +3,12 @@
     <!-- Tournament -->
     <div v-if="tournamentCopy" class="flex flex-col space-y-3">
       <!-- Header -->
-      <div>
+      <label-component
+        :title-top="normalizeTournamentTypeName(tournamentCopy.type?.name)"
+        :title-bottom="moment(tournamentCopy.createdAt).format('MMMM D, YYYY')"
+      >
         <div class="text-4xl">{{ tournamentCopy.name }}</div>
-        <div class="text-xs">
-          {{ normalizeTournamentTypeName(tournamentCopy.type?.name) }}
-        </div>
-      </div>
+      </label-component>
       <!-- Teams and Matches -->
       <div class="flex">
         <!-- Teams -->
@@ -28,10 +28,7 @@
         <div class="w-full">
           <!-- Tournament types -->
           <!-- All for All -->
-          <div
-            class="flex flex-wrap w-full"
-            v-if="isAllForAll"
-          >
+          <div class="flex flex-wrap w-full" v-if="isAllForAll">
             <template v-for="(itemf, indexf) in tournamentCopy.teams">
               <template v-for="(iteml, indexl) in tournamentCopy.teams">
                 <tournament-match-component
@@ -43,7 +40,7 @@
                   :team2="iteml"
                   :tournament="tournamentCopy"
                   :tournamentPlays="tournamentPlays"
-                  class="mb-3 mr-3 "
+                  class="mb-3 mr-3"
                 ></tournament-match-component>
               </template>
             </template>
@@ -85,6 +82,8 @@
 import Axios from "axios";
 import { mapState } from "vuex";
 
+import moment from "moment";
+
 import {
   ALL_FOR_ALL_1,
   ALL_FOR_ALL_3,
@@ -94,11 +93,13 @@ import {
   DIRECT_5,
 } from "@/store/tournament-type";
 import TournamentMatchComponent from "./TournamentMatchComponent";
-import TournamentTeamComponent from "./TournamentTeamComponent.vue";
+import TournamentTeamComponent from "./TournamentTeamComponent";
+import LabelComponent from "@/components/LabelComponent";
 
 export default {
   data() {
     return {
+      moment: moment,
       ALL_FOR_ALL_1,
       ALL_FOR_ALL_3,
       ALL_FOR_ALL_5,
@@ -139,6 +140,7 @@ export default {
   components: {
     TournamentMatchComponent,
     TournamentTeamComponent,
+    LabelComponent,
   },
   methods: {
     initPlays() {
@@ -155,7 +157,7 @@ export default {
       let out = "";
       for (let i = 0; i < name.length; i++)
         out += name[i] !== "_" ? name[i] : " ";
-      return out.toUpperCase();
+      return out.toLowerCase();
     },
   },
   watch: {

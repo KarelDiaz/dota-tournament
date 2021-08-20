@@ -28,6 +28,7 @@
               },
             ]"
             required
+            maxlength="40"
             type="text"
             v-model="tournamentTemp.name"
             placeholder="Name"

@@ -1,68 +1,43 @@
 <template>
-  <div class="flex flex-col space-y-3 justify-center">
+  <div class="flex flex-col justify-center space-y-3">
+    <clean-component></clean-component>
     <!-- Dota Tournament -->
     <div class="flex flex-col space-y-3">
       <!-- Dota Tournament img -->
       <div
-        class="
-          flex flex-col
-          sm:flex-row
-          justify-center
-          items-center
-          text-center
-          space-x-3
-        "
+        class="flex flex-col items-center justify-center space-x-3 text-center  sm:flex-row"
       >
         <img class="h-14 w-14" src="favicon.png" alt="" />
-        <div class="text-5xl font-extrabold ml-3">
+        <div class="ml-3 text-5xl font-extrabold">
           <span
-            class="
-              bg-clip-text
-              text-transparent
-              bg-gradient-to-b
-              from-blue-500
-              to-blue-800
-              my-auto
-            "
+            class="my-auto text-transparent  bg-clip-text bg-gradient-to-b from-blue-500 to-blue-800"
           >
             Dota Tournament
           </span>
         </div>
       </div>
       <!-- Dota Tournament links -->
-      <div class="flex space-x-3 sm:space-x-20 justify-center">
+      <div class="flex justify-center space-x-3 sm:space-x-20">
         <a
-          class="
-            flex flex-col
-            sm:flex-row
-            space-x-2
-            items-center
-            hover:text-indigo-400
-          "
+          class="flex flex-col items-center space-x-2  sm:flex-row hover:text-indigo-400"
           target="blanck"
           :href="$store.state.github.frontend"
         >
-          <i class="fa fa-github text-3xl"></i>
+          <i class="text-3xl fa fa-github"></i>
           <span>Frontend <i class="fa fa-external-link"></i></span>
         </a>
         <a
-          class="
-            flex flex-col
-            sm:flex-row
-            space-x-2
-            items-center
-            hover:text-indigo-400
-          "
+          class="flex flex-col items-center space-x-2  sm:flex-row hover:text-indigo-400"
           target="blanck"
           :href="$store.state.github.backend"
         >
-          <i class="fa fa-github text-3xl"></i>
+          <i class="text-3xl fa fa-github"></i>
           <span>Backend <i class="fa fa-external-link"></i></span>
         </a>
       </div>
     </div>
     <!-- Tecs -->
-    <div class="grid grid-cols-2 gap-6 sm:grid-cols-4 py-6">
+    <div class="grid grid-cols-2 gap-6 py-6 sm:grid-cols-4">
       <!-- Vue -->
       <a
         target="blanck"
@@ -112,14 +87,7 @@
     <div class="flex flex-col space-y-3">
       <!-- Playes -->
       <div
-        class="
-          flex flex-col
-          space-y-1
-          border border-blue-50
-          bg-gradient-to-br
-          from-blue-50
-          p-3
-        "
+        class="flex flex-col p-3 space-y-1 border  border-blue-50 bg-gradient-to-br from-blue-50"
       >
         <b>Players</b>
         <p>
@@ -153,23 +121,16 @@
 
       <!-- Plays -->
       <div
-        class="
-          flex flex-col
-          space-y-1
-          border border-blue-50
-          bg-gradient-to-br
-          from-blue-50
-          p-3
-        "
+        class="flex flex-col p-3 space-y-1 border  border-blue-50 bg-gradient-to-br from-blue-50"
       >
         <b>Plays</b>
         <p>
           En esta vista se encuantran todos los plays efectuados. Puede
           agragarse un play utilizando el botton verde con el simbolo
-          <i class="fa fa-plus text-green-500"></i>.
+          <i class="text-green-500 fa fa-plus"></i>.
         </p>
         <p>
-          El boton <i class="fa fa-plus text-green-500"></i> abre una formulario
+          El boton <i class="text-green-500 fa fa-plus"></i> abre una formulario
           en el cual se agrega toda la informacion del play. El formulario es
           sencilo, tiene las 10 capacidades predefinidas para los 10 players.
           Los cuales inician como bot pero con solo tocar el boton que dice
@@ -187,20 +148,13 @@
 
       <!-- Tournaments -->
       <div
-        class="
-          flex flex-col
-          space-y-1
-          border border-blue-50
-          bg-gradient-to-br
-          from-blue-50
-          p-3
-        "
+        class="flex flex-col p-3 space-y-1 border  border-blue-50 bg-gradient-to-br from-blue-50"
       >
         <b>Tournaments</b>
         <p>
           Lo primero que encontraras en dicha vista es una lista de todos
           torneos activos. El la parte superior se encuentra el boton
-          <i class="fa fa-plus text-green-500"></i> para agregar un nuevo
+          <i class="text-green-500 fa fa-plus"></i> para agregar un nuevo
           troneo.
         </p>
         <p>
@@ -229,14 +183,7 @@
 
       <!-- Heroes -->
       <div
-        class="
-          flex flex-col
-          space-y-1
-          border border-blue-50
-          bg-gradient-to-br
-          from-blue-50
-          p-3
-        "
+        class="flex flex-col p-3 space-y-1 border  border-blue-50 bg-gradient-to-br from-blue-50"
       >
         <b>Heroes</b>
         <p>
@@ -248,14 +195,7 @@
 
       <!-- Lotery -->
       <div
-        class="
-          flex flex-col
-          space-y-1
-          border border-blue-50
-          bg-gradient-to-br
-          from-blue-50
-          p-3
-        "
+        class="flex flex-col p-3 space-y-1 border  border-blue-50 bg-gradient-to-br from-blue-50"
       >
         <b>Lotery</b>
         <p>Esta vista esta dividade en 3 columnas:</p>
@@ -269,7 +209,7 @@
             Columna 2: Estan los playes seleccionados. Pueden sen retornados con
             tocarlos de forma independiente o todos con el botton
             <i class="fa fa-trash"></i>. Y tocando el boton
-            <i class="fa fa-arrow-right text-green-400"></i> pasara un player de
+            <i class="text-green-400 fa fa-arrow-right"></i> pasara un player de
             forma aleatoria a la comlumna 3.
           </p>
         </div>
@@ -277,3 +217,12 @@
     </div>
   </div>
 </template>
+
+<script>
+import CleanComponent from "@/components/CleanComponent.vue";
+export default {
+  components: {
+    CleanComponent,
+  },
+};
+</script>

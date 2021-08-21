@@ -1,5 +1,5 @@
 <template>
-  <div class="p-2 sm:p-3">
+  <div class="flex flex-col p-2 space-y-2 sm:p-3 sm:space-y-3">
     <!-- Add and modify player -->
     <form @submit.prevent="send" class="flex justify-center">
       <div class="rounded-lg shadow-lg">
@@ -24,7 +24,7 @@
       </div>
     </form>
     <!-- Player list -->
-    <table v-if="players.length > 0" class="w-full pb-3 mt-6">
+    <table v-if="players.length > 0" class="w-full">
       <tr>
         <td class="hidden font-bold sm:table-cell"></td>
         <td class="font-bold">Nick</td>

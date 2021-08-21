@@ -1,7 +1,7 @@
 <template>
   <div
     :class="[
-      'flex flex-col text-center p-1 sm:p-3 space-y-3 bg-gradient-to-t border from-gray-100 text-gray-500 rounded-lg shadow-md',
+      'flex flex-col text-center p-1 sm:p-3 space-y-3 bg-gradient-to-t border from-gray-50 to-white text-gray-500 rounded-lg shadow-md',
       {
         'bg-gradient-to-t from-yellow-400 to-yellow-200 border-yellow-400':
           position === 0 && teamWonPlays.length > 0,
@@ -39,7 +39,7 @@
     <!-- plays,vistories,defeates -->
     <div
       :class="[
-        'flex justify-evenly items-center  select-none bg-gradient-to-t from-gray-200 to-white shadow-lg rounded-full',
+        'flex justify-evenly items-center  select-none bg-gradient-to-t from-gray-100 to-white shadow-md rounded-full',
         { border: position > 2 || teamWonPlays.length === 0 },
       ]"
     >

@@ -1,8 +1,8 @@
 <template>
-  <div class="flex flex-col items-center space-y-3">
+  <div class="flex flex-col items-center space-y-2">
     <!-- Actions -->
     <div
-      class="flex justify-center space-x-3"
+      class="flex justify-center space-x-2 sm:space-x-3"
       v-if="window.location.hostname === 'localhost'"
     >
       <button

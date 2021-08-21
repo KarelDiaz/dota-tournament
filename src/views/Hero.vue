@@ -35,7 +35,7 @@
                     { 'scale-75 sm:scale-100 shadow-md': hSelected == h },
                   ]"
                 />
-                <span class="hidden sm:flex">{{ h.displayName }}</span>
+                <span class="hidden truncate sm:flex">{{ h.displayName }}</span>
               </div>
             </template>
           </transition-group>

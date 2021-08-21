@@ -17,7 +17,7 @@
         <!-- Teams -->
         <label-component title-top="Teams">
           <div
-            class="flex p-2 space-x-2 overflow-x-auto border rounded-lg shadow-lg sm:p-3 bg-gradient-to-t from-gray-100 to-gray-50"
+            class="flex p-2 space-x-2 overflow-x-auto border rounded-lg shadow-lg  sm:p-3 bg-gradient-to-t from-gray-100 to-gray-50"
           >
             <tournament-team-component
               class="min-w-24"

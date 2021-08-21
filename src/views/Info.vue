@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col space-y-3">
+  <div class="flex flex-col p-2 space-y-2 sm:space-y-3 sm:p-3">
     <clean-component></clean-component>
     <!-- Dota Tournament -->
     <div class="flex flex-col space-y-3">

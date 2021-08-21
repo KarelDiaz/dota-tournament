@@ -17,7 +17,7 @@
     <transition name="slide-left-full">
       <div
         class="fixed top-0 bottom-0 left-0 z-20 w-2/3 md:static md:z-auto md:object-none md:object-center"
-        v-if="open || window.innerWidth > 640"
+        v-if="open || window.innerWidth > 768"
       >
         <div
           class="flex flex-col items-center h-full p-3 m-0 space-y-3 overflow-auto bg-white shadow-xl md:shadow-none md:bg-opacity-0 md:p-0 md:flex-row md:justify-end md:space-x-3 md:space-y-0"

@@ -1,6 +1,14 @@
-# vue-start
+# Dota Tournament
+Con el sistema es posible gestionar de forma offline los datos generados cuando se juega Dota con amigos. 
 
-## Project setup
+## Technologies
+[Vue](https://vuejs.org/)
+[Tailwind](https://tailwindcss.com)
+[Strapi](https://strapi.io)
+[Mongodb](https://www.mongodb.com)
+
+
+## Setup
 ```
 npm install
 ```
@@ -20,5 +28,10 @@ npm run build
 npm run lint
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Backend
+Es necesario descargar el backend de la aplicacion, lo puede encontrar [aqui](https://github.com/KarelDiaz/dota-tournament-backend).
+
+# Developer
+## Karel Diaz
+
+Puede encontrarme en Twitter como [@KarelDiazA](https://twitter.com/KarelDiazA) o por mi cuenta GitHub [KarelDiaz](https://github.com/KarelDiaz)

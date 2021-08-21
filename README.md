@@ -2,10 +2,19 @@
 Con el sistema es posible gestionar de forma offline los datos generados cuando se juega Dota con amigos. 
 
 ## Technologies
-[Vue](https://vuejs.org/)
-[Tailwind](https://tailwindcss.com)
-[Strapi](https://strapi.io)
-[Mongodb](https://www.mongodb.com)
+
+
+ <img src="./src/assets/vue.png" alt="drawing" style="width:50px;"/> | <img src="./src/assets/tailwind.png" alt="drawing" style="width:50px;"/> | <img src="./src/assets/strapi.png" alt="drawing" style="width:50px;"/> | <img src="./src/assets/mongodb.png" alt="drawing" style="width:50px;"/> 
+  --- |---| --- |--- 
+[Vue](https://vuejs.org/) | [Tailwind](https://tailwindcss.com) | [Strapi](https://strapi.io) | [Mongodb](https://www.mongodb.com) 
+
+
+
+
+
+
+
+
 
 
 ## Setup

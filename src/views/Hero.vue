@@ -20,7 +20,7 @@
               <div
                 :key="h.id"
                 :class="[
-                  'flex sm:p-3 justify-center bg-gradient-to-t from-gray-100 to-gray-50 rounded-lg border shadow-lg sm:justify-center cursor-pointer hover:from-gray-200 hover:to-gry-100',
+                  'flex w-full sm:space-x-3 items-center sm:p-3 bg-gradient-to-t from-gray-50 to-white rounded-lg border shadow-lg cursor-pointer hover:from-gray-200 hover:to-gry-100',
                   {
                     'from-blue-200 to-blue-50 border-blue-200': hSelected == h,
                   },
@@ -32,17 +32,10 @@
                   :src="'npc/' + h.name + '.png'"
                   :class="[
                     'transform transition-all rounded-lg sm:w-10 sm:rounded-full',
-                    { 'scale-75 sm:scale-100': hSelected == h },
+                    { 'scale-75 sm:scale-100 shadow-md': hSelected == h },
                   ]"
                 />
-                <span
-                  class="justify-between hidden w-full my-auto ml-3 sm:flex"
-                >
-                  <span>{{ h.displayName }}</span>
-                  <b>
-                    {{ prs.filter((pr) => pr.hero.id == h.id).length }}
-                  </b>
-                </span>
+                <span class="hidden sm:flex">{{ h.displayName }}</span>
               </div>
             </template>
           </transition-group>

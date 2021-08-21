@@ -16,7 +16,7 @@
     <!-- Link views -->
     <transition name="slide-left-full">
       <div
-        class="fixed top-0 bottom-0 left-0 z-20 w-2/3 md:static md:object-none md:object-center"
+        class="fixed top-0 bottom-0 left-0 z-20 w-2/3 md:static md:z-auto md:object-none md:object-center"
         v-if="open || window.innerWidth > 640"
       >
         <div

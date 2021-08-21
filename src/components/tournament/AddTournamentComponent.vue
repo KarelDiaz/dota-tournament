@@ -356,7 +356,14 @@
     <!--No players error -->
     <div v-else>
       <h3>Es necesario agregar players para poder iniciar un torneo</h3>
-      <p>Pude agragar players <a class="text-blue-500 cursor-pointer hover:text-blue-400" href="/players">aqui</a>.</p>
+      <p>
+        Pude agragar players
+        <a
+          class="text-blue-500 cursor-pointer hover:text-blue-400"
+          href="/players"
+          >aqui</a
+        >.
+      </p>
     </div>
   </div>
 </template>
@@ -440,7 +447,7 @@ export default {
     },
   },
   methods: {
-    ...mapMutations([ADD_TOURNAMENT,INIT_TOURNAMENTS]),
+    ...mapMutations([ADD_TOURNAMENT, INIT_TOURNAMENTS]),
     submitTournament() {
       var arr = [];
       this.tournamentTemp.teams.forEach((t) => {
@@ -470,7 +477,34 @@ export default {
       return parseInt(s / team.players.length);
     },
     addRandomNameToTeamTemp() {
-      this.teamTemp.name = "Team " + (this.tournamentTemp.teams.length + 1);
+      let n = 0;
+      let t = this.tournamentTemp.teams
+        .filter((team) => {
+          let split = team.name.split(" ");
+          if (split.length !== 2) return false;
+          if (split[0] !== "Team") return false;
+          if (Number.isNaN(Number.parseInt(split[1]))) return false;
+          return true;
+        })
+        .sort((a, b) => {
+          return (
+            Number.parseInt(a.name.split(" ")[1]) -
+            Number.parseInt(b.name.split(" ")[1])
+          );
+        });
+
+      if (t.length > 0) {
+        t.forEach((element, i) => {
+          if (Number.parseInt(element.name.split(" ")[1]) === i + 1) {
+            n = Number.parseInt(element.name.split(" ")[1]);
+            this.teamTemp.name = "Team " + ((n + 1) < 10 ? "0" : "") + (n + 1);
+          } else {
+            return;
+          }
+        });
+      } else {
+        this.teamTemp.name = "Team 01";
+      }
     },
     addPlayerToTeamTemp() {
       if (!this.playerSelected.nick) return;
@@ -501,6 +535,7 @@ export default {
     },
     addTeamTempToTournamentTemp() {
       this.tournamentTemp.teams.push(this.teamTemp);
+      this.tournamentTemp.teams.sort((a, b) => a.name.localeCompare(b.name));
       this.teamTemp = new Team();
     },
     delTeam(team) {

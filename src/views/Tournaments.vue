@@ -44,7 +44,7 @@
           </div>
           <!-- Tournament list empty -->
           <div
-            class="italic text-center text-gray-400"
+            class="flex items-center justify-center w-full h-full italic text-gray-400"
             v-if="tournaments.length == 0"
           >
             No hay torneos

@@ -84,9 +84,9 @@
       </a>
     </div>
     <!-- Views info -->
-    <div v-show="false" class="flex flex-col space-y-3">
+    <div v-if="false" class="flex flex-col space-y-3">
       <!-- Playes -->
-      <div
+      <div v-if="false"
         class="flex flex-col p-3 space-y-1 border border-blue-50 bg-gradient-to-br from-blue-50"
       >
         <b>Players</b>
@@ -120,7 +120,7 @@
       </div>
 
       <!-- Plays -->
-      <div
+      <div v-if="true"
         class="flex flex-col p-3 space-y-1 border border-blue-50 bg-gradient-to-br from-blue-50"
       >
         <b>Plays</b>
@@ -147,7 +147,7 @@
       </div>
 
       <!-- Tournaments -->
-      <div
+      <div v-if="false"
         class="flex flex-col p-3 space-y-1 border border-blue-50 bg-gradient-to-br from-blue-50"
       >
         <b>Tournaments</b>
@@ -182,7 +182,7 @@
       </div>
 
       <!-- Heroes -->
-      <div
+      <div v-if="false"
         class="flex flex-col p-3 space-y-1 border border-blue-50 bg-gradient-to-br from-blue-50"
       >
         <b>Heroes</b>
@@ -194,7 +194,7 @@
       </div>
 
       <!-- Lotery -->
-      <div
+      <div v-if="false"
         class="flex flex-col p-3 space-y-1 border border-blue-50 bg-gradient-to-br from-blue-50"
       >
         <b>Lotery</b>

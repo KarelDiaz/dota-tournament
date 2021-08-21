@@ -1,43 +1,42 @@
 <template>
-  <div class="flex justify-end">
+  <div class="flex justify-end p-2 sm:p-3">
     <!-- Hores list -->
-    <div class="pt-14 w-1/4 h-screen top-0 fixed left-0">
-      <div class="flex flex-col h-full mt-50 overflow-auto bg-white border-r">
+    <div class="sticky top-0 w-1/4">
+      <div
+        class="flex flex-col h-full overflow-hidden border rounded-lg shadow-lg bg-gradient-to-t from-gray-100 to-gray-50 mt-50"
+      >
         <input
-          class="
-            px-2
-            py-1
-            border border-gray-200
-            bg-gradient-to-b
-            from-gray-50
-            to-gray-200
-            focus:border-blue-300
-            sticky
-            top-0
-          "
+          class="sticky top-0 px-2 py-1 border-b border-gray-300 shadow-lg bg-gradient-to-b from-gray-50 to-gray-200 focus:border-blue-300"
           type="search"
           placeholder="Buscar"
           v-model="filterText"
         />
 
-        <div class="flex flex-col">
+        <div
+          class="flex flex-col p-2 space-y-2 overflow-auto sm:p-3 sm:space-y-3"
+        >
           <transition-group name="slide-right">
             <template v-for="(h, i) in heroes">
               <div
                 :key="h.id"
                 :class="[
-                  'flex justify-center sm:justify-center px-3 py-2 bg-gradient-to-t cursor-pointer hover:from-blue-200 hover:to-blue-50',
-                  { 'from-green-200 to-green-50': hSelected == h },
+                  'flex sm:p-3 justify-center bg-gradient-to-t from-gray-100 to-gray-50 rounded-lg border shadow-lg sm:justify-center cursor-pointer hover:from-gray-200 hover:to-gry-100',
+                  {
+                    'from-blue-200 to-blue-50 border-blue-200': hSelected == h,
+                  },
                 ]"
                 v-if="hsVisible[i]"
                 @click="hSelected = h"
               >
                 <img
                   :src="'npc/' + h.name + '.png'"
-                  class="w-10 rounded-full"
+                  :class="[
+                    'transform transition-all rounded-lg sm:w-10 sm:rounded-full',
+                    { 'scale-75 sm:scale-100': hSelected == h },
+                  ]"
                 />
                 <span
-                  class="sm:flex justify-between w-full ml-3 my-auto hidden"
+                  class="justify-between hidden w-full my-auto ml-3 sm:flex"
                 >
                   <span>{{ h.displayName }}</span>
                   <b>
@@ -52,19 +51,21 @@
     </div>
     <!-- Hero and all users onfo -->
     <div class="w-3/4 pl-3 text-center sm:text-left">
-      <div v-if="!hSelected">Seleccione un heroe para ver estadisticas</div>
+      <div v-if="!hSelected" class="p-10 italic text-gray-400">
+        Seleccione un heroe para ver estadisticas
+      </div>
       <!--Hero info-->
-      <div class="flex flex-col sm:flex-row mb-3" v-if="hSelected">
+      <div class="flex flex-col mb-3 sm:flex-row" v-if="hSelected">
         <img
-          class="rounded-full"
+          class="rounded-lg shadow-lg sm:rounded-full"
           :src="'./npc/' + hSelected.name + '.png'"
           alt
         />
-        <div class="w-full sm:pl-3 my-auto">
-          <span class="font-extrabold text-2xl">
+        <div class="w-full my-auto sm:pl-3">
+          <span class="text-2xl font-extrabold">
             {{ hSelected.displayName }}
           </span>
-          <table class="w-full text-left mt-3">
+          <table class="w-full mt-3 text-left">
             <thead>
               <tr>
                 <th>P</th>
@@ -166,7 +167,10 @@ export default {
     initPs() {
       axios
         .get(this.strapi + "/players?_limit=-1")
-        .then(({ data }) => (this.ps = data.sort((a, b) => a.nick.localeCompare(b.nick))));
+        .then(
+          ({ data }) =>
+            (this.ps = data.sort((a, b) => a.nick.localeCompare(b.nick)))
+        );
     },
     initPrs() {
       axios

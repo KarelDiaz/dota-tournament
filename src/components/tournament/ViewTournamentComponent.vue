@@ -1,35 +1,41 @@
 <template>
-  <div class="w-full">
+  <div class="w-full h-full">
     <!-- Tournament -->
-    <div v-if="tournamentCopy" class="flex flex-col">
+    <div
+      v-if="tournamentCopy"
+      class="flex flex-col p-2 pb-0 space-y-2 sm:p-3 sm:space-y-3"
+    >
       <!-- Header -->
       <label-component
-      class="p-3"
-        :title-top="normalizeTournamentTypeName(tournamentCopy.type?.name)"
-        :title-bottom="moment(tournamentCopy.createdAt).format('MMMM D, YYYY')"
+        :title-top="moment(tournamentCopy.createdAt).format('MMMM D, YYYY')"
+        :title-bottom="normalizeTournamentTypeName(tournamentCopy.type?.name)"
       >
         <div class="text-4xl">{{ tournamentCopy.name }}</div>
       </label-component>
       <!-- Teams and Matches -->
-      <div class="flex flex-col">
+      <div class="flex flex-col space-y-2 sm:space-y-3">
         <!-- Teams -->
-        <div class="top-0 flex p-2 space-x-3 overflow-x-auto border-t border-b sm:p-3 bg-gradient-to-t from-gray-100 to-gray-50">
-          <tournament-team-component
-            class="min-w-24"
-            v-for="(team, i) in tournamentTeamsOrder"
-            :position="i"
-            :key="team.id + tournamentCopy.id"
-            :team="team"
-            :tournament="tournamentCopy"
-            :tournamentPlays="tournamentPlays"
+        <label-component title-top="Teams">
+          <div
+            class="flex p-2 space-x-2 overflow-x-auto border rounded-lg shadow-lg sm:p-3 bg-gradient-to-t from-gray-100 to-gray-50"
           >
-          </tournament-team-component>
-        </div>
+            <tournament-team-component
+              class="min-w-24"
+              v-for="(team, i) in tournamentTeamsOrder"
+              :position="i"
+              :key="team.id + tournamentCopy.id"
+              :team="team"
+              :tournament="tournamentCopy"
+              :tournamentPlays="tournamentPlays"
+            >
+            </tournament-team-component>
+          </div>
+        </label-component>
         <!-- Matches -->
-        <div class="w-full pt-3 pl-3">
+        <label-component title-top="Mathes" class="w-full">
           <!-- Tournament types -->
           <!-- All for All -->
-          <div class="flex flex-wrap w-full" v-if="isAllForAll">
+          <div class="flex flex-wrap w-full justify-evenly" v-if="isAllForAll">
             <template v-for="(itemf, indexf) in tournamentCopy.teams">
               <template v-for="(iteml, indexl) in tournamentCopy.teams">
                 <tournament-match-component
@@ -41,7 +47,7 @@
                   :team2="iteml"
                   :tournament="tournamentCopy"
                   :tournamentPlays="tournamentPlays"
-                  class="mb-3 mr-3"
+                  class="mb-2 sm:mb-3"
                 ></tournament-match-component>
               </template>
             </template>
@@ -69,7 +75,7 @@
               ></tournament-match-component>
             </template>
           </div>
-        </div>
+        </label-component>
       </div>
     </div>
     <!-- Empty tournaments -->
@@ -158,7 +164,7 @@ export default {
       let out = "";
       for (let i = 0; i < name.length; i++)
         out += name[i] !== "_" ? name[i] : " ";
-      return out.toLowerCase();
+      return out.toUpperCase();
     },
   },
   watch: {

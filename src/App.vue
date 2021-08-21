@@ -1,7 +1,7 @@
 <template>
   <div>
     <nav-component class="w-full"></nav-component>
-    <router-view class="fixed bottom-0 left-0 right-0 p-1 overflow-y-auto sm:p-3 top-14" />
+    <router-view class="fixed bottom-0 left-0 right-0 overflow-y-auto top-14" />
   </div>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-2">
+  <div class="p-2 sm:p-3">
     <!-- Add and modify player -->
     <form @submit.prevent="send" class="flex justify-center">
       <div class="rounded-lg shadow-lg">

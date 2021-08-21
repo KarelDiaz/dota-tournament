@@ -22,6 +22,21 @@
         <div
           class="flex flex-col items-center h-full p-3 m-0 space-y-3 overflow-auto bg-white shadow-xl md:shadow-none md:bg-opacity-0 md:p-0 md:flex-row md:justify-end md:space-x-3 md:space-y-0"
         >
+          <!-- Logo and link to info -->
+          <router-link
+            to="/"
+            class="flex flex-col items-center w-full pb-3 border-b cursor-pointer bg-gradient-to-b from-blue-400 sm:hidden"
+            @click.passive="open = false"
+          >
+            <img src="favicon.png" class="w-20 h-20 filter drop-shadow-lg" />
+            <span
+              class="flex w-full text-xs text-center text-blue-700 justify-evenly md:inline-block"
+            >
+              <span>T</span><span>o</span><span>u</span><span>r</span>
+              <span>n</span><span>a</span> <span>m</span><span>e</span>
+              <span>n</span><span>t</span>
+            </span>
+          </router-link>
           <!-- Players -->
           <router-link
             class="link hover:text-blue-500"
@@ -50,7 +65,7 @@
           </router-link>
           <!-- Heroes -->
           <router-link
-          v-if="$store.state.players.length > 0"
+            v-if="$store.state.players.length > 0"
             class="link hover:text-blue-500"
             to="/hero"
             @click.passive="open = false"
@@ -59,7 +74,7 @@
           </router-link>
           <!-- Lotery -->
           <router-link
-          v-if="$store.state.players.length > 0"
+            v-if="$store.state.players.length > 0"
             class="link hover:text-blue-500"
             to="/lotery"
             @click.passive="open = false"

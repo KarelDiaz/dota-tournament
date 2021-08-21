@@ -22,7 +22,7 @@
             <transition-group name="slide-top">
               <button
                 :class="[
-                  'justify-center items-center bg-gradient-to-b border p-1 sm:p-2 rounded-lg w-64 sm:w-full flex flex-col space-y-1 text-xs shadow-md transform transition-all',
+                  'justify-center items-center bg-gradient-to-b border p-2 sm:p-3 rounded-lg w-64 sm:w-full flex flex-col space-y-1 text-xs shadow-md transform transition-all',
                   'text-gray-800 from-white to-gray-100 border-gray-100 ',
                   'sm:p-1 sm:text-base ',
                   'hover:from-gray-50 hover:to-gray-200 hover:border-gray-200',

@@ -1,46 +1,34 @@
 # Dota Tournament
-Con el sistema es posible gestionar de forma offline los datos generados cuando se juega Dota con amigos. 
+With this system it is possible to manage offline the data generated when you are playing Dota with your friends. All data has to be entered manually, player by player, using the web interface.
 
 ## Technologies
+ <img src="./src/assets/vue.png" alt="drawing" style="width:50px;"/> | <img src="./src/assets/tailwind.png" alt="drawing" style="width:50px;"/>  
+  :---: | :---:
+[Vue](https://vuejs.org/) | [Tailwind](https://tailwindcss.com) 
 
-
- <img src="./src/assets/vue.png" alt="drawing" style="width:50px;"/> | <img src="./src/assets/tailwind.png" alt="drawing" style="width:50px;"/> | <img src="./src/assets/strapi.png" alt="drawing" style="width:50px;"/> | <img src="./src/assets/mongodb.png" alt="drawing" style="width:50px;"/> 
-  --- |---| --- |--- 
-[Vue](https://vuejs.org/) | [Tailwind](https://tailwindcss.com) | [Strapi](https://strapi.io) | [Mongodb](https://www.mongodb.com) 
-
-
-
-
-
-
-
-
-
+## Backend
+The first thing is to have the administration server running, you can find it [here](https://github.com/KarelDiaz/dota-tournament-backend). There you will find instructions to install the administration server. 
 
 ## Setup
+After having the administrator installed, follow these steps: 
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-## Backend
-Es necesario descargar el backend de la aplicacion, lo puede encontrar [aqui](https://github.com/KarelDiaz/dota-tournament-backend).
+To enter and use the server enter here [localhost:8080](http://localhost:8080/) and happy play :)
 
 # Developer
-## Karel Diaz
+## Karel Diaz Alfonso
 
-Puede encontrarme en Twitter como [@KarelDiazA](https://twitter.com/KarelDiazA) o por mi cuenta GitHub [KarelDiaz](https://github.com/KarelDiaz)
+You can find me at: 
+
+Telegram [@KarelDiazAlfonso](https://t.me/KarelDiazAlfonso)
+
+Twitter [@KarelDiazA](https://twitter.com/KarelDiazA)
+
+GitHub [@KarelDiaz](https://github.com/KarelDiaz)
+

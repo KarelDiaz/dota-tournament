@@ -84,11 +84,9 @@
       </a>
     </div>
     <!-- Views info -->
-    <div  class="flex flex-col space-y-3">
+    <div class="flex flex-col space-y-3">
       <!-- Playes -->
-      <div 
-        class="flex flex-col p-3 space-y-1 border border-blue-50 bg-gradient-to-br from-blue-50"
-      >
+      <div class="info">
         <b>Players</b>
         <p>
           En la vista <i class="text-blue-500"><b>Players</b></i> se puede
@@ -120,9 +118,7 @@
       </div>
 
       <!-- Plays -->
-      <div 
-        class="flex flex-col p-3 space-y-1 border border-blue-50 bg-gradient-to-br from-blue-50"
-      >
+      <div class="info">
         <b>Plays</b>
         <p>
           En esta vista se encuantran todos los plays efectuados. Puede
@@ -147,9 +143,7 @@
       </div>
 
       <!-- Tournaments -->
-      <div 
-        class="flex flex-col p-3 space-y-1 border border-blue-50 bg-gradient-to-br from-blue-50"
-      >
+      <div class="info">
         <b>Tournaments</b>
         <p>
           Lo primero que encontraras en dicha vista es una lista de todos
@@ -182,9 +176,7 @@
       </div>
 
       <!-- Heroes -->
-      <div
-        class="flex flex-col p-3 space-y-1 border border-blue-50 bg-gradient-to-br from-blue-50"
-      >
+      <div class="info">
         <b>Heroes</b>
         <p>
           En esta vista sencilla se puede ver la estadista por heroe. Y cuales
@@ -194,9 +186,7 @@
       </div>
 
       <!-- Lotery -->
-      <div 
-        class="flex flex-col p-3 space-y-1 border border-blue-50 bg-gradient-to-br from-blue-50"
-      >
+      <div class="info">
         <b>Lotery</b>
         <p>Esta vista esta dividade en 3 columnas:</p>
 
@@ -226,3 +216,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.info {
+  @apply flex flex-col p-3 space-y-1 border bg-gradient-to-br from-gray-50 shadow-lg rounded-lg;
+}
+</style>

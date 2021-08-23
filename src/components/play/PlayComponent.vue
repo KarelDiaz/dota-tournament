@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-col overflow-hidden border border-t-0 border-b-0 rounded-lg shadow-md"
+    class="flex flex-col overflow-hidden border border-t-0 border-b-0 rounded-lg shadow-md "
     @mouseover="date = true"
     @mouseleave="date = false"
   >
@@ -8,7 +8,7 @@
     <transition name="scale-y-top">
       <div
         v-show="date"
-        class="text-center text-gray-400 border-t bg-gradient-to-b from-gray-100"
+        class="text-center text-gray-400 border-t  bg-gradient-to-b from-gray-100"
       >
         {{ moment(play.createdAt).format("MMMM D, YYYY, HH:mm") }}
       </div>
@@ -33,8 +33,8 @@
             :class="[
               'flex flex-col justify-between h-40 p-1 text-xs text-white bg-center bg-cover sm:text-base',
               { 'bg-opacity-10': result.bot },
-              { 'bg-green-400': result.side==='good' },
-              { 'bg-red-400': result.side==='bad' },
+              { 'bg-green-400': result.side === 'good' },
+              { 'bg-red-400': result.side === 'bad' },
             ]"
             :style="[
               {
@@ -123,7 +123,6 @@
 import moment from "moment";
 
 import Player from "@/store/model/player";
-//import Play from "@/store/model/play";
 import Hero from "@/store/model/hero";
 
 export default {
@@ -152,6 +151,9 @@ export default {
     this.playCopy = this.play;
   },
   watch: {
+    play(val) {
+      this.playCopy = val;
+    },
     playCopy(val) {
       val.player_results.sort((a, b) => {
         if (a.side == b.side)

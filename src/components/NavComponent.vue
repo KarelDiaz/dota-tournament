@@ -25,7 +25,7 @@
           <!-- Logo and link to info -->
           <router-link
             to="/"
-            class="flex flex-col items-center w-full pb-3 border-b cursor-pointer bg-gradient-to-b from-blue-400 sm:hidden"
+            class="flex flex-col items-center w-full pb-3 border-b cursor-pointer sm:hidden"
             @click.passive="open = false"
           >
             <img src="favicon.png" class="w-20 h-20 filter drop-shadow-lg" />

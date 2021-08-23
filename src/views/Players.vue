@@ -23,6 +23,13 @@
         </button>
       </div>
     </form>
+    <!-- Empty players -->
+    <div
+      v-if="players.length === 0"
+      class="p-10 italic text-center text-gray-400"
+    >
+      No hay players disponibles
+    </div>
     <!-- Player list -->
     <table v-if="players.length > 0" class="w-full">
       <tr>
@@ -40,7 +47,11 @@
         <td class="hidden font-bold sm:table-cell">A/P</td>
       </tr>
       <tr
-        class="cursor-pointer h-30 hover:bg-gray-50"
+        :class="[
+          'cursor-pointer h-30 ',
+          { 'hover:bg-gray-100': p.id !== playerInfo.id },
+          { 'bg-blue-100 cursor-auto': p.id === playerInfo.id },
+        ]"
         v-for="(p, i) in players
           .filter((p) => p.nick != 'bot')
           .sort((a, b) => b.elo - a.elo)"
@@ -95,13 +106,17 @@
         <td class="hidden sm:table-cell">{{ Math.round(p.a / p.p) || 0 }}</td>
       </tr>
     </table>
-    <!-- Empty players -->
-    <div v-else class="p-10 italic text-center text-gray-400">
-      No hay players disponibles
-    </div>
+    <!-- New history player -->
+    <transition name="slide-top">
+      <player-history-component
+        :player="playerInfo"
+        v-if="playerInfo.id"
+        @result:select="setResultInfo($event)"
+      ></player-history-component>
+    </transition>
     <!-- History player -->
     <transition name="slide-top">
-      <div class="info-container" v-if="playerInfo.id">
+      <div class="info-container" v-if="playerInfo.id && false">
         <b class="info-name">{{ playerInfo.nick }}</b>
         <div class="info">
           <div class="line p1500">
@@ -161,7 +176,9 @@
       </div>
     </transition>
     <!-- Play info -->
-    <play-component v-if="playInfo.id" :play="playInfo"></play-component>
+    <div v-if="playInfo.id">
+      <play-component :play="playInfo"></play-component>
+    </div>
   </div>
 </template>
 
@@ -171,7 +188,6 @@ import { mapState, mapMutations } from "vuex";
 
 import moment from "moment";
 
-import PlayComponent from "@/components/play/PlayComponent";
 import Player from "@/store/model/player";
 import {
   START_LOADING,
@@ -180,6 +196,8 @@ import {
   SET_PLAYER_INFO,
   SET_RESULT_INFO,
 } from "@/store/mutations-type";
+import PlayComponent from "@/components/play/PlayComponent";
+import PlayerHistoryComponent from "@/components/PlayerHistoryComponent";
 
 export default {
   name: "Players",
@@ -203,6 +221,7 @@ export default {
   },
   components: {
     PlayComponent,
+    PlayerHistoryComponent,
   },
   methods: {
     ...mapMutations([

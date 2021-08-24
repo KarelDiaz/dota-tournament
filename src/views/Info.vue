@@ -95,7 +95,7 @@
         </p>
         <p>Significado de las columnas de la tabla:</p>
         <div class="px-3">
-          <p><b>ELO</b>: valor adquido basado en el sistema ELO de ajedrez.</p>
+          <p><b>MMR</b>: valor adquido por partidas ganadas.</p>
           <p><b>P</b>: cantidad de plays total efectuados por el player</p>
           <p><b>V</b>: cantidad de victorias del player.</p>
           <p>

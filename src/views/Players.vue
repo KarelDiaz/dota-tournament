@@ -35,7 +35,7 @@
       <tr>
         <td class="hidden font-bold sm:table-cell"></td>
         <td class="font-bold">Nick</td>
-        <td class="font-bold">ELO ↓</td>
+        <td class="font-bold">MMR ↓</td>
         <td class="font-bold">P</td>
         <td class="hidden font-bold sm:table-cell">V</td>
         <td class="font-bold">AVE</td>
@@ -48,7 +48,7 @@
       </tr>
       <tr
         :class="[
-          'cursor-pointer h-30 ',
+          'cursor-pointer h-30',
           { 'hover:bg-gray-100': p.id !== playerInfo.id },
           { 'bg-blue-100 cursor-auto': p.id === playerInfo.id },
         ]"
@@ -58,10 +58,11 @@
         :key="p.nick"
         @click="setPlayerInfo(p)"
       >
-        <td class="hidden max-w-md text-center sm:table-cell">
-          <span
+        <!-- Position -->
+        <td class="hidden sm:table-cell">
+          <div
             :class="[
-              'px-3 py-1 h-full',
+              'w-7 h-7 mx-auto flex justify-center items-center',
               {
                 'from-yellow-100 to-yellow-400 border border-yellow-400 text-yellow-600':
                   i == 0,
@@ -71,7 +72,7 @@
                   i == 1,
               },
               {
-                'from-yellow-400 to-yellow-700 border border-yellow-700 text-yellow-900':
+                'from-yellow-300 to-yellow-600 border border-yellow-600 text-yellow-900':
                   i == 2,
               },
               {
@@ -81,9 +82,10 @@
             ]"
           >
             {{ i + 1 }}
-          </span>
+          </div>
         </td>
-        <td class="pr-6">
+        <!-- Nick -->
+        <td class="sm:pr-6">
           <span
             @click="preMod(p.id)"
             class="flex items-center justify-start w-full h-full p-3 border border-transparent rounded-lg nick bg-gradient-to-b hover:shadow-lg hover:text-green-800 hover:border-green-200 hover:from-green-50 hover:to-green-200"
@@ -94,15 +96,25 @@
             </span>
           </span>
         </td>
+        <!-- MMR -->
         <td>{{ p.elo || 0 }}</td>
+        <!-- Plays -->
         <td>{{ p.p || 0 }}</td>
+        <!-- Victories -->
         <td class="hidden sm:table-cell">{{ p.v || 0 }}</td>
+        <!-- Average -->
         <td>{{ p.p > 0 ? Math.round((p.v / p.p) * 1000) : 0 }}</td>
+        <!-- Kills -->
         <td>{{ p.k || 0 }}</td>
+        <!-- Kills per play -->
         <td class="hidden sm:table-cell">{{ Math.round(p.k / p.p) || 0 }}</td>
+        <!-- Death -->
         <td>{{ p.d || 0 }}</td>
+        <!-- Daeth per play -->
         <td class="hidden sm:table-cell">{{ Math.round(p.d / p.p) || 0 }}</td>
+        <!-- Asist -->
         <td>{{ p.a || 0 }}</td>
+        <!-- Asist per play -->
         <td class="hidden sm:table-cell">{{ Math.round(p.a / p.p) || 0 }}</td>
       </tr>
     </table>

@@ -1,18 +1,23 @@
+const prop = 5000;
 class Elo {
   eloA;
   eloB;
 
   constructor(a, b) {
-    this.eloA = parseInt(a);
-    this.eloB = parseInt(b);
+    this.eloA = parseInt(a) + prop;
+    this.eloB = parseInt(b) + prop;
   }
 
   getEloA() {
-    return Math.round(this.eloA + this.getPlusA());
+    let out = Math.round(this.eloA + this.getPlusA()) - prop;
+    if (out < 0) return 0
+    return out
   }
 
   getEloB() {
-    return Math.round(this.eloB + this.getPlusB());
+    let out = Math.round(this.eloB + this.getPlusB()) - prop;
+    if (out < 0) return 0
+    return out
   }
 
   puntuacionEsperadaA() {
@@ -24,13 +29,17 @@ class Elo {
   }
 
   getPlusA() {
-    let k = this.eloA < 2100 ? 32 : this.eloA < 2100 ? 24 : 16;
-    return Math.round(k * (1 - this.puntuacionEsperadaA()));
+    let k = this.eloA < 2300 + prop ? 50 : this.eloB + prop < 4600 ? 40 : 20;
+    let out = Math.round(k * (1 - this.puntuacionEsperadaA()));
+    if (this.eloA - prop + out < 0) return -(this.eloA - prop)
+    return out
   }
 
   getPlusB() {
-    let k = this.eloB < 2100 ? 32 : this.eloB < 2100 ? 24 : 16;
-    return Math.round(k * (0 - this.puntuacionEsperadaB()));
+    let k = this.eloB < 2300 + prop ? 50 : this.eloB + prop < 4600 ? 40 : 20;
+    let out = Math.round(k * (0 - this.puntuacionEsperadaB()));
+    if (this.eloB - prop + out < 0) return -(this.eloB - prop)
+    return out
   }
 }
 export default Elo;

@@ -134,8 +134,11 @@
     </div>
 
     <!-- Empty plays -->
-    <div class="p-10 italic text-center text-gray-400"  v-if="plays.length===0">
-      No hay plays
+    <div class="p-10 text-center text-gray-400"  v-if="plays.length===0">
+      <span>
+        <i>No hay plays</i>
+        🙄
+      </span>
     </div>
   </div>
 </template>

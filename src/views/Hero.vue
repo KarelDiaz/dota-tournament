@@ -44,8 +44,9 @@
     </div>
     <!-- Hero and all users onfo -->
     <div class="w-3/4 pl-3 text-center sm:text-left">
-      <div v-if="!hSelected" class="p-10 italic text-gray-400">
-        Seleccione un heroe para ver estadisticas
+      <div v-if="!hSelected" class="px-3 py-10 text-gray-400 sm:px-10">
+        👈😉
+        <i>Seleccione un héroe para ver estadísticas</i>
       </div>
       <!--Hero info-->
       <div class="flex flex-col mb-3 sm:flex-row" v-if="hSelected">

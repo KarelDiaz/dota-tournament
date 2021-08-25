@@ -17,7 +17,7 @@
         <!-- Teams -->
         <label-component title-top="Teams">
           <div
-            class="flex p-2 space-x-2 overflow-x-auto border rounded-lg shadow-lg  sm:p-3 bg-gradient-to-t from-gray-100 to-gray-50"
+            class="flex p-2 space-x-2 overflow-x-auto border rounded-lg shadow-lg sm:p-3 bg-gradient-to-t from-gray-100 to-gray-50"
           >
             <tournament-team-component
               class="min-w-24"
@@ -79,8 +79,13 @@
       </div>
     </div>
     <!-- Empty tournaments -->
-    <div v-else class="w-full p-10 italic text-center text-gray-400">
-      No hay tourneo seleccionado
+    <div v-else class="flex justify-center w-full p-10 space-x-3 text-center text-gray-400 sm:justify-start">
+        <span class="flex">
+          <b class="hidden sm:flex">👈</b>
+          <b>😒</b>
+          <b class="flex sm:hidden">👆</b>
+        </span>
+        <i>Seleccione un torneo no seas vago</i>
     </div>
   </div>
 </template>

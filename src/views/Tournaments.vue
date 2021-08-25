@@ -3,7 +3,9 @@
     <!--Tornements and view -->
     <div class="flex flex-col w-full h-full sm:flex-row">
       <!--Tornements-->
-      <div class="sticky w-full p-2 pb-0 sm:p-3 sm:pr-0 sm:h-full sm:w-40 min-h-24">
+      <div
+        class="sticky w-full p-2 pb-0 sm:p-3 sm:pr-0 sm:h-full sm:w-40 min-h-24"
+      >
         <div
           class="flex w-full h-full overflow-x-hidden border rounded-lg shadow-lg bg-gradient-to-t from-gray-100 to-gray-50 sm:overflow-y-auto sm:border-b-0 sm:flex-col"
         >
@@ -44,15 +46,20 @@
           </div>
           <!-- Tournament list empty -->
           <div
-            class="flex items-center justify-center w-full h-full italic text-gray-400 "
+            class="flex items-center justify-center w-full h-full space-x-1 text-center text-gray-400 sm:space-x-0 sm:flex-col "
             v-if="tournaments.length == 0"
           >
-            No hay torneos
+              <span class="flex">
+                <b class="flex sm:hidden">👈</b>
+                <b>😒</b>
+                <b class="hidden sm:flex">👆</b>
+              </span>
+              <i>Agregue un torneo </i>
           </div>
         </div>
       </div>
       <!-- View tournament -->
-      <div class="w-full overflow-auto">
+      <div class="w-full overflow-auto" v-if="tournaments.length > 0">
         <view-tournament-component :tournament="tournamentSelected">
         </view-tournament-component>
       </div>

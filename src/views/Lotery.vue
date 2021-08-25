@@ -1,7 +1,7 @@
 <template>
   <div v-if="!nonePlayers" class="grid w-full h-full grid-cols-3 divide-x">
     <!--Left-->
-    <div class="h-full p-3 space-y-3 overflow-auto">
+    <div class="relative w-full h-full p-3 space-y-3 overflow-auto">
       <!-- Controls -->
       <transition name="fade">
         <div
@@ -23,9 +23,20 @@
           <i class="fa fa-arrow-right"></i>
         </div>
       </transition-group>
+      <!-- Emty case -->
+      <transition name="fade">
+        <div
+          class="absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center p-3 text-center text-gray-400 sm:p-6"
+          v-if="ps1.length === 0"
+        >
+          <span>
+            <i>Aqui van todos todos los players disponibles en el sistema</i>
+          </span>
+        </div>
+      </transition>
     </div>
     <!--Center-->
-    <div class="h-full p-3 space-y-3 overflow-auto">
+    <div class="relative h-full p-3 space-y-3 overflow-auto">
       <!-- Controls -->
       <transition name="fade">
         <div
@@ -54,9 +65,22 @@
           <i class="hidden sm:inline-block fa fa-arrow-left"></i>
         </div>
       </transition-group>
+      <!-- Emty case -->
+      <transition name="fade">
+        <div
+          class="absolute top-0 bottom-0 left-0 right-0 flex flex-col items-center justify-center p-3 text-center text-gray-400 sm:p-6"
+          v-if="ps2.length === 0"
+        >
+          <i>
+            Pasa para acá los player de los cuales quieres seleccionar de forma
+            aleatoria
+          </i>
+          😉👉
+        </div>
+      </transition>
     </div>
     <!--Right-->
-    <div class="h-full p-3 space-y-3 overflow-auto">
+    <div class="relative h-full p-3 space-y-3 overflow-auto">
       <!-- Controls -->
       <transition name="fade">
         <div
@@ -82,6 +106,18 @@
           <b>{{ i + 1 }}</b>
         </div>
       </transition-group>
+      <!-- Emty case -->
+      <transition name="fade">
+        <div
+          class="absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center p-3 text-center text-gray-400 sm:p-6"
+          v-if="ps3.length === 0"
+        >
+          <span>
+            😏
+            <i> Lista aleatoria </i>
+          </span>
+        </div>
+      </transition>
     </div>
   </div>
   <div v-else class="flex justify-center p-10 italic text-gray-400">

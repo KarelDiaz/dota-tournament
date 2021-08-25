@@ -48,7 +48,7 @@ export default createStore({
         prs = prs.data;
         axios.get(state.strapi + "/players?_limit=-1").then(ps => {
           ps = ps.data;
-          state.players = ps.sort((a, b) => b.nick.localeCompare(a.nick)
+          state.players = ps.sort((a, b) => a.nick.localeCompare(b.nick)
           );
 
           state.players.forEach(p => {

@@ -109,8 +109,8 @@
                 <!-- Name input -->
                 <label-component
                   title-top="Nombre del equipo"
-                  :title-bottom="`Team MMR:${
-                    eloMediaTeam(teamTemp) === 0
+                  :title-bottom="`Team MMR: ${
+                    teamTemp.players.length === 0
                       ? ' No hay players'
                       : eloMediaTeam(teamTemp)
                   }`"

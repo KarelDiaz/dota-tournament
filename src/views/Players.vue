@@ -24,21 +24,19 @@
       </div>
     </form>
     <!-- Empty players -->
-    <div
-      v-if="players.length === 0"
-      class="p-10 italic text-center text-gray-400"
-    >
-      No hay players disponibles
+    <div v-if="players.length === 0" class="p-10 text-center text-gray-400">
+      <span><i>Para sin doteros no hay dota </i> 😜</span>
     </div>
     <!-- Player list -->
     <table v-if="players.length > 0" class="w-full">
       <tr>
         <td class="hidden font-bold sm:table-cell"></td>
-        <td class="font-bold">Nick</td>
+        <td></td>
+        <td></td>
         <td class="font-bold">MMR ↓</td>
         <td class="font-bold">P</td>
         <td class="hidden font-bold sm:table-cell">V</td>
-        <td class="font-bold">AVE</td>
+        <td class="hidden font-bold sm:table-cell">AVE</td>
         <td class="font-bold">K</td>
         <td class="hidden font-bold sm:table-cell">K/P</td>
         <td class="font-bold">D</td>
@@ -85,16 +83,21 @@
           </div>
         </td>
         <!-- Nick -->
-        <td class="sm:pr-6">
+        <td class="sm:p-3 sm:pr-6">
           <span
             @click="preMod(p.id)"
-            class="flex items-center justify-start w-full h-full p-3 border border-transparent rounded-lg nick bg-gradient-to-b hover:shadow-lg hover:text-green-800 hover:border-green-200 hover:from-green-50 hover:to-green-200"
+            class="h-full p-2 border border-transparent rounded-lg nick bg-gradient-to-b hover:shadow-lg hover:text-green-800 hover:border-green-200 hover:from-green-50 hover:to-green-200"
           >
-            <i class="mr-3 fa fa-pencil"></i>
-            <span>
-              {{ p.nick }}
-            </span>
+            {{ p.nick }}
           </span>
+        </td>
+        <!-- Rank -->
+        <td>
+          <img
+            class="h-8"
+            :src="`rank/${Player.getRank(p.elo)}.png`"
+            :title="Player.getRank(p.elo)"
+          />
         </td>
         <!-- MMR -->
         <td>{{ p.elo || 0 }}</td>
@@ -103,7 +106,9 @@
         <!-- Victories -->
         <td class="hidden sm:table-cell">{{ p.v || 0 }}</td>
         <!-- Average -->
-        <td>{{ p.p > 0 ? Math.round((p.v / p.p) * 1000) : 0 }}</td>
+        <td class="hidden sm:table-cell">
+          {{ p.p > 0 ? Math.round((p.v / p.p) * 1000) : 0 }}
+        </td>
         <!-- Kills -->
         <td>{{ p.k || 0 }}</td>
         <!-- Kills per play -->
@@ -125,67 +130,6 @@
         v-if="playerInfo.id"
         @result:select="setResultInfo($event)"
       ></player-history-component>
-    </transition>
-    <!-- History player -->
-    <transition name="slide-top">
-      <div class="info-container" v-if="playerInfo.id && false">
-        <b class="info-name">{{ playerInfo.nick }}</b>
-        <div class="info">
-          <div class="line p1500">
-            <span class="text">1500</span>
-          </div>
-
-          <div class="line p1400">
-            <span class="text">1400</span>
-          </div>
-
-          <div class="line p1300">
-            <span class="text">1300</span>
-          </div>
-
-          <div
-            class="line"
-            :style="'transform: translateY(' + (1400 - playerInfo.elo) + 'px)'"
-          >
-            <b class="text">{{ playerInfo.elo }}</b>
-          </div>
-
-          <div
-            class="info-item"
-            v-for="pr in playerInfoResults"
-            :key="pr.id"
-            :style="'width:' + 98 / playerInfoResults.length + 'vw'"
-            @click="setResultInfo(pr)"
-          >
-            <div
-              :class="['info-hover', { waching: pr.id == resultInfo.id }]"
-              :style="'width:' + 98 / playerInfoResults.length + 'vw'"
-            ></div>
-            <span class="info-text">
-              <i>{{ moment(pr.createdAt).format("MMMM D, YYYY, HH:mm") }}</i>
-              <i>
-                <span>{{ pr.elo }}</span>
-                <span :class="[pr.eloPlus > 0 ? 'good' : 'bad', 'val']">
-                  <span v-if="pr.eloPlus > 0">+</span>
-                  <span v-else>-</span>
-                  {{ Math.abs(pr.eloPlus) }}
-                </span>
-              </i>
-              <b class="result">{{ pr.elo + pr.eloPlus }}</b>
-            </span>
-            <div
-              class="info-item-val"
-              :class="[pr.eloPlus > 0 ? 'good' : 'bad', { bet: pr.bet }]"
-              :style="[
-                'min-height:' + Math.abs(pr.eloPlus) + 'px',
-                'transform:translateY(' +
-                  (pr.elo - 1400 + pr.eloPlus / 2) * -1 +
-                  'px)',
-              ]"
-            ></div>
-          </div>
-        </div>
-      </div>
     </transition>
     <!-- Play info -->
     <div v-if="playInfo.id">
@@ -216,6 +160,7 @@ export default {
   data() {
     return {
       moment,
+      Player,
       playerForm: new Player(),
       textFilter: "",
       idMod: null,
@@ -313,156 +258,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-@import "@/theme/theme.scss";
-
-$width: calc(calc(calc(100vw / 10) - 5px) * 10);
-$width-xs: calc(calc(100vw / 10) * 10);
-
-.info-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 30px;
-
-  .info-name {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 10px;
-    font-size: large;
-    text-transform: uppercase;
-  }
-
-  .info {
-    display: flex;
-    flex-direction: row;
-    width: $width;
-
-    overflow-x: auto;
-    height: 400px;
-    align-items: center;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-
-    @media screen and (max-width: 899px) {
-      & {
-        width: $width-xs;
-      }
-    }
-
-    .line {
-      position: absolute;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-      width: $width;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-
-      @media screen and (max-width: 899px) {
-        & {
-          width: $width-xs;
-        }
-      }
-
-      &.p1500 {
-        transform: translateY(-100px);
-      }
-
-      &.p1300 {
-        transform: translateY(100px);
-      }
-
-      .text {
-        position: absolute;
-        padding-left: 5px;
-      }
-    }
-
-    .info-hover {
-      position: absolute;
-      height: 400px;
-      cursor: pointer;
-      &.waching {
-        background-color: transparentize($color: rgb(14, 0, 65), $amount: 0.5);
-      }
-
-      &:hover {
-        background-color: transparentize($color: black, $amount: 0.5);
-      }
-    }
-
-    &-item {
-      display: flex;
-      flex-direction: column;
-      align-content: center;
-      justify-content: center;
-
-      .info-text {
-        cursor: default;
-        display: none;
-        position: absolute;
-        transform: translate(10px, -165px);
-        font-size: small;
-
-        .val {
-          padding-left: 5px;
-          &.bad {
-            color: brown;
-          }
-
-          &.good {
-            color: greenyellow;
-          }
-        }
-
-        .result {
-          font-size: initial;
-        }
-      }
-      &:hover {
-        .info-text {
-          display: flex;
-          flex-direction: column;
-        }
-
-        .info-item-val {
-          &.bad {
-            background-color: red;
-            clip-path: polygon(40% 30%, 0% 100%, 60% 60%, 100% 0%);
-          }
-          &.good {
-            background-color: green;
-            clip-path: polygon(0% 0%, 20% 60%, 100% 100%, 60% 20%);
-          }
-        }
-      }
-
-      &-val {
-        transition: clip-path 0.2s;
-        &.bad {
-          background-color: brown;
-          clip-path: polygon(80% 0%, 0% 100%, 20% 100%, 100% 0%);
-        }
-
-        &.good {
-          transition: clip-path 0.3s;
-          background-color: greenyellow;
-          clip-path: polygon(0% 0%, 80% 100%, 100% 100%, 20% 0%);
-        }
-      }
-    }
-  }
-}
-
-.nick {
-  i {
-    //display: ;
-    opacity: 0.1;
-  }
-  &:hover {
-    i {
-      opacity: 1;
-    }
-  }
-}
-</style>

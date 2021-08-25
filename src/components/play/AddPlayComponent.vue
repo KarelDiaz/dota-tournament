@@ -373,6 +373,14 @@ export default {
           prtemp.player = player;
           prtemp.bot = false;
         });
+
+        this.playForm.player_results.sort((a, b) => {
+        if (a.side == b.side)
+          if (a.side === "good") return a.bot ? -1 : 1;
+          else return a.bot ? 1 : -1;
+
+        return b.side.localeCompare(a.side);
+      });
     },
   },
   watch: {

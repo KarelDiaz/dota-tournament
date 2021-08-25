@@ -1,14 +1,14 @@
 <template>
   <div
     class="flex flex-col overflow-hidden border border-t-0 border-b-0 rounded-lg shadow-md "
-    @mouseover="date = true"
-    @mouseleave="date = false"
+    @mouseover="hover = true"
+    @mouseleave="hover = false"
   >
     <!-- Date -->
     <transition name="scale-y-top">
       <div
-        v-show="date"
-        class="text-center text-gray-400 border-t  bg-gradient-to-b from-gray-100"
+        v-show="hover"
+        class="text-center text-gray-400 border-t bg-gradient-to-b from-gray-100"
       >
         {{ moment(play.createdAt).format("MMMM D, YYYY, HH:mm") }}
       </div>
@@ -16,7 +16,7 @@
     <!-- Players -->
     <div class="flex flex-wrap">
       <template v-for="result in playCopy.player_results" :key="result.id">
-        <div class="flex flex-col w-1/5 sm:w-1/10">
+        <div class="relative flex flex-col w-1/5 sm:w-1/10">
           <!-- Side -->
           <div>
             <div
@@ -76,7 +76,7 @@
                 <table
                   class="w-full my-auto text-center"
                   v-if="!result.bot"
-                  v-show="date"
+                  v-show="hover"
                 >
                   <tr>
                     <td>K</td>
@@ -98,7 +98,13 @@
               </transition>
             </div>
             <!-- Hero name -->
-            <span class="pb-2 truncate item" v-if="!result.bot">
+            <span
+              :class="[
+                'pb-2 truncate item transition-opacity duration-500',
+                { 'opacity-0': hover },
+              ]"
+              v-if="!result.bot"
+            >
               {{ getHero(result.hero).displayName }}
             </span>
           </div>
@@ -113,6 +119,38 @@
               class="w-full h-2 bg-gradient-to-b from-gray-200 to-gray-400"
             ></div>
           </div>
+          <!-- Rank -->
+          <transition name="fade">
+            <div
+              v-if="hover && !result.bot"
+              class="absolute left-0 right-0 flex justify-center bottom-1"
+            >
+              <span class="relative flex">
+                <img
+                  class="h-12"
+                  :src="`rank/${Player.getRank(
+                    result.elo + result.eloPlus
+                  )}.png`"
+                />
+                <i
+                  class="absolute animate-bounce -right-5 bottom-3"
+                  v-if="
+                    Player.getRank(result.elo) !==
+                    Player.getRank(result.elo + result.eloPlus)
+                  "
+                >
+                  <i
+                    class="text-green-400 fa fa-arrow-up"
+                    v-if="result.eloPlus > 0"
+                  ></i>
+                  <i
+                    class="absolute text-red-400 animate-bounce -right-5 bottom-3 fa fa-arrow-down"
+                    v-if="result.eloPlus < 0"
+                  ></i>
+                </i>
+              </span>
+            </div>
+          </transition>
         </div>
       </template>
     </div>
@@ -129,7 +167,8 @@ export default {
   data() {
     return {
       moment,
-      date: false,
+      Player,
+      hover: false,
       playCopy: null,
     };
   },

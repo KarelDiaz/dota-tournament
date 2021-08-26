@@ -28,7 +28,7 @@
         </label>
         <!-- Save -->
         <button
-          class="px-3 text-blue-900 border border-blue-400 rounded-lg shadow-lg  sm:w-40 hover:border-blue-300 bg-gradient-to-b from-blue-200 to-blue-400 hover:from-blue-100 hover:to-blue-300"
+          class="px-3 text-blue-900 border border-blue-400 rounded-lg shadow-lg sm:w-40 hover:border-blue-300 bg-gradient-to-b from-blue-200 to-blue-400 hover:from-blue-100 hover:to-blue-300"
           type="submit"
         >
           Save
@@ -117,7 +117,7 @@
           >
             <!-- Player -->
             <select
-              class="w-full py-1 bg-opacity-50 border border-gray-200 border-opacity-50  bg-gray-50"
+              class="w-full py-1 bg-opacity-50 border border-gray-200 border-opacity-50 bg-gray-50"
               required
               v-model="pr.player"
               v-if="!pr.bot"
@@ -130,7 +130,7 @@
             <div class="flex" v-if="!pr.bot">
               <!-- K -->
               <div
-                class="flex flex-col text-center bg-opacity-50 border border-r-0 border-gray-200 border-opacity-50  bg-gray-50"
+                class="flex flex-col text-center bg-opacity-50 border border-r-0 border-gray-200 border-opacity-50 bg-gray-50"
               >
                 <span class="text-xs">K</span>
                 <input
@@ -143,7 +143,7 @@
               </div>
               <!-- D -->
               <div
-                class="flex flex-col text-center bg-opacity-50 border border-r-0 border-gray-200 border-opacity-50  bg-gray-50"
+                class="flex flex-col text-center bg-opacity-50 border border-r-0 border-gray-200 border-opacity-50 bg-gray-50"
               >
                 <span class="text-xs">D</span>
                 <input
@@ -156,7 +156,7 @@
               </div>
               <!-- A -->
               <div
-                class="flex flex-col text-center bg-opacity-50 border border-gray-200 border-opacity-50  bg-gray-50"
+                class="flex flex-col text-center bg-opacity-50 border border-gray-200 border-opacity-50 bg-gray-50"
               >
                 <span class="text-xs">A</span>
                 <input
@@ -170,7 +170,7 @@
             </div>
             <!-- Hero -->
             <select
-              class="w-full py-1 bg-opacity-50 border border-gray-200 border-opacity-50  bg-gray-50"
+              class="w-full py-1 bg-opacity-50 border border-gray-200 border-opacity-50 bg-gray-50"
               v-if="!pr.bot"
               v-model="pr.hero"
               required
@@ -204,7 +204,7 @@ import { mapState, mapMutations, mapGetters } from "vuex";
 import { INIT_PLAYERS } from "@/store/type/mutations";
 import { GET_PLAYER, GET_HERO } from "@/store/type/getters";
 
-import Elo from "@/store/model/elo";
+import MMR from "@/store/model/mmr";
 import Player from "@/store/model/player";
 import Play from "@/store/model/play";
 
@@ -245,30 +245,30 @@ export default {
         if (!pr.bot) {
           if (pr.win) {
             playersWin.push(pr.player);
-            mediaWin += this.getPlayer(pr.player).elo;
+            mediaWin += this.getPlayer(pr.player).mmr;
           }
           if (!pr.win) {
             playersLose.push(pr.player);
-            mediaLose += this.getPlayer(pr.player).elo;
+            mediaLose += this.getPlayer(pr.player).mmr;
           }
         }
       });
 
       if (playersWin.length > 0 && playersLose.length > 0) {
-        this.elo(playersWin, playersLose);
+        this.mmr(playersWin, playersLose);
         mediaWin /= playersWin.length;
         mediaLose /= playersLose.length;
       }
 
       this.playForm.player_results.forEach((pr) => {
         if (!pr.bot) {
-          pr.elo = this.getPlayer(pr.player).elo;
+          pr.mmr = this.getPlayer(pr.player).mmr;
           if (pr.win) {
-            let telo = new Elo(pr.elo, mediaLose);
-            pr.eloPlus = telo.getPlusA();
+            let tmmr = new MMR(pr.mmr, mediaLose);
+            pr.mmrPlus = tmmr.getPlusA();
           } else {
-            let telo = new Elo(mediaWin, pr.elo);
-            pr.eloPlus = telo.getPlusB();
+            let tmmr = new MMR(mediaWin, pr.mmr);
+            pr.mmrPlus = tmmr.getPlusB();
           }
         }
         axios.post(this.strapi + "/player-results", pr).then(({ data }) => {
@@ -290,35 +290,35 @@ export default {
       });
     },
 
-    elo(win, lose) {
+    mmr(win, lose) {
       var pWin = [];
       var pLose = [];
 
       // media del ELO q ganan
-      let eloWin = 0;
+      let mmrWin = 0;
       win.forEach((id) => {
         let ptemp = this.getPlayer(id);
-        eloWin += ptemp.elo;
+        mmrWin += ptemp.mmr;
         pWin.push(ptemp);
       });
-      eloWin /= win.length;
+      mmrWin /= win.length;
 
       // media del ELO q pierden
-      let eloLose = 0;
+      let mmrLose = 0;
       lose.forEach((id) => {
         let ptemp = this.getPlayer(id);
-        eloLose += ptemp.elo;
+        mmrLose += ptemp.mmr;
         pLose.push(ptemp);
       });
-      eloLose /= lose.length;
+      mmrLose /= lose.length;
 
-      // update elo de los q ganana
+      // update mmr de los q ganana
       pWin.forEach((player) => {
-        let elo = new Elo(player.elo, eloLose);
+        let mmr = new MMR(player.mmr, mmrLose);
         let playerOut = new Player(
           player.fullName,
           player.nick,
-          elo.getEloA(),
+          mmr.getMMRA(),
           player.active
         );
 
@@ -327,13 +327,13 @@ export default {
           .then(() => {});
       });
 
-      // update elo de los q pierden
+      // update mmr de los q pierden
       pLose.forEach((player) => {
-        let elo = new Elo(eloWin, player.elo);
+        let mmr = new MMR(mmrWin, player.mmr);
         let playerOut = new Player(
           player.fullName,
           player.nick,
-          elo.getEloB(),
+          mmr.getMMRB(),
           player.active
         );
 

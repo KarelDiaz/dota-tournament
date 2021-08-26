@@ -48,7 +48,7 @@
               },
             ]"
           >
-            <!-- Player nick and Elo -->
+            <!-- Player nick and MMR -->
             <div class="flex flex-col">
               <b class="truncate item" v-if="!result.bot">
                 {{ getPlayer(result.player).nick }}
@@ -57,7 +57,7 @@
                 class="flex flex-col space-x-1 text-xs italic sm:flex-row"
                 v-if="!result.bot"
               >
-                <span>{{ result.elo }}</span>
+                <span>{{ result.mmr }}</span>
                 <b
                   :class="[
                     { 'text-green-400': result.win },
@@ -66,7 +66,7 @@
                 >
                   <span v-if="result.win">+</span>
                   <span v-if="!result.win">-</span>
-                  {{ Math.abs(result.eloPlus) }}
+                  {{ Math.abs(result.mmrPlus) }}
                 </b>
               </span>
             </div>
@@ -128,22 +128,22 @@
               <span class="relative flex">
                 <img
                   class="h-12"
-                  :src="`rank/${getRank(result.elo + result.eloPlus).name}.png`"
+                  :src="`rank/${getRank(result.mmr).name}.png`"
                 />
                 <i
                   class="absolute animate-bounce -right-5 bottom-3"
                   v-if="
-                    getRank(result.elo).name !==
-                    getRank(result.elo + result.eloPlus).name
+                    getRank(result.mmr).name !==
+                    getRank(result.mmr + result.mmrPlus).name
                   "
                 >
                   <i
                     class="text-green-400 fa fa-arrow-up"
-                    v-if="result.eloPlus > 0"
+                    v-if="result.mmrPlus > 0"
                   ></i>
                   <i
                     class="absolute text-red-400 animate-bounce -right-5 bottom-3 fa fa-arrow-down"
-                    v-if="result.eloPlus < 0"
+                    v-if="result.mmrPlus < 0"
                   ></i>
                 </i>
               </span>

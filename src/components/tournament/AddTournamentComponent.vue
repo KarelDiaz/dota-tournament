@@ -64,10 +64,10 @@
               <div
                 class="relative flex flex-col p-3 mb-3 mr-3 space-y-3 text-green-800 border border-green-300 rounded-lg shadow-lg bg-gradient-to-t from-green-300 to-green-100"
               >
-                <!-- Name and elo -->
+                <!-- Name and mmr -->
                 <div class="flex flex-col">
                   <span class="text-lg font-bold">{{ team.name }}</span>
-                  <i class="text-xs text-green-500">{{ eloMediaTeam(team) }}</i>
+                  <i class="text-xs text-green-500">{{ mmrMediaTeam(team) }}</i>
                 </div>
                 <!-- Players -->
                 <div class="flex flex-col">
@@ -78,7 +78,7 @@
                   >
                     <span>{{ p.nick }}</span>
                     <span class="text-xs italic text-green-500">{{
-                      p.elo
+                      p.mmr
                     }}</span>
                   </span>
                 </div>
@@ -104,7 +104,7 @@
               >
                 <i class="fa fa-random"></i>
               </button>
-              <!--Team name and elo-->
+              <!--Team name and mmr-->
               <div>
                 <!-- Name input -->
                 <label-component
@@ -112,7 +112,7 @@
                   :title-bottom="`Team MMR: ${
                     teamTemp.players.length === 0
                       ? ' No hay players'
-                      : eloMediaTeam(teamTemp)
+                      : mmrMediaTeam(teamTemp)
                   }`"
                 >
                   <div class="flex mb-1 rounded-lg shadow-lg">
@@ -190,8 +190,8 @@
                         class="absolute text-gray-500 left-1 fa fa-arrow-up"
                       ></i>
                       <span>{{ p.nick }}</span>
-                      <span class="mr-3 text-xs italic text-gray-500 elo">
-                        {{ p.elo }}
+                      <span class="mr-3 text-xs italic text-gray-500 mmr">
+                        {{ p.mmr }}
                       </span>
                     </span>
                   </transition-group>
@@ -470,11 +470,11 @@ export default {
         });
       });
     },
-    eloMediaTeam(team) {
+    mmrMediaTeam(team) {
       if (!team.players || team.players.length == 0) return 0;
       let s = 0;
       team.players.forEach((p) => {
-        s += p.elo;
+        s += p.mmr;
       });
       return parseInt(s / team.players.length);
     },
@@ -511,7 +511,7 @@ export default {
     addPlayerToTeamTemp() {
       if (!this.playerSelected.nick) return;
       this.teamTemp.players.push(this.playerSelected);
-      this.teamTemp.players.sort((a, b) => b.elo - a.elo);
+      this.teamTemp.players.sort((a, b) => b.mmr - a.mmr);
       this.players = this.players.filter((p) => p != this.playerSelected);
       this.playerSelected = null;
     },
@@ -520,7 +520,7 @@ export default {
       let n = this.players.length;
       let pTemp = this.players[parseInt(n * Math.random())];
       this.teamTemp.players.push(pTemp);
-      this.teamTemp.players.sort((a, b) => b.elo - a.elo);
+      this.teamTemp.players.sort((a, b) => b.mmr - a.mmr);
       this.players = this.players.filter((p) => p != pTemp);
       this.playerSelected = null;
     },

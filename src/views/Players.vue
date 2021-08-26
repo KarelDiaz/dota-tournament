@@ -4,14 +4,14 @@
     <form @submit.prevent="send" class="flex justify-center">
       <div class="rounded-lg shadow-lg">
         <input
-          class="px-2 py-1 border border-gray-100 rounded-l-lg  bg-gradient-to-b from-white to-gray-100 focus:ring-green-200 focus:outline-none focus:ring-1 focus:border-transparent"
+          class="px-2 py-1 border border-gray-100 rounded-l-lg bg-gradient-to-b from-white to-gray-100 focus:ring-green-200 focus:outline-none focus:ring-1 focus:border-transparent"
           v-model="playerForm.nick"
           required
           type="text"
           placeholder="Escriba el nick"
         />
         <button
-          class="px-5 py-1 text-green-900 border border-green-400 rounded-r-lg  hover:border-green-300 bg-gradient-to-b from-green-200 to-green-400 hover:from-green-100 hover:to-green-300"
+          class="px-5 py-1 text-green-900 border border-green-400 rounded-r-lg hover:border-green-300 bg-gradient-to-b from-green-200 to-green-400 hover:from-green-100 hover:to-green-300"
           type="submit"
         >
           <span v-if="!idMod">
@@ -52,7 +52,7 @@
         ]"
         v-for="(p, i) in players
           .filter((p) => p.nick != 'bot')
-          .sort((a, b) => b.elo - a.elo)"
+          .sort((a, b) => b.mmr - a.mmr)"
         :key="p.nick"
         @click="setPlayerInfo(p)"
       >
@@ -86,7 +86,7 @@
         <td class="sm:p-3 sm:pr-6">
           <span
             @click="preMod(p.id)"
-            class="h-full p-2 border border-transparent rounded-lg  nick bg-gradient-to-b hover:shadow-lg hover:text-green-800 hover:border-green-200 hover:from-green-50 hover:to-green-200"
+            class="h-full p-2 border border-transparent rounded-lg nick bg-gradient-to-b hover:shadow-lg hover:text-green-800 hover:border-green-200 hover:from-green-50 hover:to-green-200"
           >
             {{ p.nick }}
           </span>
@@ -95,12 +95,12 @@
         <td>
           <img
             class="h-8"
-            :src="`rank/${getRank(p.elo).name}.png`"
-            :title="getRank(p.elo).name"
+            :src="`rank/${getRank(p.mmr).name}.png`"
+            :title="getRank(p.mmr).name"
           />
         </td>
         <!-- MMR -->
-        <td>{{ p.elo || 0 }}</td>
+        <td>{{ p.mmr || 0 }}</td>
         <!-- Plays -->
         <td>{{ p.p || 0 }}</td>
         <!-- Victories -->
@@ -157,7 +157,7 @@ import Player from "@/store/model/player";
 import Rank from "@/store/model/rank";
 
 import PlayComponent from "@/components/play/PlayComponent";
-import PlayerHistoryComponent from "@/components/PlayerHistoryComponent";
+import PlayerHistoryComponent from "@/components/player/PlayerHistoryComponent";
 
 export default {
   name: "Players",
@@ -202,20 +202,20 @@ export default {
             let text = this.textFilter.toLowerCase();
             let name = player.fullName.toLowerCase();
             let nick = player.nick.toLowerCase();
-            let elo = player.elo;
+            let mmr = player.mmr;
 
             //search text into data
             if (name.indexOf(text) >= 0) return true;
             if (nick.indexOf(text) >= 0) return true;
-            if (elo == text) return true;
+            if (mmr == text) return true;
 
             return false; //discard player if no match
           })
           .sort((a, b) => {
-            if (a.elo == b.elo) {
+            if (a.mmr == b.mmr) {
               return a.fullName > b.fullName;
             }
-            return a.elo < b.elo;
+            return a.mmr < b.mmr;
           });
       });*/
     },
@@ -255,7 +255,7 @@ export default {
         this.playerForm = new Player(
           data.fullName,
           data.nick,
-          data.elo,
+          data.mmr,
           data.active
         );
       });

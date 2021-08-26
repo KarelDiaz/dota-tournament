@@ -16,7 +16,7 @@
       },
     ]"
   >
-    <!-- Team name and elo -->
+    <!-- Team name and mmr -->
     <div
       :class="[
         'break-all sm:break-normal flex flex-col',
@@ -33,7 +33,7 @@
     >
       <span>{{ team.name }}</span>
       <i>
-        <small>{{ elo }}</small>
+        <small>{{ mmr }}</small>
       </i>
     </div>
     <!-- plays,vistories,defeates -->
@@ -66,7 +66,7 @@
 export default {
   data() {
     return {
-      elo: 0,
+      mmr: 0,
       teamPlays: [], // partidos
       teamWonPlays: [], // partidos ganados
     };
@@ -79,11 +79,11 @@ export default {
   },
   methods: {
     initTeam() {
-      this.elo = 0;
+      this.mmr = 0;
       this.team.players.forEach((p_id) => {
-        this.elo += this.$store.state.players.find((pp) => pp.id == p_id).elo;
+        this.mmr += this.$store.state.players.find((pp) => pp.id == p_id).mmr;
       });
-      this.elo = Math.round(this.elo / this.team.players.length);
+      this.mmr = Math.round(this.mmr / this.team.players.length);
       this.teamPlays = this.tournamentPlays.filter((p) => {
         return p.teamGood.id === this.team.id || p.teamBad.id === this.team.id;
       });

@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col" v-if="player.id">
     <!-- Header -->
-    <div class="grid grid-cols-2 sm:grid-cols-3">
+    <div class="grid grid-cols-3">
       <!-- Zoom -->
       <div class="flex items-center p-2 space-x-2">
         <button
@@ -25,7 +25,20 @@
       <div
         class="flex items-center justify-center p-2 text-lg font-extrabold text-center text-gray-700 border border-b-0 rounded-t-lg bg-gradient-to-t from-gray-100 to-white"
       >
-        {{ player.nick }} - {{player.elo}}
+        {{ player.nick }} - {{ player.mmr }}
+      </div>
+      <!-- Rank -->
+      <div
+        class="flex flex-col items-end justify-center space-x-0 sm:flex-row sm:items-center sm:justify-end sm:space-x-3"
+      >
+        <div class="flex justify-center w-full sm:justify-end">
+          <img class="h-8" :src="`rank/${rankSelected?.name}.png`" />
+        </div>
+        <select class="capitalize" v-model="rankSelected">
+          <option v-for="rank in ranks" :key="rank.id" :value="rank">
+            {{ rank.name }}
+          </option>
+        </select>
       </div>
     </div>
     <!-- Graph and lines -->
@@ -38,10 +51,10 @@
         <!-- Max -->
         <div
           class="absolute top-0 flex justify-between w-full px-2"
-          v-if="maxElo - minElo > 0"
+          v-if="playerResults.length > 0"
         >
-          <i>{{ maxElo }}</i>
-          <i>{{ maxElo }}</i>
+          <i>{{ maxMMR }}</i>
+          <i>{{ maxMMR }}</i>
         </div>
         <!-- 1400 -->
         <div
@@ -49,13 +62,13 @@
           :style="[
             {
               transform: `translateY(-${
-                Math.abs(lastResult.elo + lastResult.eloPlus) * proportion
+                Math.abs(lastResult.mmr + lastResult.mmrPlus) * proportion
               }px)`,
             },
           ]"
           v-if="
-            maxElo - minElo > 0 &&
-            maxElo !== lastResult.elo + lastResult.eloPlus
+            maxMMR - minMMR > 0 &&
+            maxMMR !== lastResult.mmr + lastResult.mmrPlus
           "
         ></div>
       </div>
@@ -91,30 +104,28 @@
                   'bg-gradient-to-tr from-green-300 to-green-500 win': pr.win,
                 },
                 {
-                  'bg-gradient-to-br from-red-300 to-red-500 lost':
-                    !pr.win && pr.eloPlus !== 0,
+                  'bg-gradient-to-br from-red-300 to-red-500 lost': !pr.win,
                 },
                 {
-                  'bg-gradient-to-r from-gray-300 to-gray-500 none':
-                    !pr.win && pr.eloPlus === 0,
+                  none: pr.mmrPlus === 0,
                 },
               ]"
               :style="[
                 {
                   transform: `translateY(-${
                     Math.abs(
-                      pr.elo - minElo + (pr.eloPlus < 0 ? pr.eloPlus : 0)
+                      pr.mmr - minMMR + (pr.mmrPlus < 0 ? pr.mmrPlus : 0)
                     ) * proportion
                   }px)`,
                 },
                 {
                   minWidth:
-                    Math.abs(pr.eloPlus !== 0 ? pr.eloPlus : 25) * proportion +
+                    Math.abs(pr.mmrPlus !== 0 ? pr.mmrPlus : 25) * proportion +
                     'px',
                 },
                 {
                   minHeight:
-                    Math.abs(pr.eloPlus !== 0 ? pr.eloPlus : 25) * proportion +
+                    Math.abs(pr.mmrPlus !== 0 ? pr.mmrPlus : 25) * proportion +
                     'px',
                 },
               ]"
@@ -123,7 +134,7 @@
           <!-- Empty player results -->
           <div
             class="flex items-center justify-center w-full h-24 text-gray-500"
-            v-if="playerResults.length===0"
+            v-if="playerResults.length === 0"
           >
             <div><i>No hay informacion que mostrar </i> 😒</div>
           </div>
@@ -134,15 +145,18 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import Axios from "axios";
 
 export default {
   data() {
     return {
+      playerResultsAll: [],
       playerResults: [],
       playerResultSelected: {},
-      maxElo: 0,
-      minElo: 0,
+      rankSelected: {},
+      maxMMR: 0,
+      minMMR: Number.MAX_SAFE_INTEGER,
       proportion: 2,
     };
   },
@@ -150,35 +164,52 @@ export default {
     player: Object,
   },
   computed: {
+    ...mapState({
+      ranks: (state) => state.ranks,
+    }),
     lastResult() {
       return this.playerResults[this.playerResults.length - 1];
     },
     height() {
-      if (this.maxElo - this.minElo === 0) return 50;
-      return this.maxElo - this.minElo;
+      if (this.playerResults.length === 0) return 50;
+      if (this.maxMMR - this.minMMR <= 0) return 10;
+      return this.maxMMR - this.minMMR;
     },
   },
   methods: {
-    checkElo() {
-      this.maxElo = 0;
-      this.minElo = 0;
-      this.playerResults.forEach((pr) => {
-        this.maxElo = Math.max(pr.elo + pr.eloPlus, this.maxElo);
-        this.minElo = Math.min(pr.elo + pr.eloPlus, this.minElo);
+    maxRank() {
+      let max = 0;
+      this.playerResultsAll.forEach((pr) => {
+        max = Math.max(pr.mmr + pr.mmrPlus, max);
       });
+      this.ranks = this.$store.state.ranks.filter((r) => max >= r.min);
+      if (!this.ranks.find((r) => r === this.rankSelected))
+        this.rankSelected = this.ranks[this.ranks.length - 1];
     },
     getResults() {
       Axios.get(this.$store.state.strapi + "/player-results?_limit=-1").then(
         ({ data }) => {
-          this.playerResults = data.filter(
+          this.playerResultsAll = data.filter(
             (p) => p.player?.id === this.player.id
           );
-          this.checkElo();
+          // check rank
+          this.playerResults = this.playerResultsAll.filter(
+            (pr) =>
+              this.rankSelected.min <= pr.mmr && pr.mmr <= this.rankSelected.max
+          );
+          // check mmr
+          this.maxMMR = 0;
+          this.minMMR = Number.MAX_SAFE_INTEGER;
+          this.playerResults.forEach((pr) => {
+            this.maxMMR = Math.max(pr.mmr + pr.mmrPlus, this.maxMMR);
+            this.minMMR = Math.min(pr.mmr + pr.mmrPlus, this.minMMR);
+          });
         }
       );
     },
   },
-  created() {
+  mounted() {
+    this.rankSelected = this.ranks[0];
     this.getResults();
   },
   watch: {
@@ -186,6 +217,9 @@ export default {
       this.$emit("result:select", val);
     },
     player() {
+      this.getResults();
+    },
+    rankSelected() {
       this.getResults();
     },
   },

@@ -28,7 +28,7 @@
         </label>
         <!-- Save -->
         <button
-          class="px-3 text-blue-900 border border-blue-400 rounded-lg shadow-lg sm:w-40 hover:border-blue-300 bg-gradient-to-b from-blue-200 to-blue-400 hover:from-blue-100 hover:to-blue-300"
+          class="px-3 text-blue-900 border border-blue-400 rounded-lg shadow-lg  sm:w-40 hover:border-blue-300 bg-gradient-to-b from-blue-200 to-blue-400 hover:from-blue-100 hover:to-blue-300"
           type="submit"
         >
           Save
@@ -117,7 +117,7 @@
           >
             <!-- Player -->
             <select
-              class="w-full py-1 bg-opacity-50 border border-gray-200 border-opacity-50 bg-gray-50"
+              class="w-full py-1 bg-opacity-50 border border-gray-200 border-opacity-50  bg-gray-50"
               required
               v-model="pr.player"
               v-if="!pr.bot"
@@ -130,7 +130,7 @@
             <div class="flex" v-if="!pr.bot">
               <!-- K -->
               <div
-                class="flex flex-col text-center bg-opacity-50 border border-r-0 border-gray-200 border-opacity-50 bg-gray-50"
+                class="flex flex-col text-center bg-opacity-50 border border-r-0 border-gray-200 border-opacity-50  bg-gray-50"
               >
                 <span class="text-xs">K</span>
                 <input
@@ -143,7 +143,7 @@
               </div>
               <!-- D -->
               <div
-                class="flex flex-col text-center bg-opacity-50 border border-r-0 border-gray-200 border-opacity-50 bg-gray-50"
+                class="flex flex-col text-center bg-opacity-50 border border-r-0 border-gray-200 border-opacity-50  bg-gray-50"
               >
                 <span class="text-xs">D</span>
                 <input
@@ -156,7 +156,7 @@
               </div>
               <!-- A -->
               <div
-                class="flex flex-col text-center bg-opacity-50 border border-gray-200 border-opacity-50 bg-gray-50"
+                class="flex flex-col text-center bg-opacity-50 border border-gray-200 border-opacity-50  bg-gray-50"
               >
                 <span class="text-xs">A</span>
                 <input
@@ -170,7 +170,7 @@
             </div>
             <!-- Hero -->
             <select
-              class="w-full py-1 bg-opacity-50 border border-gray-200 border-opacity-50 bg-gray-50"
+              class="w-full py-1 bg-opacity-50 border border-gray-200 border-opacity-50  bg-gray-50"
               v-if="!pr.bot"
               v-model="pr.hero"
               required
@@ -199,12 +199,13 @@
 
 <script>
 import axios from "axios";
-import { mapState, mapMutations } from "vuex";
+import { mapState, mapMutations, mapGetters } from "vuex";
 
-import { INIT_PLAYERS } from "@/store/mutations-type";
+import { INIT_PLAYERS } from "@/store/type/mutations";
+import { GET_PLAYER, GET_HERO } from "@/store/type/getters";
+
 import Elo from "@/store/model/elo";
 import Player from "@/store/model/player";
-import Hero from "@/store/model/hero";
 import Play from "@/store/model/play";
 
 export default {
@@ -220,6 +221,7 @@ export default {
     teamBad: {},
   },
   computed: {
+    ...mapGetters([GET_PLAYER, GET_HERO]),
     ...mapState({
       strapi: (state) => state.strapi,
       players: (state) => state.players,
@@ -341,16 +343,6 @@ export default {
       });
     },
 
-    getPlayer(id) {
-      const temp = this.players.find((p) => p.id == id);
-      return temp ? temp : new Player();
-    },
-
-    getHero(id) {
-      const temp = this.heroes.find((p) => p.id == id);
-      return temp ? temp : new Hero();
-    },
-
     resetForm() {
       let side_win = this.playForm.side_win;
       this.playForm = new Play([], side_win);
@@ -374,7 +366,7 @@ export default {
           prtemp.bot = false;
         });
 
-        this.playForm.player_results.sort((a, b) => {
+      this.playForm.player_results.sort((a, b) => {
         if (a.side == b.side)
           if (a.side === "good") return a.bot ? -1 : 1;
           else return a.bot ? 1 : -1;

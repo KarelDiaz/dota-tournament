@@ -103,9 +103,10 @@ import {
   DIRECT_1,
   DIRECT_3,
   DIRECT_5,
-} from "@/store/tournament-type";
-import TournamentMatchComponent from "./TournamentMatchComponent";
-import TournamentTeamComponent from "./TournamentTeamComponent";
+} from "@/store/type/tournament";
+
+import TournamentMatchComponent from "@/components/tournament/TournamentMatchComponent";
+import TournamentTeamComponent from "@/components/tournament/TournamentTeamComponent";
 import LabelComponent from "@/components/LabelComponent";
 
 export default {

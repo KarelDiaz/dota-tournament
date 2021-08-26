@@ -128,15 +128,13 @@
               <span class="relative flex">
                 <img
                   class="h-12"
-                  :src="`rank/${Player.getRank(
-                    result.elo + result.eloPlus
-                  )}.png`"
+                  :src="`rank/${getRank(result.elo + result.eloPlus).name}.png`"
                 />
                 <i
                   class="absolute animate-bounce -right-5 bottom-3"
                   v-if="
-                    Player.getRank(result.elo) !==
-                    Player.getRank(result.elo + result.eloPlus)
+                    getRank(result.elo).name !==
+                    getRank(result.elo + result.eloPlus).name
                   "
                 >
                   <i
@@ -158,16 +156,18 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import moment from "moment";
 
-import Player from "@/store/model/player";
-import Hero from "@/store/model/hero";
+import { GET_PLAYER, GET_HERO, GET_RANK } from "@/store/type/getters";
+
+import Rank from "@/store/model/rank";
 
 export default {
   data() {
     return {
       moment,
-      Player,
+      Rank,
       hover: false,
       playCopy: null,
     };
@@ -175,15 +175,8 @@ export default {
   props: {
     play: {},
   },
-  methods: {
-    getPlayer(id) {
-      const temp = this.$store.state.players.find((p) => p.id == id);
-      return temp ? temp : new Player();
-    },
-    getHero(id) {
-      const temp = this.$store.state.heroes.find((p) => p.id == id);
-      return temp ? temp : new Hero();
-    },
+  computed: {
+    ...mapGetters([GET_PLAYER, GET_HERO, GET_RANK]),
   },
   created() {
     // the copy is because the watcher doesnt run on props

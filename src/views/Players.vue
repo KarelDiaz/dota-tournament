@@ -4,14 +4,14 @@
     <form @submit.prevent="send" class="flex justify-center">
       <div class="rounded-lg shadow-lg">
         <input
-          class="px-2 py-1 border border-gray-100 rounded-l-lg bg-gradient-to-b from-white to-gray-100 focus:ring-green-200 focus:outline-none focus:ring-1 focus:border-transparent"
+          class="px-2 py-1 border border-gray-100 rounded-l-lg  bg-gradient-to-b from-white to-gray-100 focus:ring-green-200 focus:outline-none focus:ring-1 focus:border-transparent"
           v-model="playerForm.nick"
           required
           type="text"
           placeholder="Escriba el nick"
         />
         <button
-          class="px-5 py-1 text-green-900 border border-green-400 rounded-r-lg hover:border-green-300 bg-gradient-to-b from-green-200 to-green-400 hover:from-green-100 hover:to-green-300"
+          class="px-5 py-1 text-green-900 border border-green-400 rounded-r-lg  hover:border-green-300 bg-gradient-to-b from-green-200 to-green-400 hover:from-green-100 hover:to-green-300"
           type="submit"
         >
           <span v-if="!idMod">
@@ -25,7 +25,7 @@
     </form>
     <!-- Empty players -->
     <div v-if="players.length === 0" class="p-10 text-center text-gray-400">
-      <span><i>Para sin doteros no hay dota </i> 😜</span>
+      <span><i>Sin doteros no hay dota </i> 😜</span>
     </div>
     <!-- Player list -->
     <table v-if="players.length > 0" class="w-full">
@@ -86,7 +86,7 @@
         <td class="sm:p-3 sm:pr-6">
           <span
             @click="preMod(p.id)"
-            class="h-full p-2 border border-transparent rounded-lg nick bg-gradient-to-b hover:shadow-lg hover:text-green-800 hover:border-green-200 hover:from-green-50 hover:to-green-200"
+            class="h-full p-2 border border-transparent rounded-lg  nick bg-gradient-to-b hover:shadow-lg hover:text-green-800 hover:border-green-200 hover:from-green-50 hover:to-green-200"
           >
             {{ p.nick }}
           </span>
@@ -95,8 +95,8 @@
         <td>
           <img
             class="h-8"
-            :src="`rank/${Player.getRank(p.elo)}.png`"
-            :title="Player.getRank(p.elo)"
+            :src="`rank/${getRank(p.elo).name}.png`"
+            :title="getRank(p.elo).name"
           />
         </td>
         <!-- MMR -->
@@ -140,18 +140,22 @@
 
 <script>
 import axios from "axios";
-import { mapState, mapMutations } from "vuex";
+import { mapState, mapMutations, mapGetters } from "vuex";
 
 import moment from "moment";
 
-import Player from "@/store/model/player";
 import {
   START_LOADING,
   END_LOADING,
   INIT_PLAYERS,
   SET_PLAYER_INFO,
   SET_RESULT_INFO,
-} from "@/store/mutations-type";
+} from "@/store/type/mutations";
+import { GET_RANK } from "@/store/type/getters";
+
+import Player from "@/store/model/player";
+import Rank from "@/store/model/rank";
+
 import PlayComponent from "@/components/play/PlayComponent";
 import PlayerHistoryComponent from "@/components/PlayerHistoryComponent";
 
@@ -160,13 +164,14 @@ export default {
   data() {
     return {
       moment,
-      Player,
+      Rank,
       playerForm: new Player(),
       textFilter: "",
       idMod: null,
     };
   },
   computed: {
+    ...mapGetters([GET_RANK]),
     ...mapState({
       strapi: (state) => state.strapi,
       players: (state) => state.players,

@@ -372,8 +372,6 @@
 import axios from "axios";
 import { mapState, mapMutations } from "vuex";
 
-import { ADD_TOURNAMENT, INIT_TOURNAMENTS } from "@/store/mutations-type";
-import Tournament from "@/store/model/tournament";
 import {
   ALL_FOR_ALL_1,
   ALL_FOR_ALL_3,
@@ -381,8 +379,12 @@ import {
   DIRECT_1,
   DIRECT_3,
   DIRECT_5,
-} from "@/store/tournament-type";
+} from "@/store/type/tournament";
+import { ADD_TOURNAMENT, INIT_TOURNAMENTS } from "@/store/type/mutations";
+
+import Tournament from "@/store/model/tournament";
 import Team from "@/store/model/team";
+
 import LabelComponent from "@/components/LabelComponent.vue";
 
 export default {

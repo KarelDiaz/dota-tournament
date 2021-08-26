@@ -7,18 +7,18 @@
         class="sticky w-full p-2 pb-0 sm:p-3 sm:pr-0 sm:h-full sm:w-40 min-h-24"
       >
         <div
-          class="flex w-full h-full overflow-x-hidden border rounded-lg shadow-lg bg-gradient-to-t from-gray-100 to-gray-50 sm:overflow-y-auto sm:border-b-0 sm:flex-col"
+          class="flex w-full h-full overflow-x-hidden border rounded-lg shadow-lg  bg-gradient-to-t from-gray-100 to-gray-50 sm:overflow-y-auto sm:border-b-0 sm:flex-col"
         >
           <!--Tournaments add-->
           <button
-            class="px-2 text-green-900 border border-green-400 rounded-l-lg shadow-md sm:rounded-l-none sm:rounded-t-lg bg-gradient-to-b hover:border-green-300 from-green-200 to-green-400 hover:from-green-100 hover:to-green-300"
+            class="px-2 text-green-900 border border-green-400 rounded-l-lg shadow-md  sm:rounded-l-none sm:rounded-t-lg bg-gradient-to-b hover:border-green-300 from-green-200 to-green-400 hover:from-green-100 hover:to-green-300"
             @click="modal = true"
           >
             <i class="fa fa-plus"></i>
           </button>
           <!--Tournaments list-->
           <div
-            class="flex p-2 space-x-2 overflow-auto sm:p-3 sm:space-x-0 sm:space-y-3 sm:flex-col"
+            class="flex p-2 space-x-2 overflow-auto  sm:p-3 sm:space-x-0 sm:space-y-3 sm:flex-col"
             v-if="tournaments.length > 0"
           >
             <transition-group name="slide-top">
@@ -46,15 +46,15 @@
           </div>
           <!-- Tournament list empty -->
           <div
-            class="flex items-center justify-center w-full h-full space-x-1 text-center text-gray-400 sm:space-x-0 sm:flex-col "
+            class="flex items-center justify-center w-full h-full space-x-1 text-center text-gray-400  sm:space-x-0 sm:flex-col"
             v-if="tournaments.length == 0"
           >
-              <span class="flex">
-                <b class="flex sm:hidden">👈</b>
-                <b>😒</b>
-                <b class="hidden sm:flex">👆</b>
-              </span>
-              <i>Agregue un torneo </i>
+            <span class="flex">
+              <b class="flex sm:hidden">👈</b>
+              <b>😒</b>
+              <b class="hidden sm:flex">👆</b>
+            </span>
+            <i>Agregue un torneo </i>
           </div>
         </div>
       </div>
@@ -80,6 +80,7 @@
 <script>
 import { mapState } from "vuex";
 import moment from "moment";
+
 import AddTournamentComponent from "@/components/tournament/AddTournamentComponent";
 import ViewTournamentComponent from "@/components/tournament/ViewTournamentComponent";
 import ModalComponent from "@/components/ModalComponent.vue";

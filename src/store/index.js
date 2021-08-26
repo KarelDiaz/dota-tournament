@@ -8,14 +8,18 @@ import {
   INIT_HEROES,
   INIT_TOURNAMENTS,
   INIT_TOURNAMENT_TYPE,
+  INIT_RANKS,
   SET_PLAYER_INFO,
   SET_RESULT_INFO,
   ADD_TOURNAMENT
-} from "./mutations-type";
-import { ALL } from './tournament-type'
-import { INIT } from "./actions-type";
-import Hero from './model/hero'
-import TournamentType from './model/tournament_type'
+} from "@/store/type/mutations";
+import { INIT } from "@/store/type/actions";
+import { ALL } from '@/store/type/tournament'
+import { GET_RANK, GET_PLAYER, GET_HERO } from "@/store/type/getters";
+
+import Hero from '@/store/model/hero'
+import Rank from '@/store/model/rank'
+import TournamentType from '@/store/model/tournament_type'
 
 export default createStore({
   state: {
@@ -23,7 +27,7 @@ export default createStore({
     strapi: `http://${window.location.hostname}:1337`,
     local: `http://${window.location.hostname}:8080`,
     github: {
-      frontend: 'https://github.com/KarelDiaz/dota-tournament-frontend',
+      frontend: 'https://github.com/KarelDiaz/dota-tournament',
       backend: 'https://github.com/KarelDiaz/dota-tournament-backend'
     },
     players: [],
@@ -34,7 +38,22 @@ export default createStore({
     resultInfo: {},
     playInfo: {},
     tournaments: [],
-    tournamentTypes: []
+    tournamentTypes: [],
+    ranks: [],
+  },
+  getters: {
+    [GET_RANK]: (state) => (mmr) => {
+      let temp = state.ranks.find(rank => rank.min <= mmr && mmr <= rank.max)
+      return temp ? temp : {}
+    },
+    [GET_PLAYER]: (state) => (id) => {
+      let temp = state.players.find(player => player.id === id)
+      return temp ? temp : {}
+    },
+    [GET_HERO]: (state) => (id) => {
+      let temp = state.heroes.find(hero => hero.id === id)
+      return temp ? temp : {}
+    }
   },
   mutations: {
     [START_LOADING](state) {
@@ -246,6 +265,35 @@ export default createStore({
         }
       });
     },
+    [INIT_RANKS](state) {
+      axios.get(state.strapi + "/ranks").then(({ data }) => {
+        state.ranks = data.sort((a, b) => a.min - b.min);
+
+        // load all heros from scratch if no exist on db
+        if (this.state.ranks.length === 0) {
+          let ranksTemp = [
+            new Rank('herald', 0, 839),
+            new Rank('guardian', 840, 1679),
+            new Rank('crusader', 1680, 2519),
+            new Rank('archon', 2520, 3359),
+            new Rank('legend', 3360, 4199),
+            new Rank('ancient', 4200, 5039),
+            new Rank('divine', 5040, Number.MAX_SAFE_INTEGER),
+          ];
+          var n = 0;
+          ranksTemp.forEach((h) => {
+            axios.post(this.state.strapi + "/ranks", h).then(() => {
+              n++;
+              if (n == ranksTemp.length) {
+                axios.get(state.strapi + "/ranks").then(({ data2 }) => {
+                  state.ranks = data2.sort((a, b) => a.min - b.min);
+                });
+              }
+            });
+          });
+        }
+      });
+    },
     [SET_PLAYER_INFO](state, dataIn) {
       state.playerInfo = dataIn;
       state.resultInfo = {};
@@ -278,7 +326,8 @@ export default createStore({
       await commit(INIT_PLAYERS);
       await commit(INIT_TOURNAMENTS);
       await commit(INIT_TOURNAMENT_TYPE);
-    }
+      await commit(INIT_RANKS);
+    },
   },
   modules: {}
 });

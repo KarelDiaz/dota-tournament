@@ -124,8 +124,10 @@ import {
   DIRECT_1,
   DIRECT_3,
   DIRECT_5,
-} from "@/store/tournament-type";
+} from "@/store/type/tournament";
+
 import TournamentPlay from "@/store/model/tournament_play";
+
 import AddPlayComponent from "@/components/play/AddPlayComponent";
 import ModalComponent from "@/components/ModalComponent.vue";
 

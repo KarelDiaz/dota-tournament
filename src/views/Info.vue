@@ -5,12 +5,12 @@
     <div class="flex flex-col space-y-3">
       <!-- Dota Tournament img -->
       <div
-        class="flex flex-col items-center justify-center space-x-3 text-center sm:flex-row"
+        class="flex flex-col items-center justify-center space-x-3 text-center  sm:flex-row"
       >
         <img class="h-14 w-14" src="favicon.png" alt="" />
         <div class="ml-3 text-5xl font-extrabold">
           <span
-            class="my-auto text-transparent bg-clip-text bg-gradient-to-b from-blue-500 to-blue-800"
+            class="my-auto text-transparent  bg-clip-text bg-gradient-to-b from-blue-500 to-blue-800"
           >
             Dota Tournament
           </span>
@@ -19,7 +19,7 @@
       <!-- Dota Tournament links -->
       <div class="flex justify-center space-x-3 sm:space-x-20">
         <a
-          class="flex flex-col items-center space-x-2 sm:flex-row hover:text-indigo-400"
+          class="flex flex-col items-center space-x-2  sm:flex-row hover:text-indigo-400"
           target="blanck"
           :href="$store.state.github.frontend"
         >
@@ -27,7 +27,7 @@
           <span>Frontend <i class="fa fa-external-link"></i></span>
         </a>
         <a
-          class="flex flex-col items-center space-x-2 sm:flex-row hover:text-indigo-400"
+          class="flex flex-col items-center space-x-2  sm:flex-row hover:text-indigo-400"
           target="blanck"
           :href="$store.state.github.backend"
         >
@@ -210,6 +210,7 @@
 
 <script>
 import CleanComponent from "@/components/CleanComponent.vue";
+
 export default {
   components: {
     CleanComponent,

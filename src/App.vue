@@ -8,12 +8,13 @@
 <script>
 import { mapActions } from "vuex";
 
+import { INIT } from "@/store/type/actions";
+
 import NavComponent from "@/components/NavComponent";
-import { INIT } from "@/store/actions-type";
 
 export default {
   components: {
-    NavComponent
+    NavComponent,
   },
   methods: {
     ...mapActions([INIT]),

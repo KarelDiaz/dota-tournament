@@ -70,8 +70,9 @@ class Info {
   }
 }
 
-import Axios from "axios";
 import { mapState } from "vuex";
+import Axios from "axios";
+
 export default {
   data() {
     return {

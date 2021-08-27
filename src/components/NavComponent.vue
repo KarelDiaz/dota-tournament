@@ -72,6 +72,15 @@
           >
             Heroes
           </router-link>
+          <!-- Virtual -->
+          <router-link
+            v-if="$store.state.players.length > 0"
+            class="link hover:text-blue-500"
+            to="/virtual"
+            @click.passive="open = false"
+          >
+            Virtual
+          </router-link>
           <!-- Lotery -->
           <router-link
             v-if="$store.state.players.length > 0"

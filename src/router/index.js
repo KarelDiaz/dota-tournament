@@ -30,6 +30,11 @@ const routes = [
     path: "/tournaments",
     name: "Tournaments",
     component: () => import("../views/Tournaments.vue")
+  },
+  {
+    path: "/virtual",
+    name: "Virtual",
+    component: () => import("../views/Virtual.vue")
   }
 ];
 

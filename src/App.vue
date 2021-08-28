@@ -1,7 +1,10 @@
 <template>
   <div>
     <nav-component class="w-full"></nav-component>
-    <router-view class="fixed bottom-0 left-0 right-0 overflow-y-auto top-14" />
+    <router-view
+      id="view"
+      class="fixed bottom-0 left-0 right-0 overflow-y-auto top-14"
+    />
   </div>
 </template>
 
@@ -32,5 +35,9 @@ export default {
     "Lucida Sans", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+#view {
+  @apply bg-cover bg-center bg-no-repeat;
+  background-image: url("/background.png");
 }
 </style>

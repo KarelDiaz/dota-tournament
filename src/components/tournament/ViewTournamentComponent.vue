@@ -79,13 +79,16 @@
       </div>
     </div>
     <!-- Empty tournaments -->
-    <div v-else class="flex justify-center w-full p-10 space-x-3 text-center text-gray-400 sm:justify-start">
-        <span class="flex">
-          <b class="hidden sm:flex">👈</b>
-          <b>😒</b>
-          <b class="flex sm:hidden">👆</b>
-        </span>
-        <i>Seleccione un torneo no seas vago</i>
+    <div
+      v-else
+      class="flex justify-center w-full p-10 space-x-3 text-center text-gray-400 sm:justify-start"
+    >
+      <span class="flex">
+        <b class="hidden sm:flex">👈</b>
+        <b>😒</b>
+        <b class="flex sm:hidden">👆</b>
+      </span>
+      <i>Seleccione un torneo no seas vago</i>
     </div>
   </div>
 </template>
@@ -125,7 +128,7 @@ export default {
     };
   },
   props: {
-    tournament: null,
+    tournament: Object,
   },
   computed: {
     ...mapState({
@@ -173,13 +176,19 @@ export default {
       return out.toUpperCase();
     },
   },
+  mounted() {
+    if (this.tournament.name) {
+      this.tournamentCopy = this.tournament;
+      this.initPlays();
+    }
+  },
   watch: {
     async tournament(val) {
       this.tournamentCopy = val;
       this.initPlays();
     },
     tournamentCopy(val) {
-      val.teams?.sort((a, b) => {
+      val?.teams?.sort((a, b) => {
         return a.name.localeCompare(b.name);
       });
     },

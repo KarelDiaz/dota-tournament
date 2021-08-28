@@ -8,10 +8,12 @@ import {
   INIT_HEROES,
   INIT_TOURNAMENTS,
   INIT_TOURNAMENT_TYPE,
+  TOURNAMENT_SELECT,
   INIT_RANKS,
   SET_PLAYER_INFO,
   SET_RESULT_INFO,
-  ADD_TOURNAMENT
+  ADD_TOURNAMENT,
+  HERO_SELECT
 } from "@/store/type/mutations";
 import { INIT } from "@/store/type/actions";
 import { ALL } from '@/store/type/tournament'
@@ -39,6 +41,8 @@ export default createStore({
     playInfo: {},
     tournaments: [],
     tournamentTypes: [],
+    tournamentSelected: {},
+    heroSelected: {},
     ranks: [],
   },
   getters: {
@@ -265,6 +269,9 @@ export default createStore({
         }
       });
     },
+    [TOURNAMENT_SELECT](state, dataIn) {
+      state.tournamentSelected = dataIn;
+    },
     [INIT_RANKS](state) {
       axios.get(state.strapi + "/ranks").then(({ data }) => {
         state.ranks = data.sort((a, b) => a.min - b.min);
@@ -318,6 +325,9 @@ export default createStore({
     [ADD_TOURNAMENT](state, dataIn) {
       state.tournaments.push(dataIn)
       state.tournaments.sort((a, b) => a.createdAt.localeCompare(b.createdAt))
+    },
+    [HERO_SELECT](state, dataIn) {
+      state.heroSelected = dataIn;
     }
   },
   actions: {

@@ -22,17 +22,17 @@
                 :class="[
                   'flex w-full sm:space-x-3 items-center sm:p-3 bg-gradient-to-t from-gray-50 to-white rounded-lg border shadow-lg cursor-pointer hover:from-gray-200 hover:to-gry-100',
                   {
-                    'from-blue-200 to-blue-50 border-blue-200': hSelected == h,
+                    'from-blue-200 to-blue-50 border-blue-200': heroSelected == h,
                   },
                 ]"
                 v-if="hsVisible[i]"
-                @click="hSelected = h"
+                @click="heroSelect(h)"
               >
                 <img
                   :src="'npc/' + h.name + '.png'"
                   :class="[
                     'transform transition-all rounded-lg sm:w-10 sm:rounded-full',
-                    { 'scale-75 sm:scale-100 shadow-md': hSelected == h },
+                    { 'scale-75 sm:scale-100 shadow-md': heroSelected == h },
                   ]"
                 />
                 <span class="hidden truncate sm:flex">{{ h.displayName }}</span>
@@ -44,20 +44,20 @@
     </div>
     <!-- Hero and all users onfo -->
     <div class="w-3/4 pl-3 text-center sm:text-left">
-      <div v-if="!hSelected" class="px-3 py-10 text-gray-400 sm:px-10">
+      <div v-if="!heroSelected" class="px-3 py-10 text-gray-400 sm:px-10">
         👈😉
         <i>Seleccione un héroe para ver estadísticas</i>
       </div>
       <!--Hero info-->
-      <div class="flex flex-col mb-3 sm:flex-row" v-if="hSelected">
+      <div class="flex flex-col mb-3 sm:flex-row" v-if="heroSelected">
         <img
           class="rounded-lg shadow-lg sm:rounded-full"
-          :src="'./npc/' + hSelected.name + '.png'"
+          :src="'./npc/' + heroSelected.name + '.png'"
           alt
         />
         <div class="w-full my-auto sm:pl-3">
           <span class="text-2xl font-extrabold">
-            {{ hSelected.displayName }}
+            {{ heroSelected.displayName }}
           </span>
           <table class="w-full mt-3 text-left">
             <thead>
@@ -91,7 +91,7 @@
       </div>
       <!--All users info-->
       <div class="flex">
-        <table class="w-full text-left" v-if="hSelected">
+        <table class="w-full text-left" v-if="heroSelected">
           <thead>
             <tr>
               <th>Nick</th>
@@ -130,7 +130,9 @@
 
 <script>
 import axios from "axios";
-import { mapState } from "vuex";
+import { mapState, mapMutations } from "vuex";
+
+import {HERO_SELECT} from '@/store/type/mutations'
 
 export default {
   data() {
@@ -139,7 +141,6 @@ export default {
       prs: [],
       hsVisible: [],
       filterText: "",
-      hSelected: null,
       hP: 0,
       hV: 0,
       hAve: 0,
@@ -155,9 +156,11 @@ export default {
     ...mapState({
       strapi: (state) => state.strapi,
       heroes: (state) => state.heroes,
+      heroSelected: (state) => state.heroSelected,
     }),
   },
   methods: {
+    ...mapMutations([HERO_SELECT]),
     initPs() {
       axios
         .get(this.strapi + "/players?_limit=-1")
@@ -177,12 +180,12 @@ export default {
     },
     getV(id) {
       return this.prs.filter((pr) => {
-        return pr.player.id == id && pr.hero.id == this.hSelected.id && pr.win;
+        return pr.player.id == id && pr.hero.id == this.heroSelected.id && pr.win;
       }).length;
     },
     getP(id) {
       return this.prs.filter((pr) => {
-        return pr.player.id == id && pr.hero.id == this.hSelected.id;
+        return pr.player.id == id && pr.hero.id == this.heroSelected.id;
       }).length;
     },
     getAve(id) {
@@ -194,7 +197,7 @@ export default {
       var out = 0;
       this.prs
         .filter((pr) => {
-          return pr.player.id == id && pr.hero.id == this.hSelected.id;
+          return pr.player.id == id && pr.hero.id == this.heroSelected.id;
         })
         .forEach((pr) => (out += pr.kills));
       return out;
@@ -208,7 +211,7 @@ export default {
       var out = 0;
       this.prs
         .filter((pr) => {
-          return pr.player.id == id && pr.hero.id == this.hSelected.id;
+          return pr.player.id == id && pr.hero.id == this.heroSelected.id;
         })
         .forEach((pr) => (out += pr.deths));
       return out;
@@ -222,7 +225,7 @@ export default {
       var out = 0;
       this.prs
         .filter((pr) => {
-          return pr.player.id == id && pr.hero.id == this.hSelected.id;
+          return pr.player.id == id && pr.hero.id == this.heroSelected.id;
         })
         .forEach((pr) => (out += pr.asist));
       return out;
@@ -248,7 +251,7 @@ export default {
         }
       });
     },
-    hSelected(h) {
+    heroSelected(h) {
       this.hP = 0;
       this.hV = 0;
       this.hAve = 0;

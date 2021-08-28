@@ -331,12 +331,12 @@ export default createStore({
     }
   },
   actions: {
-    async [INIT]({ commit }) {
-      await commit(INIT_HEROES);
-      await commit(INIT_PLAYERS);
-      await commit(INIT_TOURNAMENTS);
-      await commit(INIT_TOURNAMENT_TYPE);
-      await commit(INIT_RANKS);
+    [INIT]({ commit }) {
+      commit(INIT_HEROES);
+      commit(INIT_PLAYERS);
+      commit(INIT_TOURNAMENTS);
+      commit(INIT_TOURNAMENT_TYPE);
+      commit(INIT_RANKS);
     },
   },
   modules: {}

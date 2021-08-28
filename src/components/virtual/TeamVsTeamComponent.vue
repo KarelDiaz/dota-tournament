@@ -1,7 +1,7 @@
 <template>
-  <label-component title-top="MMR vs MMR">
+  <label-component title-top="Team vs Team">
     <div
-      class="grid items-center justify-center w-full grid-cols-2 gap-3 p-2 border rounded-lg shadow-lg bg-gradient-to-t from-gray-50 to-white"
+      class="grid grid-cols-2 gap-3 p-3 border rounded-lg shadow-lg bg-gradient-to-t from-gray-100 to-white"
     >
       <!-- side win a-->
       <label
@@ -35,25 +35,19 @@
       >
         <input v-model="side_win" type="radio" name="radio" value="b" hidden />
       </label>
-      <!-- MMR a -->
-      <label-component title-top="MMR A">
-        <!-- MMR val -->
-        <input
-          class="px-2 py-1 border border-gray-100 rounded-lg shadow-lg bg-gradient-to-b from-white to-gray-100 focus:ring-green-200 focus:outline-none focus:ring-1 focus:border-transparent"
-          type="number"
-          min="0"
-          v-model="mmrA"
-        />
+      <!-- Team A -->
+      <label-component title-top="Team A">
+        <virtual-team-component
+          v-model="players"
+          @mmr="mmrA = $event"
+        ></virtual-team-component>
       </label-component>
-      <!-- MMR b -->
-      <label-component title-top="MMR B">
-        <!-- MMR val -->
-        <input
-          class="px-2 py-1 border border-gray-100 rounded-lg shadow-lg bg-gradient-to-b from-white to-gray-100 focus:ring-green-200 focus:outline-none focus:ring-1 focus:border-transparent"
-          type="number"
-          min="0"
-          v-model="mmrB"
-        />
+      <!-- Team B -->
+      <label-component title-top="Team B">
+        <virtual-team-component
+          v-model="players"
+          @mmr="mmrB = $event"
+        ></virtual-team-component>
       </label-component>
       <!-- MMR plus a -->
       <div class="flex items-center space-x-3">
@@ -92,13 +86,17 @@
 </template>
 
 <script>
+import Axios from "axios";
+
 import MMR from "@/store/model/mmr";
 
-import LabelComponent from "@/components/LabelComponent";
+import VirtualTeamComponent from "@/components/virtual/VirtualTeamComponent.vue";
+import LabelComponent from "@/components/LabelComponent.vue";
 
 export default {
   data() {
     return {
+      players: [],
       mmrA: 0,
       mmrB: 0,
       side_win: "a",
@@ -116,6 +114,13 @@ export default {
         : new MMR(this.mmrA, this.mmrB).getPlusB();
     },
   },
-  components: { LabelComponent },
+  async created() {
+    await Axios.get(this.$store.state.strapi + "/players?_limit=-1").then(
+      ({ data }) => {
+        this.players = data;
+      }
+    );
+  },
+  components: { VirtualTeamComponent, LabelComponent },
 };
 </script>

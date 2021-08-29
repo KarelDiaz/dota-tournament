@@ -1,7 +1,7 @@
 <template>
   <label-component title-top="Team vs Team">
     <div
-      class="grid grid-cols-2 gap-3 p-3 border rounded-lg shadow-lg bg-gradient-to-t from-gray-100 to-white"
+      class="grid grid-cols-2 gap-3 p-3 border rounded-lg shadow-lg  bg-gradient-to-t from-gray-100 to-white"
     >
       <!-- side win a-->
       <label

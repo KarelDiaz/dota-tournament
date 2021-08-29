@@ -8,6 +8,7 @@
           v-model="playerForm.nick"
           required
           type="text"
+          maxlength="15"
           placeholder="Escriba el nick"
         />
         <button

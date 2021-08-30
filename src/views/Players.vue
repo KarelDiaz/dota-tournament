@@ -4,7 +4,7 @@
     <form @submit.prevent="send" class="flex justify-center">
       <div class="rounded-lg shadow-lg">
         <input
-          class="px-2 py-1 border border-gray-100 rounded-l-lg bg-gradient-to-b from-white to-gray-100 focus:ring-green-200 focus:outline-none focus:ring-1 focus:border-transparent"
+          class="px-2 py-1 border border-gray-100 rounded-l-lg  bg-gradient-to-b from-white to-gray-100 focus:ring-green-200 focus:outline-none focus:ring-1 focus:border-transparent"
           v-model="playerForm.nick"
           required
           type="text"
@@ -12,7 +12,7 @@
           placeholder="Escriba el nick"
         />
         <button
-          class="px-5 py-1 text-green-900 border border-green-400 rounded-r-lg hover:border-green-300 bg-gradient-to-b from-green-200 to-green-400 hover:from-green-100 hover:to-green-300"
+          class="px-5 py-1 text-green-900 border border-green-400 rounded-r-lg  hover:border-green-300 bg-gradient-to-b from-green-200 to-green-400 hover:from-green-100 hover:to-green-300"
           type="submit"
         >
           <span v-if="!idMod">
@@ -35,8 +35,8 @@
         <td></td>
         <td></td>
         <td class="font-bold">MMR ↓</td>
-        <td class="font-bold">P</td>
-        <td class="hidden font-bold sm:table-cell">V</td>
+        <td class="hidden font-bold sm:table-cell">P</td>
+        <td class="font-bold">V</td>
         <td class="hidden font-bold sm:table-cell">AVE</td>
         <td class="font-bold">K</td>
         <td class="hidden font-bold sm:table-cell">K/P</td>
@@ -83,25 +83,25 @@
             {{ i + 1 }}
           </div>
         </td>
+        <!-- Rank -->
+        <td>
+          <rank-component class="p-1 sm:p-3" :mmr="p.mmr" :size="8" />
+        </td>
         <!-- Nick -->
         <td class="sm:p-3 sm:pr-6">
           <span
             @click="preMod(p.id)"
-            class="h-full p-2 border border-transparent rounded-lg nick bg-gradient-to-b hover:shadow-lg hover:text-green-800 hover:border-green-200 hover:from-green-50 hover:to-green-200"
+            class="h-full p-2 border border-transparent rounded-lg  nick bg-gradient-to-b hover:shadow-lg hover:text-green-800 hover:border-green-200 hover:from-green-50 hover:to-green-200"
           >
             {{ p.nick }}
           </span>
         </td>
-        <!-- Rank -->
-        <td>
-          <rank-component :mmr="p.mmr" :size="8"/>
-        </td>
         <!-- MMR -->
         <td>{{ p.mmr || 0 }}</td>
         <!-- Plays -->
-        <td>{{ p.p || 0 }}</td>
+        <td class="hidden sm:table-cell">{{ p.p || 0 }}</td>
         <!-- Victories -->
-        <td class="hidden sm:table-cell">{{ p.v || 0 }}</td>
+        <td>{{ p.v || 0 }}</td>
         <!-- Average -->
         <td class="hidden sm:table-cell">
           {{ p.p > 0 ? Math.round((p.v / p.p) * 1000) : 0 }}
@@ -157,7 +157,11 @@ import PlayerHistoryComponent from "@/components/player/PlayerHistoryComponent";
 import RankComponent from "@/components/RankComponent";
 
 export default {
-  name: "Players",
+  components: {
+    PlayComponent,
+    PlayerHistoryComponent,
+    RankComponent,
+  },
   data() {
     return {
       moment,
@@ -177,11 +181,6 @@ export default {
       resultInfo: (state) => state.resultInfo,
       playInfo: (state) => state.playInfo,
     }),
-  },
-  components: {
-    PlayComponent,
-    PlayerHistoryComponent,
-    RankComponent
   },
   methods: {
     ...mapMutations([

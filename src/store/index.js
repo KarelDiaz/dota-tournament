@@ -279,24 +279,29 @@ export default createStore({
         // load all heros from scratch if no exist on db
         if (this.state.ranks.length === 0) {
           let ranksTemp = [
-            new Rank('herald', 0, 839),
-            new Rank('guardian', 840, 1679),
-            new Rank('crusader', 1680, 2519),
-            new Rank('archon', 2520, 3359),
-            new Rank('legend', 3360, 4199),
-            new Rank('ancient', 4200, 5039),
-            new Rank('divine', 5040, Number.MAX_SAFE_INTEGER),
+            'herald',
+            'guardian',
+            'crusader',
+            'archon',
+            'legend',
+            'ancient',
+            'divine',
           ];
-          var n = 0;
-          ranksTemp.forEach((h) => {
-            axios.post(this.state.strapi + "/ranks", h).then(() => {
-              n++;
-              if (n == ranksTemp.length) {
-                axios.get(state.strapi + "/ranks").then(({ data2 }) => {
-                  state.ranks = data2.sort((a, b) => a.min - b.min);
-                });
-              }
-            });
+          let n = 0;
+          let val = 0;
+          ranksTemp.forEach((rankName) => {
+            for (let star = 0; star < 6; star++) {
+              let rank = new Rank(rankName, val, val + 139, star);
+              val += 140;
+              axios.post(this.state.strapi + "/ranks", rank).then(() => {
+                n++;
+                if (n == ranksTemp.length * 6) {
+                  axios.get(state.strapi + "/ranks").then(({ data2 }) => {
+                    state.ranks = data2.sort((a, b) => a.min - b.min);
+                  });
+                }
+              });
+            }
           });
         }
       });

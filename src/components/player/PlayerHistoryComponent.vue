@@ -23,20 +23,23 @@
       </div>
       <!-- Nick -->
       <div
-        class="flex items-center justify-center p-2 text-lg font-extrabold text-center text-gray-700 border border-b-0 rounded-t-lg bg-gradient-to-t from-gray-100 to-white"
+        class="flex items-center justify-center p-2 text-lg font-extrabold text-center text-gray-700 border border-b-0 rounded-t-lg  bg-gradient-to-t from-gray-100 to-white"
       >
         {{ player.nick }} - {{ player.mmr }}
       </div>
       <!-- Rank -->
       <div
-        class="flex flex-col items-end justify-center space-x-0 sm:flex-row sm:items-center sm:justify-end sm:space-x-3"
+        class="flex flex-col items-end justify-center space-x-0  sm:flex-row sm:items-center sm:justify-end sm:space-x-3"
       >
-        <div class="flex justify-center w-full sm:justify-end" v-if="rankSelected?.name">
+        <div
+          class="flex justify-center w-full sm:justify-end"
+          v-if="rankSelected?.name"
+        >
           <rank-component :mmr="rankSelected.min" :size="8" />
         </div>
         <select class="capitalize" v-model="rankSelected">
           <option v-for="rank in ranks" :key="rank.id" :value="rank">
-            {{ rank.name }}
+            {{ rank.name }} <span v-if="rank.star > 0">{{ rank.star }}</span>
           </option>
         </select>
       </div>
@@ -45,7 +48,7 @@
     <div class="relative overflow-auto">
       <!-- Number lines -->
       <div
-        class="sticky left-0 flex flex-col justify-end w-full h-full text-xs text-gray-500 border border-gray-300 rounded-lg rounded-tr-none shadow-lg sm:rounded-tr-lg bg-gradient-to-t from-gray-200 to-gray-50"
+        class="sticky left-0 flex flex-col justify-end w-full h-full text-xs text-gray-500 border border-gray-300 rounded-lg rounded-tr-none shadow-lg  sm:rounded-tr-lg bg-gradient-to-t from-gray-200 to-gray-50"
         :style="[{ minHeight: `${height * proportion}px` }]"
       >
         <!-- Max -->
@@ -214,7 +217,7 @@ export default {
     },
   },
   mounted() {
-    this.rankSelected = this.ranks[1];
+    this.rankSelected = this.ranks[0];
     this.getResults();
   },
   watch: {

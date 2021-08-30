@@ -51,7 +51,7 @@
           >
             <span class="flex">
               <b class="flex sm:hidden">👈</b>
-              <b>😒</b>
+              <b>😁</b>
               <b class="hidden sm:flex">👆</b>
             </span>
             <i>Agregue un torneo </i>

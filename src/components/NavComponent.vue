@@ -45,15 +45,6 @@
           >
             Players
           </router-link>
-          <!-- Plays -->
-          <router-link
-            v-if="$store.state.players.length > 0"
-            @click.passive="open = false"
-            class="link hover:text-blue-500"
-            to="/plays"
-          >
-            Plays
-          </router-link>
           <!-- Tournaments -->
           <router-link
             v-if="$store.state.players.length > 0"
@@ -62,6 +53,15 @@
             to="/tournaments"
           >
             Tournaments
+          </router-link>
+          <!-- Plays -->
+          <router-link
+            v-if="$store.state.players.length > 0"
+            @click.passive="open = false"
+            class="link hover:text-blue-500"
+            to="/plays"
+          >
+            Plays
           </router-link>
           <!-- Heroes -->
           <router-link

@@ -13,7 +13,7 @@
         "
         class="btn"
       >
-        Eliminar Plays
+        Delete Plays
       </button>
       <button
         @click="
@@ -24,7 +24,7 @@
         "
         class="btn"
       >
-        Eliminar Tournaments
+        Delete Tournaments
       </button>
       <button
         @click="
@@ -37,10 +37,11 @@
           this.clean('heroes');
           this.clean('players');
           this.clean('tournament-types');
+          this.clean('ranks');
         "
         class="btn"
       >
-        Eliminar todo
+        Delete All
       </button>
     </div>
     <!-- Info -->

@@ -43,5 +43,10 @@ export default {
   mounted() {
     this.rank = this.getRank(this.mmr);
   },
+  watch:{
+    mmr(v){
+      this.rank = this.getRank(v);
+    }
+  }
 };
 </script>

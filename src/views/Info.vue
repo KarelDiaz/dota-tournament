@@ -1,25 +1,30 @@
 <template>
   <div class="flex flex-col p-2 space-y-2 sm:space-y-3 sm:p-3">
-    <clean-component></clean-component>
     <!-- Dota Tournament -->
     <div class="flex flex-col space-y-3">
       <!-- Dota Tournament img -->
       <div
-        class="flex flex-col items-center justify-center space-x-3 text-center  sm:flex-row"
+        class="flex flex-col items-center justify-center space-x-3 text-center sm:flex-row"
       >
-        <img class="h-14 w-14" src="favicon.png" alt="" />
+        <img
+          class="h-14 w-14"
+          src="favicon.png"
+          @dblclick="this.clean = !this.clean"
+        />
         <div class="ml-3 text-5xl font-extrabold">
           <span
-            class="my-auto text-transparent  bg-clip-text bg-gradient-to-b from-blue-500 to-blue-800"
+            class="my-auto text-transparent bg-clip-text bg-gradient-to-b from-blue-500 to-blue-800"
           >
             Dota Tournament
           </span>
         </div>
       </div>
+      <!-- Clean component -->
+      <clean-component v-show="clean"></clean-component>
       <!-- Dota Tournament links -->
       <div class="flex justify-center space-x-3 sm:space-x-20">
         <a
-          class="flex flex-col items-center space-x-2  sm:flex-row hover:text-indigo-400"
+          class="flex flex-col items-center space-x-2 sm:flex-row hover:text-indigo-400"
           target="blanck"
           :href="$store.state.github.frontend"
         >
@@ -27,7 +32,7 @@
           <span>Frontend <i class="fa fa-external-link"></i></span>
         </a>
         <a
-          class="flex flex-col items-center space-x-2  sm:flex-row hover:text-indigo-400"
+          class="flex flex-col items-center space-x-2 sm:flex-row hover:text-indigo-400"
           target="blanck"
           :href="$store.state.github.backend"
         >
@@ -214,6 +219,11 @@ import CleanComponent from "@/components/CleanComponent.vue";
 export default {
   components: {
     CleanComponent,
+  },
+  data() {
+    return {
+      clean: false,
+    };
   },
 };
 </script>

@@ -22,7 +22,7 @@
       <!-- Clean component -->
       <clean-component v-show="clean"></clean-component>
       <!-- Dota Tournament links -->
-      <div class="flex justify-center space-x-3 sm:space-x-20">
+      <div class="flex justify-around space-x-3 sm:space-x-20">
         <a
           class="flex flex-col items-center space-x-2 sm:flex-row hover:text-indigo-400"
           target="blanck"
@@ -230,6 +230,6 @@ export default {
 
 <style lang="scss" scoped>
 .info {
-  @apply flex flex-col p-3 space-y-1 border bg-gradient-to-br from-gray-50 shadow-lg rounded-lg;
+  @apply flex flex-col p-3 space-y-1 border bg-gradient-to-t from-gray-50 to-white shadow-lg rounded-lg;
 }
 </style>

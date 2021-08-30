@@ -13,7 +13,7 @@
         "
         class="btn"
       >
-        Delete Plays
+        <i class="fa fa-trash"></i> Plays
       </button>
       <button
         @click="
@@ -24,7 +24,7 @@
         "
         class="btn"
       >
-        Delete Tournaments
+        <i class="fa fa-trash"></i> Tournaments
       </button>
       <button
         @click="
@@ -41,7 +41,7 @@
         "
         class="btn"
       >
-        Delete All
+        <i class="fa fa-trash"></i> All
       </button>
     </div>
     <!-- Info -->
@@ -110,6 +110,6 @@ export default {
 
 <style lang="scss" scoped>
 .btn {
-  @apply bg-gradient-to-t from-red-300 to-red-200 border border-red-300 text-red-800 shadow-lg rounded-lg hover:from-red-200 hover:to-red-100 hover:border-red-200 p-3;
+  @apply bg-gradient-to-t from-red-300 to-red-200 border border-red-300 text-red-800 shadow-lg rounded-lg hover:from-red-200 hover:to-red-100 hover:border-red-200 px-3 py-1;
 }
 </style>

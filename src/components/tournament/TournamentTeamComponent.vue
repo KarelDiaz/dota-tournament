@@ -85,14 +85,14 @@
         },
         { 'from-gray-100 to-gray-50 ': teamWonPlays.length === 0 },
       ]"
-      :style="[{ width: open ? '250px' : '0px' }]"
+      :style="[{ width: open ? '200px' : '0px' }]"
     >
       <div
         class="flex items-center pl-3 space-x-1"
         v-for="id in team.players"
         :key="id + tournament.id"
       >
-        <img class="h-5" :src="`rank/${getRank(getPlayer(id).mmr).name}.png`" />
+        <rank-component :mmr="getPlayer(id).mmr" />
         <span>{{ getPlayer(id).nick }}</span>
         <span class="text-xs italic opacity-70">
           {{ getPlayer(id).mmr }}
@@ -105,8 +105,10 @@
 <script>
 import { mapGetters } from "vuex";
 import { GET_PLAYER, GET_RANK } from "@/store/type/getters";
+import RankComponent from "../RankComponent.vue";
 
 export default {
+  components: { RankComponent },
   data() {
     return {
       mmr: 0,

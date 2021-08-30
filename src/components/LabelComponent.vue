@@ -1,10 +1,10 @@
 <template>
   <div class="flex flex-col">
-    <span v-if="titleTop" class="text-xs text-gray-400 pl-2">
+    <span v-if="titleTop" class="pl-2 text-xs text-gray-400">
       {{ titleTop }}
     </span>
     <slot></slot>
-    <span v-if="titleBottom" class="text-xs text-gray-400 pl-2">
+    <span v-if="titleBottom" class="pl-2 text-xs text-gray-400">
       {{ titleBottom }}
     </span>
   </div>

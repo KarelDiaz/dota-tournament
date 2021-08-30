@@ -94,11 +94,7 @@
         </td>
         <!-- Rank -->
         <td>
-          <img
-            class="h-8"
-            :src="`rank/${getRank(p.mmr).name}.png`"
-            :title="getRank(p.mmr).name"
-          />
+          <rank-component :mmr="p.mmr" :size="8"/>
         </td>
         <!-- MMR -->
         <td>{{ p.mmr || 0 }}</td>
@@ -159,6 +155,7 @@ import Rank from "@/store/model/rank";
 
 import PlayComponent from "@/components/play/PlayComponent";
 import PlayerHistoryComponent from "@/components/player/PlayerHistoryComponent";
+import RankComponent from "@/components/RankComponent";
 
 export default {
   name: "Players",
@@ -185,6 +182,7 @@ export default {
   components: {
     PlayComponent,
     PlayerHistoryComponent,
+    RankComponent
   },
   methods: {
     ...mapMutations([

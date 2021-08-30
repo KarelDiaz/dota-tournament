@@ -53,27 +53,34 @@
             </template>
           </div>
           <!-- Direct -->
-          <div class="flex" v-if="isDirect">
-            <template
-              v-for="(team, i) in tournamentCopy.teams"
-              class="h-full bg-green-500"
+          <div class="flex flex-col space-y-3" v-if="isDirect">
+            <label-component
+              v-for="step in steps"
+              :key="step + tournamentCopy.id"
+              :title-top="`${step}`"
             >
-              <tournament-match-component
-                @click-match="openModal(itemf, iteml, $event)"
-                @added="initPlays()"
-                :key="
-                  tournamentCopy.teams[i].id +
-                  tournamentCopy.teams[i + 1].id +
-                  tournamentCopy.id
-                "
-                v-if="i % 2 === 0"
-                :team1="tournamentCopy.teams[i]"
-                :team2="tournamentCopy.teams[i + 1]"
-                :tournament="tournamentCopy"
-                :tournamentPlays="tournamentPlays"
-                class="h-full mb-3 mr-3"
-              ></tournament-match-component>
-            </template>
+              <div class="flex flex-wrap" v-if="stepFull(step - 2)">
+                <template v-for="(team, i) in stepWinningTeams(step - 2)">
+                  <tournament-match-component
+                    class="h-full mb-3 mr-3"
+                    v-if="i % 2 === 0"
+                    @click-match="openModal(itemf, iteml, $event)"
+                    @added="initPlays()"
+                    @match:won="addStepResult(step - 1, $event)"
+                    :key="
+                      stepWinningTeams(step - 2)[i].id +
+                      stepWinningTeams(step - 2)[i + 1].id +
+                      tournamentCopy.id
+                    "
+                    :team1="stepWinningTeams(step - 2)[i]"
+                    :team2="stepWinningTeams(step - 2)[i + 1]"
+                    :tournament="tournamentCopy"
+                    :tournamentPlays="tournamentPlays"
+                  ></tournament-match-component>
+                </template>
+              </div>
+              <div class="p-3 text-gray-400 border rounded-lg" v-else >Esperando que se completen los primeros 🙄</div>
+            </label-component>
           </div>
         </label-component>
       </div>
@@ -125,6 +132,8 @@ export default {
       tournamentCopy: null,
       tournamentPlays: [],
       tournamentTeamsOrder: [],
+      steps: 0,
+      stepsResults: [],
     };
   },
   props: {
@@ -165,6 +174,14 @@ export default {
           this.tournamentPlays = data.filter(
             (p) => p.tournament.id === this.tournament.id
           );
+          this.steps = 0;
+          this.stepsResults = new Array();
+          let n = this.tournament.teams.length;
+          while (n > 1) {
+            n /= 2;
+            this.stepsResults.push({ step: this.steps, matches: [] });
+            this.steps++;
+          }
         }
       );
     },
@@ -174,6 +191,21 @@ export default {
       for (let i = 0; i < name.length; i++)
         out += name[i] !== "_" ? name[i] : " ";
       return out.toUpperCase();
+    },
+    addStepResult(s, r) {
+      this.stepsResults[s].matches.push(r);
+    },
+    stepFull(s) {
+      if (s < 0) return true;
+      return (
+        this.stepsResults[s].matches.length &&
+        this.stepsResults[s].matches.length ===
+          this.stepsResults[s].matches.filter((m) => m !== false).length
+      );
+    },
+    stepWinningTeams(s) {
+      if (s < 0) return this.tournamentCopy.teams;
+      return this.stepsResults[s].matches
     },
   },
   mounted() {

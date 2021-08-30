@@ -44,12 +44,12 @@
     </div>
     <!-- Hero and all users onfo -->
     <div class="w-3/4 pl-3 text-center sm:text-left">
-      <div v-if="!heroSelected" class="px-3 py-10 text-gray-400 sm:px-10">
+      <div v-if="!heroSelected.displayName" class="px-3 py-10 text-gray-400 sm:px-10">
         👈😉
         <i>Seleccione un héroe para ver estadísticas</i>
       </div>
       <!--Hero info-->
-      <div class="flex flex-col mb-3 sm:flex-row" v-if="heroSelected">
+      <div class="flex flex-col mb-3 sm:flex-row" v-if="heroSelected.displayName">
         <img
           class="rounded-lg shadow-lg sm:rounded-full"
           :src="'./npc/' + heroSelected.name + '.png'"
@@ -91,7 +91,7 @@
       </div>
       <!--All users info-->
       <div class="flex">
-        <table class="w-full text-left" v-if="heroSelected">
+        <table class="w-full text-left" v-if="heroSelected.displayName">
           <thead>
             <tr>
               <th>Nick</th>

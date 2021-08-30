@@ -126,10 +126,7 @@
               class="absolute left-0 right-0 flex justify-center bottom-1"
             >
               <span class="relative flex">
-                <img
-                  class="h-12"
-                  :src="`rank/${getRank(result.mmr).name}.png`"
-                />
+                <rank-component :mmr="result.mmr" :size="12"/>
                 <i
                   class="absolute animate-bounce -right-5 bottom-3"
                   v-if="
@@ -160,8 +157,9 @@ import { mapGetters } from "vuex";
 import moment from "moment";
 
 import { GET_PLAYER, GET_HERO, GET_RANK } from "@/store/type/getters";
-
 import Rank from "@/store/model/rank";
+
+import RankComponent from "@/components/RankComponent.vue";
 
 export default {
   data() {
@@ -177,6 +175,9 @@ export default {
   },
   computed: {
     ...mapGetters([GET_PLAYER, GET_HERO, GET_RANK]),
+  },
+  components: {
+    RankComponent,
   },
   created() {
     // the copy is because the watcher doesnt run on props

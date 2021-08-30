@@ -11,7 +11,7 @@
   <transition name="slide-top">
     <div
       v-if="modelValue"
-      class="fixed z-40 top-3 right-3 left-3 bottom-3 sm:bottom-auto sm:top-6 sm:right-6 sm:left-6"
+      class="fixed z-40 top-3 right-3 left-3 bottom-3 sm:bottom-6 sm:top-6 sm:right-6 sm:left-6"
     >
       <!-- Close -->
       <button

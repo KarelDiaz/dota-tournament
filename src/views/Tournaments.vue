@@ -67,11 +67,11 @@
     <!-- Modal add tournament -->
     <modal-component v-model="modal">
       <add-tournament-component
+        v-if="modal"
         @tournament-add="
           modal = false;
           tournamentSelect($event);
         "
-        v-if="modal"
       ></add-tournament-component>
     </modal-component>
   </div>

@@ -23,12 +23,15 @@
       >
         <!-- Team 1 -->
         <div
-          :class="['px-3 pt-3',{ 'font-extrabold text-lg': matchesWonTeam1Percent >= 1 }]"
+          :class="[
+            'px-3 pt-3',
+            { 'font-extrabold text-lg': matchesWonTeam1Percent >= 1 },
+          ]"
         >
           {{ team1.name }}
         </div>
         <!-- Vs -->
-        <i class="flex flex-col ">
+        <i class="flex flex-col">
           <div v-if="matchesToWin > 1" class="relative">
             {{ matchesWonTeam1 }}
             <span class="hidden sm:inline-block" v-show="hover">
@@ -68,7 +71,10 @@
         </i>
         <!-- Team 2 -->
         <div
-          :class="['px-3 pb-3',{ 'font-extrabold text-lg': matchesWonTeam2Percent >= 1 }]"
+          :class="[
+            'px-3 pb-3',
+            { 'font-extrabold text-lg': matchesWonTeam2Percent >= 1 },
+          ]"
         >
           {{ team2.name }}
         </div>
@@ -193,6 +199,11 @@ export default {
         this.matchesWonTeam1Percent >= 1 || this.matchesWonTeam2Percent >= 1
       );
     },
+    getTeamWon() {
+      if (this.matchesWonTeam1Percent >= 1) return this.team1;
+      if (this.matchesWonTeam2Percent >= 1) return this.team2;
+      return false;
+    },
   },
   methods: {
     initMatch() {
@@ -226,6 +237,8 @@ export default {
         }
         return false;
       }).length;
+
+      this.$emit("match:won", this.getTeamWon);
     },
     swapTeams() {
       let temp = this.teamGood;

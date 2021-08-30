@@ -23,13 +23,13 @@
       </div>
       <!-- Nick -->
       <div
-        class="flex items-center justify-center p-2 text-lg font-extrabold text-center text-gray-700 border border-b-0 rounded-t-lg  bg-gradient-to-t from-gray-100 to-white"
+        class="flex items-center justify-center p-2 text-lg font-extrabold text-center text-gray-700 border border-b-0 rounded-t-lg bg-gradient-to-t from-gray-100 to-white"
       >
         {{ player.nick }} - {{ player.mmr }}
       </div>
       <!-- Rank -->
       <div
-        class="flex flex-col items-end justify-center space-x-0  sm:flex-row sm:items-center sm:justify-end sm:space-x-3"
+        class="flex flex-col items-end justify-center space-x-0 sm:flex-row sm:items-center sm:justify-end sm:space-x-3"
       >
         <div
           class="flex justify-center w-full sm:justify-end"
@@ -48,7 +48,7 @@
     <div class="relative overflow-auto">
       <!-- Number lines -->
       <div
-        class="sticky left-0 flex flex-col justify-end w-full h-full text-xs text-gray-500 border border-gray-300 rounded-lg rounded-tr-none shadow-lg  sm:rounded-tr-lg bg-gradient-to-t from-gray-200 to-gray-50"
+        class="sticky left-0 flex flex-col justify-end w-full h-full text-xs text-gray-500 border border-gray-300 rounded-lg rounded-tr-none shadow-lg sm:rounded-tr-lg bg-gradient-to-t from-gray-200 to-gray-50"
         :style="[{ minHeight: `${height * proportion}px` }]"
       >
         <!-- Max -->
@@ -136,10 +136,22 @@
           </div>
           <!-- Empty player results -->
           <div
-            class="flex items-center justify-center w-full h-24 text-gray-500"
+            class="flex flex-col items-center justify-center w-full h-full text-gray-500"
             v-if="playerResults.length === 0"
           >
-            <div><i>No hay informacion que mostrar </i> 😒</div>
+            <div><i>No hay informacion que mostrar</i> 🤷‍♀️</div>
+            <i>Aqui puede econtrar los rangos en que si hay informacion</i>
+            <div>👇😒</div>
+
+            <div class="flex items-center justify-center p-3 space-x-2">
+              <rank-component
+              class="px-1 py-2 border border-gray-300 rounded-lg shadow-lg cursor-pointer bg-gradient-to-t hover:from-gray-200 hover:to-gray-50"
+                v-for="rank in ranksWithResults"
+                :key="rank.id"
+                :mmr="rank.min"
+                @click="rankSelected=rank"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -179,21 +191,27 @@ export default {
       return this.playerResults[this.playerResults.length - 1];
     },
     height() {
-      if (this.playerResults.length === 0) return 50;
+      if (this.playerResults.length === 0) return 80;
       if (this.maxMMR - this.minMMR <= 0) return 10;
       return this.maxMMR - this.minMMR;
     },
+    ranksWithResults() {
+      let ranksResult = new Array(this.ranks.length);
+      ranksResult.fill(false);
+      this.playerResultsAll.forEach((pr) => {
+        let pos = this.ranks.findIndex(
+          (r) => r.min <= pr.mmr && pr.mmr <= r.max
+        );
+        if (pos >= 0) ranksResult[pos] = true;
+      });
+      let arrOut = [];
+      ranksResult.forEach((rs, i) => {
+        if (rs) arrOut.push(this.ranks[i]);
+      });
+      return arrOut;
+    },
   },
   methods: {
-    maxRank() {
-      let max = 0;
-      this.playerResultsAll.forEach((pr) => {
-        max = Math.max(pr.mmr + pr.mmrPlus, max);
-      });
-      this.ranks = this.$store.state.ranks.filter((r) => max >= r.min);
-      if (!this.ranks.find((r) => r === this.rankSelected))
-        this.rankSelected = this.ranks[this.ranks.length - 1];
-    },
     getResults() {
       Axios.get(this.$store.state.strapi + "/player-results?_limit=-1").then(
         ({ data }) => {
@@ -210,7 +228,10 @@ export default {
           this.minMMR = Number.MAX_SAFE_INTEGER;
           this.playerResults.forEach((pr) => {
             this.maxMMR = Math.max(pr.mmr + pr.mmrPlus, this.maxMMR);
-            this.minMMR = Math.min(pr.mmr + pr.mmrPlus, this.minMMR);
+            this.minMMR = Math.min(
+              pr.mmr + (pr.mmrPlus < 0 ? pr.mmrPlus : 0),
+              this.minMMR
+            );
           });
         }
       );

@@ -33,20 +33,20 @@ export default {
     ...mapGetters([GET_RANK]),
     title() {
       // capitalize the title
-      if(!this.rank.name)return ''
+      if (!this.rank.name) return "";
       let name = this.rank.name;
       name = name.substring(0, 1).toUpperCase() + name.substring(1);
-      let star = this.rank.star;
-      return `${name} ${star}`;
+      if (this.rank.star > 0) return `${name} ${this.rank.star}`;
+      return name;
     },
   },
   mounted() {
     this.rank = this.getRank(this.mmr);
   },
-  watch:{
-    mmr(v){
+  watch: {
+    mmr(v) {
       this.rank = this.getRank(v);
-    }
-  }
+    },
+  },
 };
 </script>

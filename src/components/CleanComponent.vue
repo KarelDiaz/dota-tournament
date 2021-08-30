@@ -91,18 +91,19 @@ export default {
       this.infos = [];
     },
     clean(api) {
-      Axios.get(`${this.strapi}/${api}?_limit=-1`).then(({ data }) => {
-        this.infos.push(new Info(`${data.length} ${api}`, data.length === 0));
-        let n = 0;
-        data.forEach((element) => {
-          Axios.delete(`${this.strapi}/${api}/${element.id}`).then(() => {
-            if (++n == data.length)
-              this.infos.find(
-                (i) => i.text === `${data.length} ${api}`
-              ).done = true;
+      if (confirm(`Do you want to delete all the data in ${api}?`))
+        Axios.get(`${this.strapi}/${api}?_limit=-1`).then(({ data }) => {
+          this.infos.push(new Info(`${data.length} ${api}`, data.length === 0));
+          let n = 0;
+          data.forEach((element) => {
+            Axios.delete(`${this.strapi}/${api}/${element.id}`).then(() => {
+              if (++n == data.length)
+                this.infos.find(
+                  (i) => i.text === `${data.length} ${api}`
+                ).done = true;
+            });
           });
         });
-      });
     },
   },
 };

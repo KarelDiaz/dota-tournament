@@ -31,8 +31,8 @@
       <div
         class="flex flex-col items-end justify-center space-x-0 sm:flex-row sm:items-center sm:justify-end sm:space-x-3"
       >
-        <div class="flex justify-center w-full sm:justify-end">
-          <img class="h-8" :src="`rank/${rankSelected?.name}.png`" />
+        <div class="flex justify-center w-full sm:justify-end" v-if="rankSelected?.name">
+          <rank-component :mmr="rankSelected.min" :size="8" />
         </div>
         <select class="capitalize" v-model="rankSelected">
           <option v-for="rank in ranks" :key="rank.id" :value="rank">
@@ -148,7 +148,12 @@
 import { mapState } from "vuex";
 import Axios from "axios";
 
+import RankComponent from "@/components/RankComponent";
+
 export default {
+  components: {
+    RankComponent,
+  },
   data() {
     return {
       playerResultsAll: [],
@@ -209,7 +214,7 @@ export default {
     },
   },
   mounted() {
-    this.rankSelected = this.ranks[0];
+    this.rankSelected = this.ranks[1];
     this.getResults();
   },
   watch: {

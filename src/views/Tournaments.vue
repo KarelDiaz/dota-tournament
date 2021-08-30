@@ -81,13 +81,18 @@
 import { mapState, mapMutations } from "vuex";
 import moment from "moment";
 
-import { TOURNAMENT_SELECT } from "../store/type/mutations";
+import { TOURNAMENT_SELECT } from "@/store/type/mutations";
 
 import AddTournamentComponent from "@/components/tournament/AddTournamentComponent";
 import ViewTournamentComponent from "@/components/tournament/ViewTournamentComponent";
 import ModalComponent from "@/components/ModalComponent.vue";
 
 export default {
+  components: {
+    AddTournamentComponent,
+    ViewTournamentComponent,
+    ModalComponent,
+  },
   data() {
     return {
       moment: moment,
@@ -99,11 +104,6 @@ export default {
       tournaments: (state) => state.tournaments,
       tournamentSelected: (state) => state.tournamentSelected,
     }),
-  },
-  components: {
-    AddTournamentComponent,
-    ViewTournamentComponent,
-    ModalComponent,
   },
   methods: {
     ...mapMutations([TOURNAMENT_SELECT]),

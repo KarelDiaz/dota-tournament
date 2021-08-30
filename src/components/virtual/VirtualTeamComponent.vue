@@ -44,6 +44,9 @@
 import LabelComponent from "@/components/LabelComponent.vue";
 
 export default {
+  components: {
+    LabelComponent,
+  },
   props: {
     modelValue: Array,
   },
@@ -61,9 +64,6 @@ export default {
       mmr = Math.round(mmr / Math.max(this.playersSelected.length, 1));
       return mmr;
     },
-  },
-  components: {
-    LabelComponent,
   },
   methods: {
     add() {

@@ -1,7 +1,7 @@
 <template>
   <label-component title-top="Team vs Team">
     <div
-      class="grid grid-cols-2 gap-3 p-3 border rounded-lg shadow-lg  bg-gradient-to-t from-gray-100 to-white"
+      class="grid grid-cols-2 gap-3 p-3 border rounded-lg shadow-lg bg-gradient-to-t from-gray-100 to-white"
     >
       <!-- side win a-->
       <label
@@ -94,6 +94,7 @@ import VirtualTeamComponent from "@/components/virtual/VirtualTeamComponent.vue"
 import LabelComponent from "@/components/LabelComponent.vue";
 
 export default {
+  components: { VirtualTeamComponent, LabelComponent },
   data() {
     return {
       players: [],
@@ -121,6 +122,5 @@ export default {
       }
     );
   },
-  components: { VirtualTeamComponent, LabelComponent },
 };
 </script>

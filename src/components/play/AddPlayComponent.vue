@@ -209,7 +209,6 @@ import Player from "@/store/model/player";
 import Play from "@/store/model/play";
 
 export default {
-  name: "Plays",
   data() {
     return {
       plays: [],

@@ -131,13 +131,16 @@ import {
   DIRECT_3,
   DIRECT_5,
 } from "@/store/type/tournament";
-
 import TournamentPlay from "@/store/model/tournament_play";
 
 import AddPlayComponent from "@/components/play/AddPlayComponent";
 import ModalComponent from "@/components/ModalComponent.vue";
 
 export default {
+  components: {
+    AddPlayComponent,
+    ModalComponent,
+  },
   data() {
     return {
       ALL_FOR_ALL_1,
@@ -159,10 +162,6 @@ export default {
     team2: Object,
     tournament: Object,
     tournamentPlays: Array,
-  },
-  components: {
-    AddPlayComponent,
-    ModalComponent,
   },
   computed: {
     ...mapState({
@@ -277,7 +276,6 @@ export default {
   },
 };
 </script>
-
 
 <style lang="scss" scoped>
 .swap {

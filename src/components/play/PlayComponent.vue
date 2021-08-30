@@ -126,7 +126,8 @@
               class="absolute left-0 right-0 flex justify-center bottom-1"
             >
               <span class="relative flex">
-                <rank-component :mmr="result.mmr" :size="12"/>
+                <rank-component :mmr="result.mmr" :size="10" />
+                <!-- Change of rank -->
                 <i
                   class="absolute animate-bounce -right-5 bottom-3"
                   v-if="
@@ -162,6 +163,9 @@ import Rank from "@/store/model/rank";
 import RankComponent from "@/components/RankComponent.vue";
 
 export default {
+  components: {
+    RankComponent,
+  },
   data() {
     return {
       moment,
@@ -175,9 +179,6 @@ export default {
   },
   computed: {
     ...mapGetters([GET_PLAYER, GET_HERO, GET_RANK]),
-  },
-  components: {
-    RankComponent,
   },
   created() {
     // the copy is because the watcher doesnt run on props

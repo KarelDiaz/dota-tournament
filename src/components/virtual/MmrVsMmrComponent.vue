@@ -1,7 +1,7 @@
 <template>
   <label-component title-top="MMR vs MMR">
     <div
-      class="grid items-center justify-center w-full grid-cols-2 gap-3 p-2 border rounded-lg shadow-lg bg-gradient-to-t from-gray-50 to-white"
+      class="grid items-center justify-center w-full grid-cols-2 gap-3 p-2 border rounded-lg shadow-lg  bg-gradient-to-t from-gray-50 to-white"
     >
       <!-- side win a-->
       <label
@@ -39,7 +39,7 @@
       <label-component title-top="MMR A">
         <!-- MMR val -->
         <input
-          class="px-2 py-1 border border-gray-100 rounded-lg shadow-lg bg-gradient-to-b from-white to-gray-100 focus:ring-green-200 focus:outline-none focus:ring-1 focus:border-transparent"
+          class="px-2 py-1 border border-gray-100 rounded-lg shadow-lg  bg-gradient-to-b from-white to-gray-100 focus:ring-green-200 focus:outline-none focus:ring-1 focus:border-transparent"
           type="number"
           min="0"
           v-model="mmrA"
@@ -49,7 +49,7 @@
       <label-component title-top="MMR B">
         <!-- MMR val -->
         <input
-          class="px-2 py-1 border border-gray-100 rounded-lg shadow-lg bg-gradient-to-b from-white to-gray-100 focus:ring-green-200 focus:outline-none focus:ring-1 focus:border-transparent"
+          class="px-2 py-1 border border-gray-100 rounded-lg shadow-lg  bg-gradient-to-b from-white to-gray-100 focus:ring-green-200 focus:outline-none focus:ring-1 focus:border-transparent"
           type="number"
           min="0"
           v-model="mmrB"
@@ -97,6 +97,7 @@ import MMR from "@/store/model/mmr";
 import LabelComponent from "@/components/LabelComponent";
 
 export default {
+  components: { LabelComponent },
   data() {
     return {
       mmrA: 0,
@@ -116,6 +117,5 @@ export default {
         : new MMR(this.mmrA, this.mmrB).getPlusB();
     },
   },
-  components: { LabelComponent },
 };
 </script>

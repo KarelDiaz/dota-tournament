@@ -104,8 +104,10 @@
 
 <script>
 import { mapGetters } from "vuex";
+
 import { GET_PLAYER, GET_RANK } from "@/store/type/getters";
-import RankComponent from "../RankComponent.vue";
+
+import RankComponent from "@/components/RankComponent.vue";
 
 export default {
   components: { RankComponent },

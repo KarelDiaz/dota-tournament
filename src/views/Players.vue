@@ -149,7 +149,6 @@ import {
   SET_RESULT_INFO,
 } from "@/store/type/mutations";
 import { GET_RANK } from "@/store/type/getters";
-
 import Player from "@/store/model/player";
 import Rank from "@/store/model/rank";
 

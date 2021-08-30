@@ -2,13 +2,13 @@
   <div class="flex flex-col space-y-3">
     <!--Torunament name and type-->
     <div
-      class="flex flex-col space-x-0 space-y-3  sm:flex-row sm:space-y-0 sm:space-x-3"
+      class="flex flex-col space-x-0 space-y-3 sm:flex-row sm:space-y-0 sm:space-x-3"
     >
       <!-- Name -->
       <label-component class="relative" title-top="Nombre del torneo">
         <!-- Random name "Tournament n+1" -->
         <button
-          class="absolute w-8 h-8 text-gray-900 border rounded-full shadow-lg  -right-2 bg-gradient-to-b from-gray-50 to-gray-200 hover:from-white"
+          class="absolute w-8 h-8 text-gray-900 border rounded-full shadow-lg -right-2 bg-gradient-to-b from-gray-50 to-gray-200 hover:from-white"
           title="Generar el nombre del torneo de forma aleatoria"
           @click="
             tournamentTemp.name =
@@ -40,7 +40,7 @@
           title-top="Tipo de torneo"
         >
           <select
-            class="w-full p-4 border rounded-lg shadow-lg  sm:w-auto bg-gradient-to-b from-white to-gray-100"
+            class="w-full p-4 border rounded-lg shadow-lg sm:w-auto bg-gradient-to-b from-white to-gray-100"
             v-model="tournamentTemp.type"
             placeholder="Tipo"
           >
@@ -61,7 +61,7 @@
         <transition-group name="slide-right">
           <div v-for="team in tournamentTemp.teams" :key="team">
             <div
-              class="relative flex flex-col p-3 mb-3 mr-3 space-y-3 text-green-800 border border-green-300 rounded-lg shadow-lg  bg-gradient-to-t from-green-300 to-green-100"
+              class="relative flex flex-col p-3 mb-3 mr-3 space-y-3 text-green-800 border border-green-300 rounded-lg shadow-lg bg-gradient-to-t from-green-300 to-green-100"
             >
               <!-- Name and mmr -->
               <div class="flex flex-col">
@@ -81,7 +81,7 @@
               </div>
               <!-- Remove team -->
               <button
-                class="absolute w-8 h-8 text-gray-600 border rounded-full shadow-md  -top-5 -right-2 bg-gradient-to-b from-gray-50 to-gray-200 hover:from-white"
+                class="absolute w-8 h-8 text-gray-600 border rounded-full shadow-md -top-5 -right-2 bg-gradient-to-b from-gray-50 to-gray-200 hover:from-white"
                 @click="delTeam(team)"
               >
                 <i class="fa fa-trash"></i>
@@ -96,7 +96,7 @@
             v-if="newTeamVisibility"
           >
             <button
-              class="absolute w-8 h-8 text-gray-600 border rounded-full shadow-md  -top-2 -right-2 bg-gradient-to-b from-gray-50 to-gray-200 hover:from-white"
+              class="absolute w-8 h-8 text-gray-600 border rounded-full shadow-md -top-2 -right-2 bg-gradient-to-b from-gray-50 to-gray-200 hover:from-white"
               @click="fillRandomTeamTemp()"
             >
               <i class="fa fa-random"></i>
@@ -114,13 +114,13 @@
               >
                 <div class="flex mb-1 rounded-lg shadow-lg">
                   <button
-                    class="px-5 py-1 text-gray-900 border border-gray-300 rounded-l-lg  bg-gradient-to-b from-gray-100 to-gray-300 hover:from-gray-50 hover:to-gray-200"
+                    class="px-5 py-1 text-gray-900 border border-gray-300 rounded-l-lg bg-gradient-to-b from-gray-100 to-gray-300 hover:from-gray-50 hover:to-gray-200"
                     @click="addRandomNameToTeamTemp()"
                   >
                     <i class="fa fa-random"></i>
                   </button>
                   <input
-                    class="w-full px-2 border rounded-r-lg  bg-gradient-to-b from-white to-gray-100"
+                    class="w-full px-2 border rounded-r-lg bg-gradient-to-b from-white to-gray-100"
                     maxlength="30"
                     required
                     type="text"
@@ -147,7 +147,7 @@
                 >
                   <!-- Player random -->
                   <button
-                    class="px-5 py-1 text-gray-900 border border-gray-300 rounded-l-lg  bg-gradient-to-b from-gray-100 to-gray-300 hover:from-gray-50 hover:to-gray-200"
+                    class="px-5 py-1 text-gray-900 border border-gray-300 rounded-l-lg bg-gradient-to-b from-gray-100 to-gray-300 hover:from-gray-50 hover:to-gray-200"
                     @click="addRandomPlayerToTeamTemp"
                   >
                     <i class="transform rotate-90 fa fa-random"></i>
@@ -167,7 +167,7 @@
                   <!-- Add player selected -->
                   <button
                     v-if="playerSelected"
-                    class="px-5 text-green-900 border border-green-400 rounded-r-lg  hover:border-green-300 bg-gradient-to-b from-green-200 to-green-400 hover:from-green-100 hover:to-green-300"
+                    class="px-5 text-green-900 border border-green-400 rounded-r-lg hover:border-green-300 bg-gradient-to-b from-green-200 to-green-400 hover:from-green-100 hover:to-green-300"
                     @click="addPlayerToTeamTemp"
                   >
                     <i class="fa fa-plus"></i>
@@ -178,7 +178,7 @@
               <div class="flex flex-col space-y-1">
                 <transition-group name="slide-top">
                   <span
-                    class="relative flex items-center justify-between px-4 py-1 space-x-2 border border-dashed rounded-full  bg-gradient-to-t from-gray-50 to-white player bg-opacity-20"
+                    class="relative flex items-center justify-between px-4 py-1 space-x-2 border border-dashed rounded-full bg-gradient-to-t from-gray-50 to-white player bg-opacity-20"
                     v-for="p in teamTemp.players"
                     :key="p"
                     @click="cancelPlayerToTeamTemp(p)"
@@ -195,7 +195,7 @@
             <!--Button add team-->
             <div>
               <button
-                class="w-full px-4 text-green-900 border border-green-400 rounded-lg shadow-lg  bg-gradient-to-b hover:border-green-300 from-green-200 to-green-400 hover:from-green-100 hover:to-green-300"
+                class="w-full px-4 text-green-900 border border-green-400 rounded-lg shadow-lg bg-gradient-to-b hover:border-green-300 from-green-200 to-green-400 hover:from-green-100 hover:to-green-300"
                 @click="addTeamTempToTournamentTemp"
                 v-if="teamTemp.players.length > 0 && teamTemp.name"
               >
@@ -339,7 +339,7 @@
       </small>
       <!-- Add button -->
       <button
-        class="w-full mt-3 text-green-900 border border-green-400 rounded-lg shadow-lg  hover:border-green-300 bg-gradient-to-b from-green-200 to-green-400 hover:from-green-100 hover:to-green-300"
+        class="w-full mt-3 text-green-900 border border-green-400 rounded-lg shadow-lg hover:border-green-300 bg-gradient-to-b from-green-200 to-green-400 hover:from-green-100 hover:to-green-300"
         @click="submitTournament()"
       >
         <i class="fa fa-plus"></i>
@@ -368,6 +368,9 @@ import Team from "@/store/model/team";
 import LabelComponent from "@/components/LabelComponent.vue";
 
 export default {
+  components: {
+    LabelComponent,
+  },
   data() {
     return {
       ALL_FOR_ALL_1,
@@ -386,9 +389,6 @@ export default {
   created() {
     this.players = this.$store.state.players; // clone the players from store
     this.tournamentTemp = new Tournament();
-  },
-  components: {
-    LabelComponent,
   },
   computed: {
     ...mapState({

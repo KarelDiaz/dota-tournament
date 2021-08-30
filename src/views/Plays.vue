@@ -153,7 +153,12 @@ import LabelComponent from "@/components/LabelComponent";
 import ModalComponent from "@/components/ModalComponent.vue";
 
 export default {
-  name: "Plays",
+  components: {
+    PlayComponent,
+    AddPlayComponent,
+    LabelComponent,
+    ModalComponent,
+  },
   data() {
     return {
       modal: false,
@@ -168,12 +173,6 @@ export default {
       players: (state) => state.players,
       heroes: (state) => state.heroes,
     }),
-  },
-  components: {
-    PlayComponent,
-    AddPlayComponent,
-    LabelComponent,
-    ModalComponent,
   },
   methods: {
     filter() {

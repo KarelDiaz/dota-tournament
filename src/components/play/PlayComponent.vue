@@ -8,7 +8,7 @@
     <transition name="scale-y-top">
       <div
         v-show="hover"
-        class="text-center text-gray-400 border-t bg-gradient-to-b from-gray-100"
+        class="text-center text-gray-400 border-t  bg-gradient-to-b from-gray-100"
       >
         {{ moment(play.createdAt).format("MMMM D, YYYY, HH:mm") }}
       </div>
@@ -71,7 +71,7 @@
               </span>
             </div>
             <!-- Rasult -->
-            <div class="flex flex-col justify-center h-full">
+            <div class="flex flex-col justify-center">
               <transition name="fade">
                 <table
                   class="w-full my-auto text-center"
@@ -100,7 +100,7 @@
             <!-- Hero name -->
             <span
               :class="[
-                'pb-2 truncate item transition-opacity duration-500',
+                'truncate h-full flex items-end item transition-opacity duration-500',
                 { 'opacity-0': hover },
               ]"
               v-if="!result.bot"
@@ -120,33 +120,33 @@
             ></div>
           </div>
           <!-- Rank -->
-          <transition name="fade">
-            <div
-              v-if="hover && !result.bot"
-              class="absolute left-0 right-0 flex justify-center bottom-1"
-            >
-              <span class="relative flex">
-                <rank-component :mmr="result.mmr" :size="10" />
-                <!-- Change of rank -->
+          <div
+            :class="[
+              'absolute left-0 right-0 flex justify-center bottom-1 transition-opacity duration-1000 opacity-0',
+              { 'opacity-100': hover && !result.bot },
+            ]"
+          >
+            <span class="relative flex">
+              <rank-component :mmr="result.mmr" :size="10" />
+              <!-- Change of rank -->
+              <i
+                class="absolute animate-bounce -right-5 bottom-3"
+                v-if="
+                  getRank(result.mmr).name !==
+                  getRank(result.mmr + result.mmrPlus).name
+                "
+              >
                 <i
-                  class="absolute animate-bounce -right-5 bottom-3"
-                  v-if="
-                    getRank(result.mmr).name !==
-                    getRank(result.mmr + result.mmrPlus).name
-                  "
-                >
-                  <i
-                    class="text-green-400 fa fa-arrow-up"
-                    v-if="result.mmrPlus > 0"
-                  ></i>
-                  <i
-                    class="absolute text-red-400 animate-bounce -right-5 bottom-3 fa fa-arrow-down"
-                    v-if="result.mmrPlus < 0"
-                  ></i>
-                </i>
-              </span>
-            </div>
-          </transition>
+                  class="text-green-400 fa fa-arrow-up"
+                  v-if="result.mmrPlus > 0"
+                ></i>
+                <i
+                  class="absolute text-red-400  animate-bounce -right-5 bottom-3 fa fa-arrow-down"
+                  v-if="result.mmrPlus < 0"
+                ></i>
+              </i>
+            </span>
+          </div>
         </div>
       </template>
     </div>

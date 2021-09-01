@@ -27,7 +27,7 @@ export default createStore({
   state: {
     loading: false,
     strapi: `http://${window.location.hostname}:1337`,
-    local: `http://${window.location.hostname}:8080`,
+    local: `http://${window.location.hostname}:${window.location.port}`,
     github: {
       frontend: 'https://github.com/KarelDiaz/dota-tournament',
       backend: 'https://github.com/KarelDiaz/dota-tournament-backend'

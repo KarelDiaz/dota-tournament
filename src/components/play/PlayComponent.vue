@@ -8,7 +8,7 @@
     <transition name="scale-y-top">
       <div
         v-show="hover"
-        class="text-center text-gray-400 border-t  bg-gradient-to-b from-gray-100"
+        class="text-center text-gray-400 border-t bg-gradient-to-b from-gray-100"
       >
         {{ moment(play.createdAt).format("MMMM D, YYYY, HH:mm") }}
       </div>
@@ -122,7 +122,7 @@
           <!-- Rank -->
           <div
             :class="[
-              'absolute left-0 right-0 flex justify-center bottom-1 transition-opacity duration-1000 opacity-0',
+              'absolute left-0 right-0 flex justify-center bottom-1 transition-opacity duration-500 opacity-0',
               { 'opacity-100': hover && !result.bot },
             ]"
           >
@@ -141,7 +141,7 @@
                   v-if="result.mmrPlus > 0"
                 ></i>
                 <i
-                  class="absolute text-red-400  animate-bounce -right-5 bottom-3 fa fa-arrow-down"
+                  class="absolute text-red-400 animate-bounce -right-5 bottom-3 fa fa-arrow-down"
                   v-if="result.mmrPlus < 0"
                 ></i>
               </i>

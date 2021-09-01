@@ -3,7 +3,7 @@
     <nav-component class="w-full"></nav-component>
     <router-view
       id="view"
-      class="fixed bottom-0 left-0 right-0 overflow-y-auto top-14"
+      class="fixed bottom-0 left-0 right-0 overflow-y-auto top-10"
     />
   </div>
 </template>
@@ -38,6 +38,6 @@ export default {
 }
 #view {
   @apply bg-cover bg-center bg-no-repeat;
-  background-image: url("/background.png");
+  background-image: url("/background.jpg");
 }
 </style>

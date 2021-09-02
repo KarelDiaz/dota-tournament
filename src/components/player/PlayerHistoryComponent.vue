@@ -136,11 +136,11 @@
           </div>
           <!-- Empty player results -->
           <div
-            class="flex flex-col items-center justify-center w-full h-full text-gray-500"
+            class="flex flex-col items-center justify-center w-full h-full p-3 text-center text-gray-500"
             v-if="playerResults.length === 0"
           >
-            <div><i>No hay informacion que mostrar</i> 🤷‍♀️</div>
-            <i>Aqui puede econtrar los rangos en que si hay informacion</i>
+            <div><i>No hay historial que mostrar</i> 🤷‍♀️</div>
+            <i>Aqui puede econtrar los rangos en cuales hay información</i>
             <div>👇😒</div>
 
             <div class="flex items-center justify-center p-3 space-x-2">

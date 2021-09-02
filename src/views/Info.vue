@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col p-2 space-y-2 sm:space-y-3 sm:p-3">
     <!-- Dota Tournament -->
-    <div class="flex flex-col space-y-3">
+    <div class="flex flex-col">
       <!-- Dota Tournament img -->
       <div
         class="flex flex-col items-center justify-center space-x-3 text-center sm:flex-row"
@@ -18,7 +18,11 @@
             Dota Tournament
           </span>
         </div>
+
       </div>
+      <a href="https://twitter.com/KarelDiazA" class="text-sm italic text-center text-gray-400 hover:text-blue-400">
+      Karel Diaz Alfonso <i class="fa fa-external-link"></i>
+      </a>
       <!-- Clean component -->
       <clean-component v-show="clean"></clean-component>
       <!-- Dota Tournament links -->

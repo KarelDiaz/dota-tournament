@@ -26,7 +26,7 @@
       <!-- Emty case -->
       <transition name="fade">
         <div
-          class="absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center p-3 text-center text-gray-400 sm:p-6"
+          class="absolute top-0 bottom-0 left-0 right-0 flex p-3 text-center text-gray-400 sm:p-6"
           v-if="ps1.length === 0"
         >
           <span>
@@ -68,7 +68,7 @@
       <!-- Emty case -->
       <transition name="fade">
         <div
-          class="absolute top-0 bottom-0 left-0 right-0 flex flex-col items-center justify-center p-3 text-center text-gray-400 sm:p-6"
+          class="absolute top-0 bottom-0 left-0 right-0 flex flex-col p-3 text-center text-gray-400 sm:p-6"
           v-if="ps2.length === 0"
         >
           <i>
@@ -109,7 +109,7 @@
       <!-- Emty case -->
       <transition name="fade">
         <div
-          class="absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center p-3 text-center text-gray-400 sm:p-6"
+          class="absolute top-0 bottom-0 left-0 right-0 flex justify-center p-3 text-center text-gray-400 sm:p-6"
           v-if="ps3.length === 0"
         >
           <span>
